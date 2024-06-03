@@ -17,27 +17,27 @@ class WatershedDetails {
     required this.selectedCategory,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'district': district,
-      'taluk': taluk,
-      'hobli': hobli,
-      'subWatershedName': subWatershedName,
-      'subWatershedCode': subWatershedCode,
-      'village': village,
-      'selectedCategory': selectedCategory,
-    };
-  }
-
-  factory WatershedDetails.fromMap(Map<String, dynamic> map) {
-    return WatershedDetails(
-      district: map['district'],
-      taluk: map['taluk'],
-      hobli: map['hobli'],
-      subWatershedName: map['subWatershedName'],
-      subWatershedCode: map['subWatershedCode'],
-      village: map['village'],
-      selectedCategory: map['selectedCategory'],
-    );
-  }
+  // Map<String, dynamic> toMap() {
+  //   return {
+  //     'district': district,
+  //     'taluk': taluk,
+  //     'hobli': hobli,
+  //     'subWatershedName': subWatershedName,
+  //     'subWatershedCode': subWatershedCode,
+  //     'village': village,
+  //     'selectedCategory': selectedCategory,
+  //   };
+  // }
+  //
+  // factory WatershedDetails.fromMap(Map<String, dynamic> map) {
+  //   return WatershedDetails(
+  //     district: map['district'],
+  //     taluk: map['taluk'],
+  //     hobli: map['hobli'],
+  //     subWatershedName: map['subWatershedName'],
+  //     subWatershedCode: map['subWatershedCode'],
+  //     village: map['village'],
+  //     selectedCategory: map['selectedCategory'],
+  //   );
+  // }
 }
