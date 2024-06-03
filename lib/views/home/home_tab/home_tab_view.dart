@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/views/generateid/GenerateFarmersId_view.dart';
-
+import 'package:gkvk/views/watershed/watershed_view.dart';
 class HomeTabView extends StatelessWidget{
   const HomeTabView({super.key});
 
@@ -49,7 +50,12 @@ class HomeTabView extends StatelessWidget{
                       color: const Color(0xFF8DB600),
                     ),
                     child: IconButton(
-                        onPressed: (){},
+                        onPressed: (){
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => WatershedView()),
+                          );
+                        },
                         icon: const Icon(Icons.arrow_right_alt_rounded)
                     ),
                   )
