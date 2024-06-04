@@ -28,7 +28,7 @@ class _CropdetailsState extends State<Cropdetails> {
   final List<String> options = ['very low', 'Low', 'Medium', 'High', 'Very high'];
 
   final List<TextEditingController> _controllers = List.generate(
-    18,
+    24,  // Adjusted the number of controllers to cover all fields
     (index) => TextEditingController(),
   );
 
@@ -115,6 +115,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       child: CustomTextFormField(
                         labelText: "Crop Name",
                         controller: _controllers[0],
+                        keyboardType: TextInputType.text,
                       ),
                     ),
                     const SizedBox(width: 10.0),
@@ -122,6 +123,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       child: CustomTextFormField(
                         labelText: "Area in acres",
                         controller: _controllers[1],
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                   ],
@@ -133,6 +135,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       child: CustomTextFormField(
                         labelText: "Survey and Hissa No",
                         controller: _controllers[2],
+                        keyboardType: TextInputType.text,
                       ),
                     ),
                     const SizedBox(width: 10.0),
@@ -140,6 +143,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       child: CustomTextFormField(
                         labelText: "Variety of crop",
                         controller: _controllers[3],
+                        keyboardType: TextInputType.text,
                       ),
                     ),
                   ],
@@ -148,6 +152,7 @@ class _CropdetailsState extends State<Cropdetails> {
                 CustomTextFormField(
                   labelText: "Duration(in days)",
                   controller: _controllers[4],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
                 SelectionButton(
@@ -186,16 +191,19 @@ class _CropdetailsState extends State<Cropdetails> {
                 CustomTextFormField(
                   labelText: "Sub-Watershed Name",
                   controller: _controllers[5],
+                  keyboardType: TextInputType.text,
                 ),
                 const SizedBox(height: 20.0),
                 CustomTextFormField(
                   labelText: "Cost of seed(including own seed(in Rs))",
                   controller: _controllers[6],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20.0),
                 CustomTextFormField(
                   labelText: "Village",
                   controller: _controllers[7],
+                  keyboardType: TextInputType.text,
                 ),
                 const SizedBox(height: 20.0),
                 const Text('Fertility status according to LRI card',
@@ -418,6 +426,7 @@ class _CropdetailsState extends State<Cropdetails> {
                 CustomTextFormField(
                   labelText: "Cost of plant protection chemicals (in Rs.)",
                   controller: _controllers[8],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20.0),
                 const Text('Labour Details', style: TextStyle(fontSize: 18)),
@@ -428,6 +437,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       child: CustomTextFormField(
                         labelText: "Own Labour (number)",
                         controller: _controllers[9],
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                     const SizedBox(width: 10.0),
@@ -435,6 +445,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       child: CustomTextFormField(
                         labelText: "Cost (in Rs.)",
                         controller: _controllers[10],
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                   ],
@@ -446,6 +457,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       child: CustomTextFormField(
                         labelText: "Hired Labour (number)",
                         controller: _controllers[11],
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                     const SizedBox(width: 10.0),
@@ -453,6 +465,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       child: CustomTextFormField(
                         labelText: "Cost (in Rs.)",
                         controller: _controllers[12],
+                        keyboardType: TextInputType.number,
                       ),
                     ),
                   ],
@@ -461,17 +474,20 @@ class _CropdetailsState extends State<Cropdetails> {
                 CustomTextFormField(
                   labelText: "Cost of Animal drawn work (in Rs.)",
                   controller: _controllers[13],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
                   labelText: "Cost of Animal mechanized work (in Rs.)",
                   controller: _controllers[14],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
                   labelText:
                       "Irrigation cost (if purchased/ repairs during crop season/ fuel cost/ electricity) (in Rs.)",
                   controller: _controllers[15],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20.0),
                 const Text('Returns', style: TextStyle(fontSize: 18)),
@@ -479,33 +495,38 @@ class _CropdetailsState extends State<Cropdetails> {
                 CustomTextFormField(
                   labelText: "Quantity of main product (in quintal)",
                   controller: _controllers[16],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
                   labelText: "Price/unit (in Rs.)",
                   controller: _controllers[17],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
                   labelText: "Total main product amount (in quintal)",
-                  controller: _controllers[17],
+                  controller: _controllers[18],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
                   labelText: "Quantity of By-products (in tons)",
-                  controller: _controllers[17],
+                  controller: _controllers[19],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
                   labelText: "Price/unit (in Rs.)",
-                  controller: _controllers[17],
+                  controller: _controllers[20],
+                  keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
                   labelText: "Total By-product amount (in Rs.)",
-                  controller: _controllers[17],
+                  controller: _controllers[21],
+                  keyboardType: TextInputType.number,
                 ),
-                const SizedBox(height: 60.0),
               ],
             ),
           ),
@@ -513,7 +534,7 @@ class _CropdetailsState extends State<Cropdetails> {
       ),
       floatingActionButton: Container(
         width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: CustomTextButton(
           text: 'Done',
           onPressed: () {
