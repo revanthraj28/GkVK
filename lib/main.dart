@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:gkvk/views/login/Login.dart';
 import 'controllers/user_controller.dart';
 import 'models/user_model.dart';
-import 'package:gkvk/views/home/home_view.dart';
+
 void main() async {
   await GetStorage.init();
   runApp(MyApp());

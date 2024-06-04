@@ -62,7 +62,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
                     Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF8DB600), // Button color
+                    backgroundColor: const Color(0xFF8DB600), // Button color
                   ),
                   child: const Text('PREVIOUS'),
                 ),
@@ -71,7 +71,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
                     // Logic for the next button if needed
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Color(0xFF8DB600), // Button color
+                    backgroundColor: const Color(0xFF8DB600), // Button color
                   ),
                   child: const Text('NEXT'),
                 ),
@@ -119,7 +119,7 @@ class QuestionCard extends StatelessWidget {
                         value: option,
                         groupValue: question.selectedOption,
                         onChanged: onChanged,
-                        activeColor: Color(0xFF8DB600), // Radio color when selected
+                        activeColor: const Color(0xFF8DB600), // Radio color when selected
                       ),
                       Text(option),
                     ],

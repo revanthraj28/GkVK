@@ -38,7 +38,7 @@ class _CropdetailsState extends State<Cropdetails> {
   @override
   void initState() {
     super.initState();
-    fertilizerForms.add(FertilizerForm(index: 1));
+    fertilizerForms.add(const FertilizerForm(index: 1));
   }
 
   void addFertilizerForm() {
@@ -70,11 +70,11 @@ class _CropdetailsState extends State<Cropdetails> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
-          content: Text('All fields must be filled and a selection made in each category.'),
+          title: const Text('Error'),
+          content: const Text('All fields must be filled and a selection made in each category.'),
           actions: [
             TextButton(
-              child: Text('OK'),
+              child: const Text('OK'),
               onPressed: () {
                 Navigator.of(context).pop();
               },
@@ -542,7 +542,7 @@ class _CropdetailsState extends State<Cropdetails> {
           onPressed: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SurveyPage1()),
+                MaterialPageRoute(builder: (context) => const SurveyPage1()),
               );
             // if (_validateForm()) {
              

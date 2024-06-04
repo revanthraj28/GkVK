@@ -116,11 +116,11 @@ class WatershedView extends StatelessWidget {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: Text('Error'),
-                    content: Text('All fields must be filled and a treatment option selected.'),
+                    title: const Text('Error'),
+                    content: const Text('All fields must be filled and a treatment option selected.'),
                     actions: [
                       TextButton(
-                        child: Text('OK'),
+                        child: const Text('OK'),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },

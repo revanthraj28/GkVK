@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:gkvk/views/home/home_view.dart';
 
 class FirstPage extends StatefulWidget {
-  const FirstPage({Key? key}) : super(key: key);
+  const FirstPage({super.key});
 
   @override
   _FirstPageState createState() => _FirstPageState();
@@ -35,7 +35,7 @@ class _FirstPageState extends State<FirstPage> {
 }
 
 class SecondPage extends StatefulWidget {
-  const SecondPage({Key? key}) : super(key: key);
+  const SecondPage({super.key});
 
   @override
   _SecondPageState createState() => _SecondPageState();
@@ -68,7 +68,7 @@ class _SecondPageState extends State<SecondPage> {
 }
 
 class ThirdPage extends StatefulWidget {
-  const ThirdPage({Key? key}) : super(key: key);
+  const ThirdPage({super.key});
 
   @override
   _ThirdPageState createState() => _ThirdPageState();
@@ -112,7 +112,7 @@ class _ThirdPageState extends State<ThirdPage> {
 }
 
 class LoginPage extends StatelessWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +158,7 @@ class LoginPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                    MaterialPageRoute(builder: (context) => const HomeScreen()),
                   );
                 },
                 style: ElevatedButton.styleFrom(
