@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
-import 'package:gkvk/views/generateid/GenerateFarmersId_view.dart';
+import 'package:gkvk/views/Completedetails/GenerateFarmersid/GenerateFarmersId_view.dart';
 
 class WatershedView extends StatelessWidget {
   final TextEditingController _districtController = TextEditingController();
@@ -94,6 +94,7 @@ class WatershedView extends StatelessWidget {
                     _selectedCategory.value = option ?? '';
                   },
                 )),
+                const SizedBox(height: 60.0),
               ],
             ),
           ),

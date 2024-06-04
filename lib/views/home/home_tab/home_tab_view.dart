@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
-import 'package:gkvk/views/Watersheddetails/watersheddetails.dart';
-import 'package:gkvk/views/generateid/GenerateFarmersId_view.dart';
+import 'package:gkvk/views/Completedetails/Watersheddetails/watersheddetails.dart';
+import 'package:gkvk/views/Completedetails/GenerateFarmersid/GenerateFarmersId_view.dart';
 
 class HomeTabView extends StatelessWidget{
   const HomeTabView({super.key});

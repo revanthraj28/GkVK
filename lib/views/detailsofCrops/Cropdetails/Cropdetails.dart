@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
-import 'package:gkvk/views/Cropdetails/custominputfield.dart';
-import 'package:gkvk/views/Cropdetails/customradiogroup.dart';
-import 'package:gkvk/views/Cropdetails/FertilizerForm.dart';
-import 'package:gkvk/views/Surveypages/Surveypages1.dart';
+import 'package:gkvk/views/detailsofCrops/Cropdetails/components/CustomInputField.dart';
+import 'package:gkvk/views/detailsofCrops/Cropdetails/components/customradiogroup.dart';
+import 'package:gkvk/views/detailsofCrops/Cropdetails/components/FertilizerForm.dart';
+import 'package:gkvk/views/detailsofCrops/Surveypages/Surveypages3.dart';
 
 class Cropdetails extends StatefulWidget {
   const Cropdetails({super.key});
@@ -542,7 +542,7 @@ class _CropdetailsState extends State<Cropdetails> {
           onPressed: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const SurveyPage1()),
+                MaterialPageRoute(builder: (context) => const Surveypages3()),
               );
             // if (_validateForm()) {
              

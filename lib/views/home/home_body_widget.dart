@@ -1,9 +1,11 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show BuildContext, StatelessWidget, Widget;
 import 'package:get/get.dart';
 import 'package:gkvk/controllers/tab_index_controller.dart';
 import 'package:gkvk/views/home/home_tab/home_tab_view.dart';
 import 'package:gkvk/views/home/list_tab/list_tab_view.dart';
 import 'package:gkvk/views/home/profile_tab/profile_tab_view.dart';
+
+// ignore: must_be_immutable
 class HomeBodyWidget extends StatelessWidget {
 
   List<Widget> bodyList = [

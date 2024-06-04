@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:gkvk/views/home/home_view.dart';
+// ignore: unused_import
 import 'package:gkvk/views/login/Login.dart';
 import 'controllers/user_controller.dart';
 import 'models/user_model.dart';
@@ -33,8 +35,9 @@ class MyApp extends StatelessWidget {
   Widget starter() {
 
     return Obx(() {
+      // ignore: unused_local_variable
       UserModel user = userController.user;
-      return const LoginPage();
+      return const HomeScreen();
         });
   }
 

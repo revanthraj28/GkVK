@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
-import 'package:gkvk/views/Cropdetails/Cropdetails.dart';
+import 'package:gkvk/views/detailsofCrops/Cropdetails/Cropdetails.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
   final _farmerNameController = TextEditingController();
@@ -17,7 +17,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
   final RxString _selectedGender = ''.obs;
   final RxString _selectedCategory = ''.obs;
   final RxString _selectedLandHolding = ''.obs;
-  final RxString _selectedFertilizerSource = ''.obs;
+  RxString get _selectedFertilizerSource => ''.obs;
   final RxString _selectedSalesOfProduce = ''.obs;
   final RxString _selectedLRIReceived = ''.obs;
 
@@ -228,7 +228,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
               Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => Cropdetails()));
+                      builder: (context) => const Cropdetails()));
               // Form is valid, proceed with form submission or navigation
               Get.back(); // Assuming you want to go back to the previous screen
             } else {

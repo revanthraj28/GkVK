@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
-import 'package:gkvk/views/Surveypages/Surveypages2.dart';
+import 'package:gkvk/views/detailsofCrops/Surveypages/Surveypages3.dart';
 
-class SurveyPage1 extends StatefulWidget {
-  const SurveyPage1({super.key});
+class SurveyPage2 extends StatefulWidget {
+  const SurveyPage2({super.key});
 
   @override
-  State<SurveyPage1> createState() => _SurveyPage1State();
+  State<SurveyPage2> createState() => _SurveyPage2State();
 }
 
-class _SurveyPage1State extends State<SurveyPage1> {
+class _SurveyPage2State extends State<SurveyPage2> {
   void _handleOptionChange(int index, String? value) {
     setState(() {
-      questionsPage1[index].selectedOption = value!;
+      questionsPage2[index].selectedOption = value!;
     });
   }
 
@@ -34,7 +34,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
         elevation: 2,
         centerTitle: true,
         title: const Text(
-          'SURVEY PAGE 1',
+          'SURVEY PAGE 2',
           style: TextStyle(
             color: Color(0xFF8DB600),
             fontSize: 18,
@@ -47,9 +47,9 @@ class _SurveyPage1State extends State<SurveyPage1> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: questionsPage1.length,
+              itemCount: questionsPage2.length,
               itemBuilder: (context, index) {
-                return buildQuestion(questionsPage1[index], index);
+                return buildQuestion(questionsPage2[index], index);
               },
             ),
           ),
@@ -60,7 +60,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    // Logic for the previous button if needed
+                    Navigator.pop(context);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF8DB600), // Button color
@@ -71,7 +71,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const SurveyPage2()),
+                      MaterialPageRoute(builder: (context) => const Surveypages3()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
@@ -108,11 +108,11 @@ class QuestionCard extends StatelessWidget {
               style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 4.0),
-              padding: const EdgeInsets.all(4.0),
+              margin: const EdgeInsets.only(top: 8.0),
+              padding: const EdgeInsets.all(8.0),
               decoration: BoxDecoration(
                 border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(3.0),
+                borderRadius: BorderRadius.circular(8.0),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
