@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:gkvk/views/login/Login.dart';
 import 'controllers/user_controller.dart';
 import 'models/user_model.dart';
 import 'package:gkvk/views/home/home_view.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
 
     return Obx(() {
       UserModel user = userController.user;
-      return const HomeScreen();
+      return const LoginPage();
         });
   }
 

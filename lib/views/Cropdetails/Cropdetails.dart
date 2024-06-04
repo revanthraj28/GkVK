@@ -5,6 +5,7 @@ import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/views/Cropdetails/custominputfield.dart';
 import 'package:gkvk/views/Cropdetails/customradiogroup.dart';
 import 'package:gkvk/views/Cropdetails/FertilizerForm.dart';
+import 'package:gkvk/views/Surveypages/Surveypages1.dart';
 
 class Cropdetails extends StatefulWidget {
   const Cropdetails({super.key});
@@ -527,6 +528,7 @@ class _CropdetailsState extends State<Cropdetails> {
                   controller: _controllers[21],
                   keyboardType: TextInputType.number,
                 ),
+                const SizedBox(height: 60.0),
               ],
             ),
           ),
@@ -538,11 +540,15 @@ class _CropdetailsState extends State<Cropdetails> {
         child: CustomTextButton(
           text: 'Done',
           onPressed: () {
-            if (_validateForm()) {
-              Navigator.pop(context);
-            } else {
-              _showErrorDialog();
-            }
+            Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SurveyPage1()),
+              );
+            // if (_validateForm()) {
+             
+            // } else {
+            //   // _showErrorDialog();
+            // }
           },
         ),
       ),
