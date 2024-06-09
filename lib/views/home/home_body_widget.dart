@@ -11,7 +11,7 @@ class HomeBodyWidget extends StatelessWidget {
   List<Widget> bodyList = [
     const HomeTabView(),
     const ListTabView(),
-    const ProfileTabView(),
+    const ProfilePage(),
   ];
 
   final TabIndexController navController = Get.put(TabIndexController());

@@ -1,175 +1,161 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
 import 'package:gkvk/views/home/home_view.dart';
 
-class FirstPage extends StatefulWidget {
-  const FirstPage({super.key});
+class LoginPage extends StatefulWidget {
+  LoginPage({Key? key}) : super(key: key);
 
   @override
-  _FirstPageState createState() => _FirstPageState();
+  _LoginPageState createState() => _LoginPageState();
 }
 
-class _FirstPageState extends State<FirstPage> {
-  @override
-  void initState() {
-    super.initState();
-    // Navigate to SecondPage after 2 seconds
-    Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const SecondPage()),
-      );
-    });
+class _LoginPageState extends State<LoginPage> {
+  // text controllers
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController passwordController = TextEditingController();
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email';
+    }
+    if (!value.contains('@')) {
+      return 'Please enter a valid email';
+    }
+    return null;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Container(
-          color: Colors.white,
-        ),
-      ),
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    return null;
+  }
+
+  Future<void> login() async {
+    // Add your login logic here
+    await FirebaseAuth.instance.signInWithEmailAndPassword(
+      email: emailController.text.trim(),
+      password: passwordController.text.trim(),
     );
   }
-}
-
-class SecondPage extends StatefulWidget {
-  const SecondPage({super.key});
 
   @override
-  _SecondPageState createState() => _SecondPageState();
-}
-
-class _SecondPageState extends State<SecondPage> {
-  @override
-  void initState() {
-    super.initState();
-    // Navigate to ThirdPage after 2 seconds
-    Timer(const Duration(seconds: 1), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const ThirdPage()),
-      );
-    });
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Second Page'),
-      ),
-      body: Center(
-        child: Image.asset('assets/images/gkvk_icon.png'),
-      ),
-    );
-  }
-}
-
-class ThirdPage extends StatefulWidget {
-  const ThirdPage({super.key});
-
-  @override
-  _ThirdPageState createState() => _ThirdPageState();
-}
-
-class _ThirdPageState extends State<ThirdPage> {
-  @override
-  void initState() {
-    super.initState();
-    // Navigate to LoginPage after 2 seconds
-    Timer(const Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
-      );
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Third Page'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/gkvk_icon.png'),
-            const SizedBox(height: 20),
-            const Text(
-              'Accelerating agriculture through innovative solutions!',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
+      body: Stack(
+        children: [
+          Positioned(
+            top: 50,
+            left: 0,
+            right: 0,
+            child: AppBar(
+              title: const Text('Hello! Welcome to the GKVK App!'),
+              automaticallyImplyLeading: false,
             ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class LoginPage extends StatelessWidget {
-  const LoginPage({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Login Page'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset('assets/logo.png'),
-              const SizedBox(height: 20),
-              const Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFF8DB600), // Set the text color
-                ),
-              ),
-              const SizedBox(height: 20),
-              // ignore: prefer_const_constructors
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'ID',
-                  border: OutlineInputBorder(),
-                ),
-              ),
-              const SizedBox(height: 20),
-              // ignore: prefer_const_constructors
-              TextField(
-                decoration: const InputDecoration(
-                  labelText: 'Password',
-                  border: OutlineInputBorder(),
-                ),
-                obscureText: true,
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const HomeScreen()),
-                  );
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      const Color(0xFF8DB600), // Set the button color
-                ),
-                child: const Text('Login'),
-              ),
-            ],
           ),
-        ),
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Center(
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    const SizedBox(height: 100),
+                    const Icon(
+                      Icons.agriculture,
+                      size: 100,
+                      color: Color(0xFF8DB600),
+                    ),
+                    const SizedBox(height: 30),
+                    const Text(
+                      'Login',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF8DB600),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: emailController,
+                      decoration: const InputDecoration(
+                        labelText: 'Email ID',
+                        border: OutlineInputBorder(),
+                      ),
+                      validator: validateEmail,
+                    ),
+                    const SizedBox(height: 20),
+                    TextFormField(
+                      controller: passwordController,
+                      decoration: const InputDecoration(
+                        labelText: 'Password',
+                        border: OutlineInputBorder(),
+                      ),
+                      obscureText: true,
+                      validator: validatePassword,
+                    ),
+                    const SizedBox(height: 20),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          if (validateEmail(emailController.text) == null &&
+                              validatePassword(passwordController.text) ==
+                                  null) {
+                            try {
+                              await login();
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (context) => HomeScreen(),
+                                ),
+                              );
+                            } catch (e) {
+                              // Handle login errors
+                              print('Login failed: $e');
+                            }
+                          } else {
+                            // Show error alert message
+                            showDialog(
+                              context: context,
+                              builder: (context) => AlertDialog(
+                                title: const Text('Login Error'),
+                                content: const Text(
+                                    'Please enter valid email and password.'),
+                                actions: [
+                                  TextButton(
+                                    onPressed: () {
+                                      Navigator.of(context).pop();
+                                    },
+                                    child: const Text('OK'),
+                                  ),
+                                ],
+                              ),
+                            );
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Color(0xFF8DB600),
+                          minimumSize: Size(150, 50),
+                        ),
+                        child: const Text('Login'),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

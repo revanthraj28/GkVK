@@ -1,44 +1,44 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
-import 'package:gkvk/views/home/home_view.dart';
+
 // ignore: unused_import
 import 'package:gkvk/views/login/Login.dart';
+import 'package:gkvk/views/login/main_login/main_page.dart';
 import 'controllers/user_controller.dart';
-import 'models/user_model.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await GetStorage.init();
   runApp(MyApp());
 }
 
 // ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-
   UserController userController = Get.put(UserController());
 
   MyApp({super.key});
 
-  // This widget is the root of our application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'GKVK',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.white),
       ),
-      home: starter(),
+      home: const MainPage(),
     );
   }
-
-  Widget starter() {
-
-    return Obx(() {
-      // ignore: unused_local_variable
-      UserModel user = userController.user;
-      return const HomeScreen();
-        });
-  }
-
 }
+
+//   Widget starter() {
+//     return Obx(() {
+//       // ignore: unused_local_variable
+//       UserModel user = userController.user;
+//       return const MainPage();
+//     });
+//   }
+// }

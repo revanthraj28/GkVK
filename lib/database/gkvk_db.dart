@@ -1,6 +1,5 @@
 import 'package:sqflite/sqflite.dart';
 import 'package:gkvk/database/database_service.dart';
-import 'package:gkvk/models/watershed_model.dart';
 
 class GkvkDB {
   final tableName = 'water_shed_table';
