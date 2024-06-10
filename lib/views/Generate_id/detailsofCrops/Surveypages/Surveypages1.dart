@@ -120,6 +120,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
+  
 }
 
 class QuestionCard extends StatelessWidget {
