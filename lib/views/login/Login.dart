@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gkvk/views/home/home_view.dart';
 
 class LoginPage extends StatefulWidget {
-  LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -117,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                               await login();
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (context) => HomeScreen(),
+                                  builder: (context) => const HomeScreen(),
                                 ),
                               );
                             } catch (e) {
@@ -145,8 +145,8 @@ class _LoginPageState extends State<LoginPage> {
                           }
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xFF8DB600),
-                          minimumSize: Size(150, 50),
+                          backgroundColor: const Color(0xFF8DB600),
+                          minimumSize: const Size(150, 50),
                         ),
                         child: const Text('Login'),
                       ),
