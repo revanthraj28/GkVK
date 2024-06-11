@@ -1,20 +1,17 @@
-// ignore: file_names
-import 'package:flutter/material.dart' show AlertDialog, AppBar, Border, BorderRadius, BoxDecoration, BuildContext, Card, Color, Colors, Column, Container, CrossAxisAlignment, EdgeInsets, Expanded, FloatingActionButtonLocation, FontWeight, IconThemeData, ListView, MaterialPageRoute, Navigator, Padding, Radio, Row, Scaffold, SizedBox, State, StatefulWidget, StatelessWidget, Text, TextButton, TextStyle, ValueChanged, Widget, showDialog;
+import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
-import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages3.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 
-class SurveyPage2 extends StatefulWidget {
-  final List<String?> page1SelectedOptions;
-  const SurveyPage2({super.key, required this.page1SelectedOptions});
+class Surveypages4 extends StatefulWidget {
+  const Surveypages4({super.key});
 
   @override
-  State<SurveyPage2> createState() => _SurveyPage2State();
+  _Surveypages4 createState() => _Surveypages4();
 }
 
-class _SurveyPage2State extends State<SurveyPage2> {
-  List<String?> selectedOptions = List<String?>.filled(questionsPage2.length, null);
+class _Surveypages4 extends State<Surveypages4> {
+  List<String?> selectedOptions = List<String?>.filled(questionsPage4.length, null);
 
   void _handleOptionChange(int index, String? value) {
     setState(() {
@@ -48,11 +45,11 @@ class _SurveyPage2State extends State<SurveyPage2> {
         print('Question ${i + 1}: ${selectedOptions[i]}');
       }
 
-      // Navigate to the next page
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const Surveypages3()),
-      );
+      // Navigate to the next page or finish the survey
+      // Navigator.push(
+      //   context,
+      //   MaterialPageRoute(builder: (context) => NextSurveyPage()),
+      // );
     } else {
       // Show an alert dialog if not all questions are answered
       showDialog(
@@ -83,7 +80,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
         elevation: 2,
         centerTitle: true,
         title: const Text(
-          'SURVEY PAGE 2',
+          'SURVEY PAGE 4',
           style: TextStyle(
             color: Color(0xFF8DB600),
             fontSize: 18,
@@ -96,9 +93,9 @@ class _SurveyPage2State extends State<SurveyPage2> {
         children: [
           Expanded(
             child: ListView.builder(
-              itemCount: questionsPage2.length,
+              itemCount: questionsPage4.length,
               itemBuilder: (context, index) {
-                return buildQuestion(questionsPage2[index], index);
+                return buildQuestion(questionsPage4[index], index);
               },
             ),
           ),

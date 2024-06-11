@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
-import 'package:gkvk/views/Generate_id/Completedetails/GenerateFarmersid/GenerateFarmersId_view.dart';
 import 'package:gkvk/views/Generate_id/Completedetails/Watersheddetails/watersheddetails.dart';
 
 class HomeTabView extends StatelessWidget{
@@ -18,7 +17,7 @@ class HomeTabView extends StatelessWidget{
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
               CustomTextButton(
                 text: 'GENERATE NEW ID',
                 onPressed: () {

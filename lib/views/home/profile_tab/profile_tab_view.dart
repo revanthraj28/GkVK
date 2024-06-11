@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gkvk/views/login/Login.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({Key? key});
+  const ProfilePage({super.key});
 
   @override
   State<ProfilePage> createState() => _ProfilePageState();
@@ -16,7 +16,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await FirebaseAuth.instance.signOut();
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => LoginPage(),
+        builder: (context) => const LoginPage(),
       ),
     );
   }
@@ -33,8 +33,8 @@ class _ProfilePageState extends State<ProfilePage> {
           children: [
             MaterialButton(
               onPressed: _signOutAndNavigateToLogin,
-              color: Color(0xFF8DB600),
-              child: Text('Sign Out'),
+              color: const Color(0xFF8DB600),
+              child: const Text('Sign Out'),
             )
           ],
         ),
