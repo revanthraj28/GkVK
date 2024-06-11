@@ -5,6 +5,7 @@ import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/components/CustomInputField.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/components/customradiogroup.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/components/FertilizerForm.dart';
+import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages3.dart';
 
 class Cropdetails extends StatefulWidget {
@@ -542,7 +543,7 @@ class _CropdetailsState extends State<Cropdetails> {
           onPressed: () {
             Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => const Surveypages3()),
+                MaterialPageRoute(builder: (context) => const SurveyPage1()),
               );
             // if (_validateForm()) {
              
