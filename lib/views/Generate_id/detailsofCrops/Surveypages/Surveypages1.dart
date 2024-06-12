@@ -8,10 +8,10 @@ import 'package:gkvk/database/survey_page1_db.dart';
 
 class SurveyPage1 extends StatefulWidget {
   final int aadharId;
-  SurveyPage1({required this.aadharId, super.key});
+  const SurveyPage1({required this.aadharId, super.key});
 
   @override
-  State<SurveyPage1> createState() => _SurveyPage1State();
+  State<SurveyPage1> createState() => _SurveyPage1State(); 
 }
 
 class _SurveyPage1State extends State<SurveyPage1> {

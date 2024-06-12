@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 final textButtonStyle = TextButton.styleFrom(
   backgroundColor: const Color(0xFF8DB600), // Button background color
   shape: RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(5.0),
-    // Updated to circular radius
+    borderRadius: BorderRadius.circular(5.0), // Updated to circular radius
   ),
 );
 
