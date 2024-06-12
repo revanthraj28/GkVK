@@ -11,7 +11,7 @@ class SurveyPage1 extends StatefulWidget {
   const SurveyPage1({required this.aadharId, super.key});
 
   @override
-  State<SurveyPage1> createState() => _SurveyPage1State();
+  State<SurveyPage1> createState() => _SurveyPage1State(); 
 }
 
 class _SurveyPage1State extends State<SurveyPage1> {

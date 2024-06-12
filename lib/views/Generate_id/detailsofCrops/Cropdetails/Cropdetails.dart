@@ -16,6 +16,9 @@ class Cropdetails extends StatefulWidget {
 }
 
 class _CropdetailsState extends State<Cropdetails> {
+  // final int aadharId;
+  // const Cropdetails({required this.aadharId, super.key});
+
   final TextEditingController _cropNameController = TextEditingController();
   final TextEditingController _areaController = TextEditingController();
   final TextEditingController _surveyHissaController = TextEditingController();
@@ -24,46 +27,66 @@ class _CropdetailsState extends State<Cropdetails> {
   final TextEditingController _seedCostController = TextEditingController();
 
   final TextEditingController _manureNameController = TextEditingController();
-  final TextEditingController _manureQuantityController = TextEditingController();
+  final TextEditingController _manureQuantityController =
+      TextEditingController();
   final TextEditingController _manureCostController = TextEditingController();
 
-  final TextEditingController _bioFertilizerNameController = TextEditingController();
-  final TextEditingController _bioFertilizerQuantityController = TextEditingController();
-  final TextEditingController _bioFertilizerCostController = TextEditingController();
+  final TextEditingController _bioFertilizerNameController =
+      TextEditingController();
+  final TextEditingController _bioFertilizerQuantityController =
+      TextEditingController();
+  final TextEditingController _bioFertilizerCostController =
+      TextEditingController();
 
-  final TextEditingController _chemFertilizerNameController = TextEditingController();
-  final TextEditingController _chemFertilizerQuantityController = TextEditingController();
-  final TextEditingController _chemFertilizerCostController = TextEditingController();
+  final TextEditingController _chemFertilizerNameController =
+      TextEditingController();
+  final TextEditingController _chemFertilizerQuantityController =
+      TextEditingController();
+  final TextEditingController _chemFertilizerCostController =
+      TextEditingController();
 
-  final TextEditingController _plantProtectionCostController = TextEditingController();
+  final TextEditingController _plantProtectionCostController =
+      TextEditingController();
 
-  final TextEditingController _ownLabourNumberController = TextEditingController();
-  final TextEditingController _ownLabourCostController = TextEditingController();
+  final TextEditingController _ownLabourNumberController =
+      TextEditingController();
+  final TextEditingController _ownLabourCostController =
+      TextEditingController();
 
-  final TextEditingController _hiredLabourNumberController = TextEditingController();
-  final TextEditingController _hiredLabourCostController = TextEditingController();
+  final TextEditingController _hiredLabourNumberController =
+      TextEditingController();
+  final TextEditingController _hiredLabourCostController =
+      TextEditingController();
 
-  final TextEditingController _animalDrawnCostController = TextEditingController();
-  final TextEditingController _animalMechanizedCostController = TextEditingController();
+  final TextEditingController _animalDrawnCostController =
+      TextEditingController();
+  final TextEditingController _animalMechanizedCostController =
+      TextEditingController();
 
-  final TextEditingController _irrigationCostController = TextEditingController();
+  final TextEditingController _irrigationCostController =
+      TextEditingController();
 
-  final TextEditingController _mainProductQuantityController = TextEditingController();
-  final TextEditingController _mainProductPriceController = TextEditingController();
-  
+  final TextEditingController _mainProductQuantityController =
+      TextEditingController();
+  final TextEditingController _mainProductPriceController =
+      TextEditingController();
+
   final TextEditingController _Otherproductioncost = TextEditingController();
-  final TextEditingController _mainTotalcostproduction = TextEditingController();
-  final TextEditingController _mainProductTotalController = TextEditingController();
-  final TextEditingController _byProductQuantityController = TextEditingController();
-  final TextEditingController _byProductPriceController = TextEditingController();
-  final TextEditingController _byProductTotalController = TextEditingController();
+  final TextEditingController _mainTotalcostproduction =
+      TextEditingController();
+  final TextEditingController _mainProductTotalController =
+      TextEditingController();
+  final TextEditingController _byProductQuantityController =
+      TextEditingController();
+  final TextEditingController _byProductPriceController =
+      TextEditingController();
+  final TextEditingController _byProductTotalController =
+      TextEditingController();
 
   final RxString _selectedCategory1 = ''.obs;
   final RxString _selectedCategory2 = ''.obs;
   final RxString _selectedCategory3 = ''.obs;
   final RxString _selectedCategory4 = ''.obs;
-
-
 
   Map<String, String?> selectedValues = {
     'Nitrogen': null,
@@ -71,11 +94,17 @@ class _CropdetailsState extends State<Cropdetails> {
     'Potassium': null,
   };
 
-  final List<String> options = ['very low', 'Low', 'Medium', 'High', 'Very high'];
+  final List<String> options = [
+    'very low',
+    'Low',
+    'Medium',
+    'High',
+    'Very high'
+  ];
 
   final List<TextEditingController> _controllers = List.generate(
-    24,  // Adjusted the number of controllers to cover all fields
-        (index) => TextEditingController(),
+    24, // Adjusted the number of controllers to cover all fields
+    (index) => TextEditingController(),
   );
 
   List<Widget> fertilizerForms = [];
@@ -112,7 +141,8 @@ class _CropdetailsState extends State<Cropdetails> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const Text('Error'),
-          content: const Text('All fields must be filled and a selection made in each category.'),
+          content: const Text(
+              'All fields must be filled and a selection made in each category.'),
           actions: [
             TextButton(
               child: const Text('OK'),
@@ -200,7 +230,9 @@ class _CropdetailsState extends State<Cropdetails> {
                 SelectionButton(
                   label: "Season",
                   options: const ['Khrif', 'Rabi', 'Summer'],
-                  selectedOption: _selectedCategory2.value.isEmpty ? null : _selectedCategory2.value,
+                  selectedOption: _selectedCategory2.value.isEmpty
+                      ? null
+                      : _selectedCategory2.value,
                   onPressed: (option) {
                     setState(() {
                       _selectedCategory2.value = option ?? '';
@@ -211,7 +243,9 @@ class _CropdetailsState extends State<Cropdetails> {
                 SelectionButton(
                   label: "Type of land",
                   options: const ['Rain-fed', 'Irrigated'],
-                  selectedOption: _selectedCategory1.value.isEmpty ? null : _selectedCategory1.value,
+                  selectedOption: _selectedCategory1.value.isEmpty
+                      ? null
+                      : _selectedCategory1.value,
                   onPressed: (option) {
                     setState(() {
                       _selectedCategory1.value = option ?? '';
@@ -222,7 +256,9 @@ class _CropdetailsState extends State<Cropdetails> {
                 SelectionButton(
                   label: "Source of Irrigation",
                   options: const ['Borewell', 'Tank', 'Canal', 'Others'],
-                  selectedOption: _selectedCategory3.value.isEmpty ? null : _selectedCategory3.value,
+                  selectedOption: _selectedCategory3.value.isEmpty
+                      ? null
+                      : _selectedCategory3.value,
                   onPressed: (option) {
                     setState(() {
                       _selectedCategory3.value = option ?? '';
@@ -237,7 +273,9 @@ class _CropdetailsState extends State<Cropdetails> {
                 ),
                 const SizedBox(height: 20.0),
                 const Text('Fertility status according to LRI card',
-                    style: TextStyle(fontSize: 18, )),
+                    style: TextStyle(
+                      fontSize: 18,
+                    )),
                 const SizedBox(height: 10.0),
                 CustomRadioGroup(
                   title: 'Nitrogen',
@@ -273,7 +311,8 @@ class _CropdetailsState extends State<Cropdetails> {
                 ),
                 const SizedBox(height: 20.0),
                 const Text('RDF of crop (kg/ac)',
-                    style: TextStyle(fontSize: 18 , fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8.0),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -285,7 +324,8 @@ class _CropdetailsState extends State<Cropdetails> {
                 ),
                 const SizedBox(height: 20.0),
                 const Text('Adjusted RDF of crop according to LRI card (kg/ac)',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
                 const SizedBox(height: 8.0),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -296,7 +336,10 @@ class _CropdetailsState extends State<Cropdetails> {
                   ],
                 ),
                 const SizedBox(height: 20.0),
-                const Text('Manures and fertilizers', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), ),
+                const Text(
+                  'Manures and fertilizers',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
                 const Text(
                   'Organic manures',
                   // \n(compost / FYM / green manure / tank silt / others)
@@ -448,7 +491,10 @@ class _CropdetailsState extends State<Cropdetails> {
                   ],
                 ),
                 const SizedBox(height: 8),
-                const Text('Chemical fertilizers', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold), ),
+                const Text(
+                  'Chemical fertilizers',
+                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                ),
                 Column(
                   children: fertilizerForms,
                 ),
@@ -466,7 +512,9 @@ class _CropdetailsState extends State<Cropdetails> {
                 SelectionButton(
                   label: "Methods of fertilizer application",
                   options: const ['Broadcasting', 'Line', 'Band', 'Spot'],
-                  selectedOption: _selectedCategory4.value.isEmpty ? null : _selectedCategory4.value, 
+                  selectedOption: _selectedCategory4.value.isEmpty
+                      ? null
+                      : _selectedCategory4.value,
                   onPressed: (option) {
                     setState(() {
                       _selectedCategory4.value = option ?? '';
@@ -476,7 +524,7 @@ class _CropdetailsState extends State<Cropdetails> {
                 const SizedBox(height: 20.0),
                 CustomTextFormField(
                   labelText: "Cost of plant protection chemicals (in Rs.)",
-                  controller: _plantProtectionCostController ,
+                  controller: _plantProtectionCostController,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 20.0),
@@ -542,27 +590,24 @@ class _CropdetailsState extends State<Cropdetails> {
                 ),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
-                  labelText:
-                      "Other production cost, if any (Rs.)",
-                // (if purchased/ repairs during crop  \n season/ fuel cost/ electricity) (in Rs.)
+                  labelText: "Other production cost, if any (Rs.)",
+                  // (if purchased/ repairs during crop  \n season/ fuel cost/ electricity) (in Rs.)
                   controller: _Otherproductioncost,
                   keyboardType: TextInputType.number,
                 ),
-                 const SizedBox(height: 10.0),
+                const SizedBox(height: 10.0),
                 CustomTextFormField(
-                  labelText:
-                      "Total cost of production",
-                // (if purchased/ repairs during crop  \n season/ fuel cost/ electricity) (in Rs.)
+                  labelText: "Total cost of production",
+                  // (if purchased/ repairs during crop  \n season/ fuel cost/ electricity) (in Rs.)
                   controller: _mainTotalcostproduction,
                   keyboardType: TextInputType.number,
                 ),
-
                 const SizedBox(height: 20.0),
                 const Text('Returns', style: TextStyle(fontSize: 18)),
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
-                     labelText: "Total main product amount(in quintal)",
-                  controller:_mainProductTotalController,
+                  labelText: "Total main product amount(in quintal)",
+                  controller: _mainProductTotalController,
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
@@ -592,23 +637,24 @@ class _CropdetailsState extends State<Cropdetails> {
       floatingActionButton: Container(
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: CustomTextButton(
-          text: 'Done',
-          onPressed: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const Surveypages3()),
-              );
-            // if (_validateForm()) {
-             
-            // } else {
-            //   // _showErrorDialog();
-            // }
-          },
-        ),
+        // child: CustomTextButton(
+        //   text: 'Done',
+        //   // onPressed: () {
+        //   //   Navigator.push(
+        //   //       context,
+        //   //       MaterialPageRoute(builder: (context) => const Surveypages3()),
+        //   //     );
+        //   //   // if (_validateForm()) {
+
+        //   //   // } else {
+        //   //   //   // _showErrorDialog();
+        //   //   // }
+        //   // },
+        // ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
+  }
 }             
 // // labelText: "Quantity of main product (in quintal)",
 //                 //   controller: _controllers[16],
@@ -1548,4 +1594,3 @@ class _CropdetailsState extends State<Cropdetails> {
 //     );
 //   }
 // }
-
