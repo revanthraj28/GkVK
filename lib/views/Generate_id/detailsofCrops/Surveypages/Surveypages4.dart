@@ -1,10 +1,14 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
+import 'package:gkvk/database/survey_page4_db.dart';
 
 class Surveypages4 extends StatefulWidget {
-  const Surveypages4({super.key});
+  final int aadharId;
+
+  const Surveypages4({super.key, required this.aadharId});
 
   @override
   _Surveypages4 createState() => _Surveypages4();
@@ -29,7 +33,7 @@ class _Surveypages4 extends State<Surveypages4> {
     );
   }
 
-  void _validateAndProceed() {
+  Future<void> _validateAndProceed() async {
     bool allAnswered = true;
 
     for (int i = 0; i < selectedOptions.length; i++) {
@@ -40,16 +44,19 @@ class _Surveypages4 extends State<Surveypages4> {
     }
 
     if (allAnswered) {
-      // Print the selected options
-      for (int i = 0; i < selectedOptions.length; i++) {
-        print('Question ${i + 1}: ${selectedOptions[i]}');
-      }
+      // Convert the selected options to a JSON string
+      String jsonString = jsonEncode(selectedOptions);
+      print('Selected options JSON: $jsonString'); // Print the JSON string
 
-      // Navigate to the next page or finish the survey
-      // Navigator.push(
-      //   context,
-      //   MaterialPageRoute(builder: (context) => NextSurveyPage()),
-      // );
+      // Upload the aadharId and jsonString to SurveyDataDB4
+      final surveyDataDB4 = SurveyDataDB4();
+      await surveyDataDB4.create(
+        aadharId: widget.aadharId,
+        surveyData: jsonString,
+      );
+
+      // Navigate back to the initial page, clearing the navigation stack
+      Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
     } else {
       // Show an alert dialog if not all questions are answered
       showDialog(
@@ -106,7 +113,7 @@ class _Surveypages4 extends State<Surveypages4> {
         width: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: CustomTextButton(
-          text: 'NEXT',
+          text: 'DONE',
           onPressed: _validateAndProceed,
         ),
       ),
@@ -153,7 +160,9 @@ class QuestionCard extends StatelessWidget {
                         onChanged: onChanged,
                         activeColor: const Color(0xFF8DB600), // Radio color when selected
                       ),
-                      Text(option),
+                      Flexible(
+                        child: Text(option),
+                      ),
                     ],
                   );
                 }).toList(),

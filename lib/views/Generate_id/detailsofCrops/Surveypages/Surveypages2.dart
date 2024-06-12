@@ -1,14 +1,15 @@
-// ignore: file_names
-import 'package:flutter/material.dart' show AlertDialog, AppBar, Border, BorderRadius, BoxDecoration, BuildContext, Card, Color, Colors, Column, Container, CrossAxisAlignment, EdgeInsets, Expanded, FloatingActionButtonLocation, FontWeight, IconThemeData, ListView, MaterialPageRoute, Navigator, Padding, Radio, Row, Scaffold, SizedBox, State, StatefulWidget, StatelessWidget, Text, TextButton, TextStyle, ValueChanged, Widget, showDialog;
+import 'dart:convert'; // Add this import
+
+import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages3.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
+import 'package:gkvk/database/survey_page2_db.dart'; // Import the database class
 
 class SurveyPage2 extends StatefulWidget {
   final int aadharId;
-  final List<String?> page1SelectedOptions;
-  const SurveyPage2({super.key, required this.page1SelectedOptions,required this.aadharId});
+  const SurveyPage2({super.key, required this.aadharId});
 
   @override
   State<SurveyPage2> createState() => _SurveyPage2State();
@@ -33,7 +34,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
     );
   }
 
-  void _validateAndProceed() {
+  Future<void> _validateAndProceed() async {
     bool allAnswered = true;
 
     for (int i = 0; i < selectedOptions.length; i++) {
@@ -44,15 +45,23 @@ class _SurveyPage2State extends State<SurveyPage2> {
     }
 
     if (allAnswered) {
-      // Print the selected options
-      for (int i = 0; i < selectedOptions.length; i++) {
-        print('Question ${i + 1}: ${selectedOptions[i]}');
-      }
+      // Convert the selected options to a JSON string
+      String jsonString = jsonEncode(selectedOptions);
+      print('Selected options JSON: $jsonString'); // Print the JSON string
+
+      // Upload the aadharId and jsonString to SurveyDataDB2
+      final surveyDataDB2 = SurveyDataDB2();
+      await surveyDataDB2.create(
+        aadharId: widget.aadharId,
+        surveyData: jsonString,
+      );
 
       // Navigate to the next page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Surveypages3()),
+        MaterialPageRoute(
+          builder: (context) => Surveypages3(aadharId: widget.aadharId),
+        ),
       );
     } else {
       // Show an alert dialog if not all questions are answered

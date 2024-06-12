@@ -1,11 +1,15 @@
+import 'dart:convert'; // Add this import
 import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages4.dart';
+import 'package:gkvk/database/survey_page3_db.dart'; // Import the database class
 
 class Surveypages3 extends StatefulWidget {
-  const Surveypages3({super.key});
+  final int aadharId;
+
+  const Surveypages3({super.key, required this.aadharId});
 
   @override
   _Surveypages3 createState() => _Surveypages3();
@@ -30,7 +34,7 @@ class _Surveypages3 extends State<Surveypages3> {
     );
   }
 
-  void _validateAndProceed() {
+  Future<void> _validateAndProceed() async {
     bool allAnswered = true;
 
     for (int i = 0; i < selectedOptions.length; i++) {
@@ -41,14 +45,23 @@ class _Surveypages3 extends State<Surveypages3> {
     }
 
     if (allAnswered) {
-      // Print the selected options
-      for (int i = 0; i < selectedOptions.length; i++) {
-        print('Question ${i + 1}: ${selectedOptions[i]}');
-      }
+      // Convert the selected options to a JSON string
+      String jsonString = jsonEncode(selectedOptions);
+      print('Selected options JSON: $jsonString'); // Print the JSON string
 
-       Navigator.push(
+      // Upload the aadharId and jsonString to SurveyDataDB3
+      final surveyDataDB3 = SurveyDataDB3();
+      await surveyDataDB3.create(
+        aadharId: widget.aadharId,
+        surveyData: jsonString,
+      );
+
+      // Navigate to the next page
+      Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => const Surveypages4()),
+        MaterialPageRoute(
+          builder: (context) => Surveypages4(aadharId: widget.aadharId), // Pass the aadharId to the next page
+        ),
       );
     } else {
       // Show an alert dialog if not all questions are answered
@@ -167,4 +180,3 @@ class QuestionCard extends StatelessWidget {
     );
   }
 }
-

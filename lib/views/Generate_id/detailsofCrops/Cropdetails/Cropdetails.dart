@@ -6,8 +6,6 @@ import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/components/CustomInputField.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/components/customradiogroup.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/components/FertilizerForm.dart';
-// import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.dart';
-// import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages2.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages3.dart';
 
 class Cropdetails extends StatefulWidget {
@@ -77,7 +75,7 @@ class _CropdetailsState extends State<Cropdetails> {
 
   final List<TextEditingController> _controllers = List.generate(
     24,  // Adjusted the number of controllers to cover all fields
-    (index) => TextEditingController(),
+        (index) => TextEditingController(),
   );
 
   List<Widget> fertilizerForms = [];
@@ -538,9 +536,8 @@ class _CropdetailsState extends State<Cropdetails> {
                 const SizedBox(height: 10.0),
                 CustomTextFormField(
                   labelText:
-                      "Irrigation cost ",
-                // (if purchased/ repairs during crop  \n season/ fuel cost/ electricity) (in Rs.)
-                  controller: _irrigationCostController,
+                      "Irrigation cost (if purchased/ repairs during crop season/ fuel cost/ electricity) (in Rs.)",
+                  controller: _controllers[15],
                   keyboardType: TextInputType.number,
                 ),
                 const SizedBox(height: 10.0),
@@ -602,12 +599,16 @@ class _CropdetailsState extends State<Cropdetails> {
                 context,
                 MaterialPageRoute(builder: (context) => const Surveypages3()),
               );
+            // if (_validateForm()) {
+             
+            // } else {
+            //   // _showErrorDialog();
+            // }
           },
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
-  }
 }             
 // // labelText: "Quantity of main product (in quintal)",
 //                 //   controller: _controllers[16],

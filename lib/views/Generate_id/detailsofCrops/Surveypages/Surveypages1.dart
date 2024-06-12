@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages2.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
+import 'package:gkvk/database/survey_page1_db.dart';
 
 class SurveyPage1 extends StatefulWidget {
   final int aadharId;
@@ -31,7 +33,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
     );
   }
 
-  void _validateAndProceed() {
+  Future<void> _validateAndProceed() async {
     bool allAnswered = true;
 
     for (int i = 0; i < selectedOptions.length; i++) {
@@ -42,15 +44,21 @@ class _SurveyPage1State extends State<SurveyPage1> {
     }
 
     if (allAnswered) {
-      // Print the selected options
-      for (int i = 0; i < selectedOptions.length; i++) {
-        print('Question ${i + 1}: ${selectedOptions[i]}');
-      }
+      // Convert the selected options to a JSON string
+      String jsonString = jsonEncode(selectedOptions);
+      print('Selected options JSON: $jsonString'); // Print the JSON string
+
+      // Save to SurveyDataDB
+      final surveyDataDB = SurveyDataDB1();
+      await surveyDataDB.create(
+        aadharId: widget.aadharId,
+        surveyData: jsonString,
+      );
 
       // Navigate to the next page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>  SurveyPage2(page1SelectedOptions: selectedOptions,aadharId: widget.aadharId,)),
+        MaterialPageRoute(builder: (context) => SurveyPage2(aadharId: widget.aadharId)),
       );
     } else {
       // Show an alert dialog if not all questions are answered
@@ -120,7 +128,6 @@ class _SurveyPage1State extends State<SurveyPage1> {
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
-  
 }
 
 class QuestionCard extends StatelessWidget {
