@@ -120,7 +120,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            iconTheme: const IconThemeData(color: Colors.black),
+            iconTheme: const IconThemeData(color: Color(0xFF8DB600)),
           ),
           body: SafeArea(
             child: SingleChildScrollView(
