@@ -5,13 +5,14 @@ import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages2.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/database/survey_page1_db.dart';
+import 'package:gkvk/shared/components/Question/question_container.dart';  // Import your new component
 
 class SurveyPage1 extends StatefulWidget {
   final int aadharId;
   const SurveyPage1({required this.aadharId, super.key});
 
   @override
-  State<SurveyPage1> createState() => _SurveyPage1State(); 
+  State<SurveyPage1> createState() => _SurveyPage1State();
 }
 
 class _SurveyPage1State extends State<SurveyPage1> {
@@ -24,7 +25,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
   }
 
   Widget buildQuestion(Question question, int index) {
-    return QuestionCard(
+    return QuestionContainer(
       question: question,
       onChanged: (value) {
         _handleOptionChange(index, value);
@@ -87,7 +88,6 @@ class _SurveyPage1State extends State<SurveyPage1> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
-        elevation: 2,
         centerTitle: true,
         title: const Text(
           'Survey Page 1',
@@ -106,13 +106,15 @@ class _SurveyPage1State extends State<SurveyPage1> {
             children: [
               Expanded(
                 child: ListView.builder(
-                  itemCount: questionsPage1.length,
+                  itemCount: questionsPage1.length + 1,  // Increase item count by 1
                   itemBuilder: (context, index) {
+                    if (index == questionsPage1.length) {
+                      return SizedBox(height: 60);  // Add SizedBox at the end
+                    }
                     return buildQuestion(questionsPage1[index], index);
                   },
                 ),
               ),
-              const SizedBox(height: 60),
             ],
           ),
         ),
@@ -126,57 +128,6 @@ class _SurveyPage1State extends State<SurveyPage1> {
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-    );
-  }
-}
-
-class QuestionCard extends StatelessWidget {
-  final Question question;
-  final ValueChanged<String?> onChanged;
-  final String? selectedOption;
-
-  const QuestionCard({super.key, required this.question, required this.onChanged, this.selectedOption});
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              question.questionText,
-              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 4.0),
-              padding: const EdgeInsets.all(4.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(3.0),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: question.options.map((option) {
-                  return Row(
-                    children: [
-                      Radio<String>(
-                        value: option,
-                        groupValue: selectedOption,
-                        onChanged: onChanged,
-                        activeColor: const Color(0xFF8DB600),
-                      ),
-                      Text(option),
-                    ],
-                  );
-                }).toList(),
-              ),
-            ),
-          ],
-        ),
-      ),
     );
   }
 }
