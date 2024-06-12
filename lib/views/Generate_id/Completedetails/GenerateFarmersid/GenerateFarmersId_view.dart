@@ -1,11 +1,12 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
-import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/components/FertilizerForm.dart';
-import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.dart';
+import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/Cropdetails.dart';
+// import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
   final int waterShedId; // Accept waterShedId as a required parameter
@@ -49,7 +50,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SurveyPage1(aadharId: int.parse(_aadharController.text),),
+          builder: (context) => Cropdetails(aadharId: int.parse(_aadharController.text),),
         ),
 
       );
