@@ -1,6 +1,5 @@
 // ignore: depend_on_referenced_packages
 import 'package:sqflite/sqflite.dart';
-// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 import 'package:gkvk/database/gkvk_db.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
@@ -43,7 +42,7 @@ class DatabaseService {
   Future<void> _createDb(Database database, int version) async {
     await WaterShedDB().createTable(database);
     await FarmerProfileDB().createTable(database);
-    await CropDetailsDB().createTable(database);
+    await CropdetailsDB().createTable(database);
     await SurveyDataDB1().createTable(database);
     await SurveyDataDB2().createTable(database);
     await SurveyDataDB3().createTable(database);

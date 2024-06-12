@@ -5,6 +5,7 @@ class SelectionButton extends StatelessWidget {
   final List<String> options;
   final String? selectedOption;
   final Function(String?) onPressed;
+  final Function(String?)? onChanged;
   // final FormFieldValidator<String>? validator;
 
   const SelectionButton({
@@ -13,6 +14,7 @@ class SelectionButton extends StatelessWidget {
     required this.options,
     required this.selectedOption,
     required this.onPressed,
+    this.onChanged,
     // this.validator,
   });
 
