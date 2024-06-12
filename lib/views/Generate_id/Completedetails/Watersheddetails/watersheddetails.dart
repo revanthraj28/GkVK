@@ -80,12 +80,81 @@ class WatershedView extends StatelessWidget {
     final latestId = await _getLatestWaterShedId();
     print('Data uploaded successfully with ID: $latestId');
     if (latestId != null) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => GenerateFarmersIdPage(waterShedId: latestId),
-        ),
+      final database = await DatabaseService().database;
+      final List<Map<String, dynamic>> result = await database.query(
+        'water_shed_table',
+        where: 'watershedId = ?',
+        whereArgs: [latestId],
       );
+
+      if (result.isNotEmpty) {
+        final watershedDetails = result.first;
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Confirm'),
+              content: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('Do you want to continue with the latest watershed details?'),
+                  SizedBox(height: 20),
+                  Text('District: ${watershedDetails['district']}'),
+                  Text('Taluk: ${watershedDetails['taluk']}'),
+                  Text('Hobli: ${watershedDetails['hobli']}'),
+                  Text('Sub-Watershed Name: ${watershedDetails['subWatershedName']}'),
+                  Text('Sub-Watershed Code: ${watershedDetails['subWatershedCode']}'),
+                  Text('Village: ${watershedDetails['village']}'),
+                  Text('Selected Category: ${watershedDetails['selectedCategory']}'),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      TextButton(
+                        child: const Text('Continue'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => GenerateFarmersIdPage(waterShedId: latestId),
+                            ),
+                          );
+                        },
+                      ),
+                      TextButton(
+                        child: const Text('Cancel'),
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      } else {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Error'),
+              content: const Text('No previous watershed data found.'),
+              actions: [
+                TextButton(
+                  child: const Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
     } else {
       showDialog(
         context: context,
@@ -106,6 +175,7 @@ class WatershedView extends StatelessWidget {
       );
     }
   }
+
 
   Future<bool> _onWillPop(BuildContext context) async {
     return (await showDialog(

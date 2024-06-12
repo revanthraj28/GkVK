@@ -6,6 +6,7 @@ import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages3.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/database/survey_page2_db.dart'; // Import the database class
+import 'package:gkvk/shared/components/Question/question_container.dart';  // Import your new component
 
 class SurveyPage2 extends StatefulWidget {
   final int aadharId;
@@ -25,7 +26,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
   }
 
   Widget buildQuestion(Question question, int index) {
-    return QuestionCard(
+    return QuestionContainer(
       question: question,
       onChanged: (value) {
         _handleOptionChange(index, value);
@@ -85,96 +86,85 @@ class _SurveyPage2State extends State<SurveyPage2> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 2,
-        centerTitle: true,
-        title: const Text(
-          'SURVEY PAGE 2',
-          style: TextStyle(
-            color: Color(0xFF8DB600),
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: questionsPage2.length,
-              itemBuilder: (context, index) {
-                return buildQuestion(questionsPage2[index], index);
+  Future<void> _showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Exit'),
+          content: const Text('Do you want to return to the home page?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
               },
             ),
-          ),
-          const SizedBox(height: 60,)
-        ],
-      ),
-      floatingActionButton: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: CustomTextButton(
-          text: 'NEXT',
-          onPressed: _validateAndProceed,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
-}
-
-class QuestionCard extends StatelessWidget {
-  final Question question;
-  final ValueChanged<String?> onChanged;
-  final String? selectedOption;
-
-  const QuestionCard({super.key, required this.question, required this.onChanged, this.selectedOption});
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      margin: const EdgeInsets.all(8.0),
-      child: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              question.questionText,
-              style: const TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-            ),
-            Container(
-              margin: const EdgeInsets.only(top: 8.0),
-              padding: const EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.grey),
-                borderRadius: BorderRadius.circular(8.0),
+    return WillPopScope(
+        onWillPop: () async {
+          _showExitConfirmationDialog(context);
+          return false;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            elevation: 2,
+            centerTitle: true,
+            title: const Text(
+              'SURVEY PAGE 2',
+              style: TextStyle(
+                color: Color(0xFF8DB600),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
               ),
+            ),
+            iconTheme: const IconThemeData(color: Colors.black),
+          ),
+          body: SafeArea(
+            child: Container(
+              color: const Color(0xFFF3F3F3),
               child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: question.options.map((option) {
-                  return Row(
-                    children: [
-                      Radio<String>(
-                        value: option,
-                        groupValue: selectedOption,
-                        onChanged: onChanged,
-                        activeColor: const Color(0xFF8DB600), // Radio color when selected
-                      ),
-                      Text(option),
-                    ],
-                  );
-                }).toList(),
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: questionsPage2.length + 1,  // Increase item count by 1
+                      itemBuilder: (context, index) {
+                        if (index == questionsPage2.length) {
+                          return SizedBox(height: 60);  // Add SizedBox at the end
+                        }
+                        return buildQuestion(questionsPage2[index], index);
+                      },
+                    ),
+                  ),
+                ],
               ),
             ),
-          ],
-        ),
-      ),
+          ),
+          floatingActionButton: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: CustomTextButton(
+              text: 'NEXT',
+              onPressed: _validateAndProceed,
+            ),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        )
     );
   }
 }

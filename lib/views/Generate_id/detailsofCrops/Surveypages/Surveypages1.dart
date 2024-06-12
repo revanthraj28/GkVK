@@ -83,51 +83,85 @@ class _SurveyPage1State extends State<SurveyPage1> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        centerTitle: true,
-        title: const Text(
-          'Survey Page 1',
-          style: TextStyle(
-            color: Color(0xFF8DB600),
-            fontSize: 18,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        iconTheme: const IconThemeData(color: Colors.black),
-      ),
-      body: SafeArea(
-        child: Container(
-          color: const Color(0xFFF3F3F3),
-          child: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  itemCount: questionsPage1.length + 1,  // Increase item count by 1
-                  itemBuilder: (context, index) {
-                    if (index == questionsPage1.length) {
-                      return SizedBox(height: 60);  // Add SizedBox at the end
-                    }
-                    return buildQuestion(questionsPage1[index], index);
-                  },
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      floatingActionButton: Container(
-        width: double.infinity,
-        padding: const EdgeInsets.symmetric(horizontal: 20.0),
-        child: CustomTextButton(
-          text: 'NEXT',
-          onPressed: _validateAndProceed,
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+  Future<void> _showExitConfirmationDialog(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Exit'),
+          content: const Text('Do you want to return to the home page?'),
+          actions: <Widget>[
+            TextButton(
+              child: const Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: const Text('OK'),
+              onPressed: () {
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              },
+            ),
+          ],
+        );
+      },
     );
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return WillPopScope(
+        onWillPop: () async {
+          _showExitConfirmationDialog(context);
+          return false;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Colors.white,
+            centerTitle: true,
+            title: const Text(
+              'Survey Page 1',
+              style: TextStyle(
+                color: Color(0xFF8DB600),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            iconTheme: const IconThemeData(color: Colors.black),
+          ),
+          body: SafeArea(
+            child: Container(
+              color: const Color(0xFFF3F3F3),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ListView.builder(
+                      itemCount: questionsPage1.length + 1,  // Increase item count by 1
+                      itemBuilder: (context, index) {
+                        if (index == questionsPage1.length) {
+                          return SizedBox(height: 60);  // Add SizedBox at the end
+                        }
+                        return buildQuestion(questionsPage1[index], index);
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          floatingActionButton: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: CustomTextButton(
+              text: 'NEXT',
+              onPressed: _validateAndProceed,
+            ),
+          ),
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        )
+    );
+  }
+
 }
