@@ -15,6 +15,10 @@ List<Question> questionsPage1 = [
     options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree'],
   ),
   Question(
+    questionText: 'LRI based fertilizer application is suitable for dryland crops only ',
+    options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree'],
+  ),
+  Question(
     questionText: 'LRI based fertilizer application do not harm useful microorganisms present in the soil',
     options: ['Strongly agree', 'Agree', 'Neutral', 'Disagree', 'Strongly disagree'],
   ),

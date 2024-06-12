@@ -6,8 +6,9 @@ import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages3.d
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 
 class SurveyPage2 extends StatefulWidget {
+  final int aadharId;
   final List<String?> page1SelectedOptions;
-  const SurveyPage2({super.key, required this.page1SelectedOptions});
+  const SurveyPage2({super.key, required this.page1SelectedOptions,required this.aadharId});
 
   @override
   State<SurveyPage2> createState() => _SurveyPage2State();

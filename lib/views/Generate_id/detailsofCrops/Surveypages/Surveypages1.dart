@@ -5,7 +5,8 @@ import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages2.d
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 
 class SurveyPage1 extends StatefulWidget {
-  const SurveyPage1({super.key});
+  final int aadharId;
+  SurveyPage1({required this.aadharId, super.key});
 
   @override
   State<SurveyPage1> createState() => _SurveyPage1State();
@@ -49,7 +50,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
       // Navigate to the next page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) =>  SurveyPage2(page1SelectedOptions: selectedOptions,)),
+        MaterialPageRoute(builder: (context) =>  SurveyPage2(page1SelectedOptions: selectedOptions,aadharId: widget.aadharId,)),
       );
     } else {
       // Show an alert dialog if not all questions are answered
@@ -93,7 +94,6 @@ class _SurveyPage1State extends State<SurveyPage1> {
       body: SafeArea(
         child: Container(
           color: const Color(0xFFF3F3F3),
-          padding: const EdgeInsets.all(20.0),
           child: Column(
             children: [
               Expanded(
