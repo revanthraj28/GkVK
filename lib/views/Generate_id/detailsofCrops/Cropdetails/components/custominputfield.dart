@@ -7,6 +7,7 @@ class CustomInputField extends StatefulWidget {
   const CustomInputField({super.key, required this.label, required this.subLabel});
 
   @override
+  // ignore: library_private_types_in_public_api
   _CustomInputFieldState createState() => _CustomInputFieldState();
 }
 

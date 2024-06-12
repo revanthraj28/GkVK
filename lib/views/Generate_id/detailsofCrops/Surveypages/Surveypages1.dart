@@ -6,7 +6,7 @@ import 'package:gkvk/shared/components/CustomTextButton.dart';
 
 class SurveyPage1 extends StatefulWidget {
   final int aadharId;
-  SurveyPage1({required this.aadharId, super.key});
+  const SurveyPage1({required this.aadharId, super.key});
 
   @override
   State<SurveyPage1> createState() => _SurveyPage1State();
