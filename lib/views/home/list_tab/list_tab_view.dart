@@ -1,41 +1,61 @@
 import 'package:flutter/material.dart';
+import 'package:gkvk/database/farmer_profile_db.dart';
+import 'package:gkvk/shared/components/CustomTextButton.dart';
 
 class ListTabView extends StatelessWidget {
   const ListTabView({super.key});
 
+  Future<List<Map<String, dynamic>>> fetchAllFarmers() async {
+    return await FarmerProfileDB().readAll();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Upload Status'),
-        centerTitle: true,
-      ),
+      backgroundColor: const Color(0xFFF3F3F3),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             Expanded(
-              child: ListView(
-                children: [
-                  UploadStatusTile(farmerId: '24FGVK0001', status: 'Uploaded'),
-                  UploadStatusTile(farmerId: '24FGVK0002', status: 'Uploaded'),
-                  UploadStatusTile(farmerId: '24FGVK0003', status: 'Waiting for Connection'),
-                  UploadStatusTile(farmerId: '24FGVK0004', status: 'Upload pending'),
-                  UploadStatusTile(farmerId: '24FGVK0005', status: 'Upload pending'),
-                  UploadStatusTile(farmerId: '24FGVK0005', status: 'Upload pending'),
-                  UploadStatusTile(farmerId: '24FGVK0005', status: 'Upload pending'),
-                  UploadStatusTile(farmerId: '24FGVK0005', status: 'Upload pending'),
-                ],
+              child: FutureBuilder<List<Map<String, dynamic>>>(
+                future: fetchAllFarmers(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text('Error: ${snapshot.error}'));
+                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                    return Center(child: Text('No farmers to upload.'));
+                  } else {
+                    final farmers = snapshot.data!;
+                    return ListView.builder(
+                      itemCount: farmers.length,
+                      itemBuilder: (context, index) {
+                        final farmer = farmers[index];
+                        return Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 4.0), // Adjusted padding to reduce height
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(5.0),
+                            ),
+                            child: UploadStatusTile(
+                              aadharNumber: farmer['aadharNumber'],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
               ),
             ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Handle upload all action
-                },
-                child: Text('Upload all'),
-              ),
+            CustomTextButton(
+              text: 'UPLOAD ALL',
+              onPressed: () {
+                // Handle upload all action
+              },
             ),
           ],
         ),
@@ -45,38 +65,17 @@ class ListTabView extends StatelessWidget {
 }
 
 class UploadStatusTile extends StatelessWidget {
-  final String farmerId;
-  final String status;
+  final int aadharNumber;
 
-  UploadStatusTile({required this.farmerId, required this.status});
+  UploadStatusTile({required this.aadharNumber});
 
   @override
   Widget build(BuildContext context) {
-    IconData icon;
-    Color iconColor;
-
-    switch (status) {
-      case 'Uploaded':
-        icon = Icons.check_circle;
-        iconColor = Colors.green;
-        break;
-      case 'Waiting for Connection':
-        icon = Icons.cloud_off;
-        iconColor = Colors.yellow;
-        break;
-      case 'Upload pending':
-        icon = Icons.cloud_upload;
-        iconColor = Colors.blue;
-        break;
-      default:
-        icon = Icons.error;
-        iconColor = Colors.red;
-    }
-
     return ListTile(
-      title: Text(farmerId),
-      subtitle: Text(status),
-      trailing: Icon(icon, color: iconColor),
+      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0), // Adjusted padding to reduce height
+      title: Text('Farmer Id: $aadharNumber'),
+      subtitle: Text('Upload pending'),
+      trailing: const Icon(Icons.cloud_upload, color: Color(0xFF8DB600)),
     );
   }
 }
