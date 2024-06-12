@@ -9,7 +9,7 @@ import 'package:gkvk/views/home/profile_tab/profile_tab_view.dart';
 class HomeBodyWidget extends StatelessWidget {
 
   List<Widget> bodyList = [
-    const HomeTabView(),
+    HomeTabView(),
     const ListTabView(),
     const ProfilePage(),
   ];
