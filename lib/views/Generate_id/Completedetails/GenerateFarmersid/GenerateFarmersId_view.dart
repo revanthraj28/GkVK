@@ -319,8 +319,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
               },
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation
-              .centerFloat,
+          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         )
     );
   }

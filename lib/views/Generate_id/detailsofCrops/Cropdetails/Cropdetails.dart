@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/cropdetails_db.dart';
@@ -170,14 +171,12 @@ class _CropdetailsState extends State<Cropdetails> {
 
     await cropDetailsDB.create(data);
 
-    print('Data submitted successfully');
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SurveyPage1(aadharId: widget.aadharId),
-      ),
-    );
-  }
+  print('Data submitted successfully');
+  Navigator.pop(context);
+}
+
+
+
 
   Future<void> _showExitConfirmationDialog(BuildContext context) async {
     return showDialog<void>(
@@ -664,14 +663,8 @@ class _CropdetailsState extends State<Cropdetails> {
                     keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 20.0),
-                  // New section ends here
-                  ElevatedButton(
-                    onPressed: () => _submitData(context),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8DB600),
-                    ),
-                    child: const Text('Submit'),
-                  ),
+                  CustomTextButton(text: "NEXT", onPressed: () => _submitData(context),),
+
                 ],
               ),
             ),
