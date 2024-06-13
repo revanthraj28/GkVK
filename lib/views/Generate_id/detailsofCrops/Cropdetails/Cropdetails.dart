@@ -171,12 +171,14 @@ class _CropdetailsState extends State<Cropdetails> {
 
     await cropDetailsDB.create(data);
 
-  print('Data submitted successfully');
-  Navigator.pop(context);
-}
-
-
-
+    print('Data submitted successfully');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SurveyPage1(aadharId: widget.aadharId),
+      ),
+    );
+  }
 
   Future<void> _showExitConfirmationDialog(BuildContext context) async {
     return showDialog<void>(
@@ -541,7 +543,6 @@ class _CropdetailsState extends State<Cropdetails> {
                           _Methodsoffertilizer.value = option ?? '';
                         },
                       )),
-
                   const SizedBox(height: 20.0),
                   CustomTextFormField(
                     labelText: "Plant Protection Cost (in Rs.)",
@@ -589,7 +590,6 @@ class _CropdetailsState extends State<Cropdetails> {
                     controller: _animalMechanizedCostController,
                     keyboardType: TextInputType.number,
                   ),
-
                   const SizedBox(height: 20.0),
                   CustomTextFormField(
                     labelText: "Irrigation cost (in Rs.)",
@@ -663,8 +663,10 @@ class _CropdetailsState extends State<Cropdetails> {
                     keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 20.0),
-                  CustomTextButton(text: "NEXT", onPressed: () => _submitData(context),),
-
+                  CustomTextButton(
+                    text: "NEXT",
+                    onPressed: () => _submitData(context),
+                  ),
                 ],
               ),
             ),
