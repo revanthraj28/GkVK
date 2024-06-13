@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-
 import 'package:gkvk/views/login/Login.dart';
 
 class ThirdPage extends StatefulWidget {
@@ -26,18 +25,22 @@ class _ThirdPageState extends State<ThirdPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text(''),
-      ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/images/gkvk_icon.png'),
+            Image.asset(
+              'assets/images/gkvk_icon.png',
+              width: 150,
+              height: 150,
+            ),
             const SizedBox(height: 20),
             const Text(
               'Accelerating agriculture through innovative solutions!',
-              style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.normal,
+              ),
               textAlign: TextAlign.center,
             ),
           ],

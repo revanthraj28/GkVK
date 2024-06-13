@@ -56,8 +56,7 @@ class CropdetailsDB {
           "chemicalFertilizerTopDress$i" TEXT,
           "chemicalFertilizerTotalQuantity$i" REAL,
           "chemicalFertilizerTotalCost$i" REAL
-        ''').join(',')},
-        PRIMARY KEY ("aadharId", "cropName")
+        ''').join(',')}
       );
     ''');
   }
@@ -67,27 +66,31 @@ class CropdetailsDB {
     return await database.insert(tableName, data);
   }
 
-  Future<List<Map<String, dynamic>>> readAll() async {
+  Future<List<Map<String, dynamic>>> readByAadharId(int aadharId) async {
     final database = await DatabaseService().database;
-    return await database.query(tableName);
+    return await database.query(
+      tableName,
+      where: 'aadharId = ?',
+      whereArgs: [aadharId],
+    );
   }
 
-  Future<int> update(Map<String, dynamic> data, int aadharId, String cropName) async {
+  Future<int> update(Map<String, dynamic> data, int aadharId) async {
     final database = await DatabaseService().database;
     return await database.update(
       tableName,
       data,
-      where: 'aadharId = ? AND cropName = ?',
-      whereArgs: [aadharId, cropName],
+      where: 'aadharId = ?',
+      whereArgs: [aadharId],
     );
   }
 
-  Future<int> delete(int aadharId, String cropName) async {
+  Future<int> delete(int aadharId) async {
     final database = await DatabaseService().database;
     return await database.delete(
       tableName,
-      where: 'aadharId = ? AND cropName = ?',
-      whereArgs: [aadharId, cropName],
+      where: 'aadharId = ?',
+      whereArgs: [aadharId],
     );
   }
 }

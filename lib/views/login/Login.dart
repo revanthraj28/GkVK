@@ -52,17 +52,17 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
+backgroundColor: const Color(0xFFF3F3F3),    body: Stack(
         children: [
-          Positioned(
-            top: 50,
-            left: 0,
-            right: 0,
-            child: AppBar(
-              title: const Text('Hello! Welcome to the GKVK App!'),
-              automaticallyImplyLeading: false,
-            ),
-          ),
+          // Positioned(
+          //   top: 50,
+          //   left: 0,
+          //   right: 0,
+          //   child: AppBar(
+          //     title: const Text('Hello! Welcome to the GKVK App!'),
+          //     automaticallyImplyLeading: false,
+          //   ),
+          // ),
           Padding(
             padding: const EdgeInsets.all(12.0),
             child: Center(
@@ -70,13 +70,13 @@ class _LoginPageState extends State<LoginPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const SizedBox(height: 100),
+                    const SizedBox(height: 60,),
                     const Icon(
                       Icons.agriculture,
                       size: 100,
                       color: Color(0xFF8DB600),
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 10),
                     const Text(
                       'Login',
                       style: TextStyle(

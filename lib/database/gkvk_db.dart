@@ -45,6 +45,20 @@ class WaterShedDB {
     return await database.query(tableName);
   }
 
+  Future<Map<String, dynamic>?> read(int watershedId) async {
+    final database = await DatabaseService().database;
+    final List<Map<String, dynamic>> results = await database.query(
+      tableName,
+      where: 'watershedId = ?',
+      whereArgs: [watershedId],
+    );
+    if (results.isNotEmpty) {
+      return results.first;
+    } else {
+      return null;
+    }
+  }
+
   Future<int> update({
     required int watershedId,
     required String district,
@@ -81,3 +95,4 @@ class WaterShedDB {
     );
   }
 }
+

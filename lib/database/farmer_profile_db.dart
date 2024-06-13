@@ -69,6 +69,21 @@ class FarmerProfileDB {
     return await database.query(tableName);
   }
 
+  // Read a single farmer profile by aadharNumber
+  Future<Map<String, dynamic>?> read(int aadharNumber) async {
+    final database = await DatabaseService().database;
+    final List<Map<String, dynamic>> results = await database.query(
+      tableName,
+      where: 'aadharNumber = ?',
+      whereArgs: [aadharNumber],
+    );
+    if (results.isNotEmpty) {
+      return results.first;
+    } else {
+      return null;
+    }
+  }
+
   // Update an existing farmer profile
   Future<int> update({
     required String farmerName,
@@ -120,3 +135,4 @@ class FarmerProfileDB {
     );
   }
 }
+
