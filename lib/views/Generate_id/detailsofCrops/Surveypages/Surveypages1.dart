@@ -141,7 +141,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
                       itemCount: questionsPage1.length + 1,  // Increase item count by 1
                       itemBuilder: (context, index) {
                         if (index == questionsPage1.length) {
-                          return SizedBox(height: 60);  // Add SizedBox at the end
+                          return const SizedBox(height: 60);  // Add SizedBox at the end
                         }
                         return buildQuestion(questionsPage1[index], index);
                       },

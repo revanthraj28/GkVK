@@ -98,8 +98,8 @@ class WatershedView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Do you want to continue with the latest watershed details?'),
-                  SizedBox(height: 20),
+                  const Text('Do you want to continue with the latest watershed details?'),
+                  const SizedBox(height: 20),
                   Text('District: ${watershedDetails['district']}'),
                   Text('Taluk: ${watershedDetails['taluk']}'),
                   Text('Hobli: ${watershedDetails['hobli']}'),
@@ -107,7 +107,7 @@ class WatershedView extends StatelessWidget {
                   Text('Sub-Watershed Code: ${watershedDetails['subWatershedCode']}'),
                   Text('Village: ${watershedDetails['village']}'),
                   Text('Selected Category: ${watershedDetails['selectedCategory']}'),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

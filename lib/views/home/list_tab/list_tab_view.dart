@@ -22,11 +22,11 @@ class ListTabView extends StatelessWidget {
                 future: fetchAllFarmers(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No farmers to upload.'));
+                    return const Center(child: Text('No farmers to upload.'));
                   } else {
                     final farmers = snapshot.data!;
                     return ListView.builder(
@@ -67,21 +67,21 @@ class ListTabView extends StatelessWidget {
 class UploadStatusTile extends StatelessWidget {
   final int aadharNumber;
 
-  UploadStatusTile({required this.aadharNumber});
+  const UploadStatusTile({super.key, required this.aadharNumber});
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0), // Adjusted padding to reduce height
       title: Text('Farmer Id: $aadharNumber'),
-      subtitle: Text('Upload pending'),
+      subtitle: const Text('Upload pending'),
       trailing: const Icon(Icons.cloud_upload, color: Color(0xFF8DB600)),
     );
   }
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: ListTabView(),
   ));
 }
