@@ -519,7 +519,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         const SizedBox(height: 20.0),
                       ],
                     );
-                  }).toList(),
+                  }),
                   ElevatedButton(
                     onPressed: addNewFertilizer,
                     style: ElevatedButton.styleFrom(
