@@ -11,7 +11,7 @@ import 'package:gkvk/database/survey_page4_db.dart';
 import 'package:gkvk/database/cropdetails_db.dart'; // Include CropdetailsDB
 
 class ListTabView extends StatefulWidget {
-  const ListTabView({Key? key}) : super(key: key);
+  const ListTabView({super.key});
 
   @override
   _ListTabViewState createState() => _ListTabViewState();
@@ -114,7 +114,7 @@ class _ListTabViewState extends State<ListTabView> {
       });
     } catch (e) {
       print('Failed to upload farmer data: $e');
-      throw e; // Rethrow to handle in UI
+      rethrow; // Rethrow to handle in UI
     }
   }
 
@@ -131,11 +131,11 @@ class _ListTabViewState extends State<ListTabView> {
                 future: _farmersFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
+                    return const Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));
                   } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return Center(child: Text('No farmers to upload.'));
+                    return const Center(child: Text('No farmers to upload.'));
                   } else {
                     final farmers = snapshot.data!;
                     return ListView.builder(
@@ -181,7 +181,7 @@ class UploadStatusTile extends StatelessWidget {
   final int aadharNumber;
   final Function(int) uploadFunction; // New parameter
 
-  UploadStatusTile({
+  const UploadStatusTile({super.key, 
     required this.aadharNumber,
     required this.uploadFunction, // Added parameter
   });
@@ -191,13 +191,13 @@ class UploadStatusTile extends StatelessWidget {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 16.0),
       title: Text('Farmer Id: $aadharNumber'),
-      subtitle: Text('Upload pending'),
+      subtitle: const Text('Upload pending'),
       trailing: IconButton(
         icon: const Icon(Icons.cloud_upload, color: Color(0xFF8DB600)),
         onPressed: () async {
           try {
             await uploadFunction(aadharNumber); // Call the function passed from ListTabView
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload successful')));
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Upload successful')));
           } catch (e) {
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
           }
@@ -208,7 +208,7 @@ class UploadStatusTile extends StatelessWidget {
 }
 
 void main() {
-  runApp(MaterialApp(
+  runApp(const MaterialApp(
     home: ListTabView(),
   ));
 }

@@ -51,7 +51,7 @@ class _ProfilePageState extends State<ProfilePage> {
               const SizedBox(height: 16),
               Text(
                 user?.displayName ?? 'Revanth',
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                 ),
