@@ -21,6 +21,6 @@ class HomeBodyWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Obx(() =>
-    bodyList.elementAt(navController.selectedBodyIndex));
+        bodyList.elementAt(navController.selectedBodyIndex));
   }
 }

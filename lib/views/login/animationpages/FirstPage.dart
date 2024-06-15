@@ -27,7 +27,7 @@ class _FirstPageState extends State<FirstPage> {
     return Scaffold(
       body: Center(
         child: Container(
-          color: Colors.white,
+          color: Color(0xFFFEF8E0),
         ),
       ),
     );
