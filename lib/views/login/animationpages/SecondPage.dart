@@ -25,6 +25,7 @@ class _SecondPageState extends State<SecondPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFFFEF8E0),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

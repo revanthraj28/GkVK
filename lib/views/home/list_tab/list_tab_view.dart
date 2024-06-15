@@ -121,56 +121,68 @@ class _ListTabViewState extends State<ListTabView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFF3F3F3),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            Expanded(
-              child: FutureBuilder<List<Map<String, dynamic>>>(
-                future: _farmersFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                    return const Center(child: Text('No farmers to upload.'));
-                  } else {
-                    final farmers = snapshot.data!;
-                    return ListView.builder(
-                      itemCount: farmers.length,
-                      itemBuilder: (context, index) {
-                        final farmer = farmers[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0), // Adjusted padding to reduce height
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(5.0),
-                            ),
-                            child: UploadStatusTile(
-                              aadharNumber: farmer['aadharNumber'],
-                              uploadFunction: uploadFarmerData, // Pass the function here
-                            ),
-                          ),
+      body: Stack(
+        children: [
+          // Background Image
+          Positioned.fill(
+            child: Image.asset(
+              'assets/images/bg1.png', // Replace with your image asset path
+              fit: BoxFit.cover,
+            ),
+          ),
+          // Foreground content
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: FutureBuilder<List<Map<String, dynamic>>>(
+                    future: _farmersFuture,
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(child: CircularProgressIndicator());
+                      } else if (snapshot.hasError) {
+                        return Center(child: Text('Error: ${snapshot.error}'));
+                      } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No farmers to upload.'));
+                      } else {
+                        final farmers = snapshot.data!;
+                        return ListView.builder(
+                          itemCount: farmers.length,
+                          itemBuilder: (context, index) {
+                            final farmer = farmers[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 4.0), // Adjusted padding to reduce height
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(5.0),
+                                ),
+                                child: UploadStatusTile(
+                                  aadharNumber: farmer['aadharNumber'],
+                                  uploadFunction: uploadFarmerData, // Pass the function here
+                                ),
+                              ),
+                            );
+                          },
                         );
-                      },
-                    );
-                  }
-                },
-              ),
+                      }
+                    },
+                  ),
+                ),
+                CustomTextButton(
+                  text: 'UPLOAD ALL',
+                  onPressed: () async {
+                    final farmers = await _farmersFuture;
+                    for (var farmer in farmers) {
+                      await uploadFarmerData(farmer['aadharNumber']);
+                    }
+                  },
+                ),
+              ],
             ),
-            CustomTextButton(
-              text: 'UPLOAD ALL',
-              onPressed: () async {
-                final farmers = await _farmersFuture;
-                for (var farmer in farmers) {
-                  await uploadFarmerData(farmer['aadharNumber']);
-                }
-              },
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -180,7 +192,7 @@ class UploadStatusTile extends StatelessWidget {
   final int aadharNumber;
   final Function(int) uploadFunction; // New parameter
 
-  const UploadStatusTile({super.key, 
+  const UploadStatusTile({super.key,
     required this.aadharNumber,
     required this.uploadFunction, // Added parameter
   });

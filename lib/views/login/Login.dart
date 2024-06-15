@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/views/home/home_view.dart';
 
 class LoginPage extends StatefulWidget {
@@ -52,66 +53,81 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-backgroundColor: const Color(0xFFF3F3F3),    body: Stack(
+      body: Stack(
         children: [
-          // Positioned(
-          //   top: 50,
-          //   left: 0,
-          //   right: 0,
-          //   child: AppBar(
-          //     title: const Text('Hello! Welcome to the GKVK App!'),
-          //     automaticallyImplyLeading: false,
-          //   ),
-          // ),
+          // Background Image
+          Image.asset(
+            'assets/images/bg2.png', // Replace with your image asset path
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.cover,
+          ),
+          // Content
           Padding(
-            padding: const EdgeInsets.all(12.0),
+            padding: const EdgeInsets.all(20.0),
             child: Center(
-              child: SingleChildScrollView(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(height: 60,),
-                    const Icon(
-                      Icons.agriculture,
-                      size: 100,
-                      color: Color(0xFF8DB600),
-                    ),
-                    const SizedBox(height: 10),
-                    const Text(
-                      'Login',
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
+              child: IntrinsicHeight(
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFEF8E0),
+                    borderRadius: BorderRadius.circular(10),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.2),
+                        spreadRadius: 2,
+                        blurRadius: 5,
+                        offset: Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Icon(
+                        Icons.agriculture,
+                        size: 100,
                         color: Color(0xFF8DB600),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: emailController,
-                      decoration: const InputDecoration(
-                        labelText: 'Email ID',
-                        border: OutlineInputBorder(),
+                      const SizedBox(height: 10),
+                      const Text(
+                        'Login',
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF8DB600),
+                        ),
                       ),
-                      validator: validateEmail,
-                    ),
-                    const SizedBox(height: 20),
-                    TextFormField(
-                      controller: passwordController,
-                      decoration: const InputDecoration(
-                        labelText: 'Password',
-                        border: OutlineInputBorder(),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          labelText: 'Email ID',
+                          border: OutlineInputBorder(),
+                          fillColor: Colors.white,
+                          filled: true,
+                        ),
+                        validator: validateEmail,
                       ),
-                      obscureText: true,
-                      validator: validatePassword,
-                    ),
-                    const SizedBox(height: 20),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 25.0),
-                      child: ElevatedButton(
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        controller: passwordController,
+                        decoration: const InputDecoration(
+                          labelText: 'Password',
+                          border: OutlineInputBorder(),
+                          fillColor: Colors.white,
+                          filled: true,
+                        ),
+                        obscureText: true,
+                        validator: validatePassword,
+                      ),
+                      const SizedBox(height: 20),
+                      CustomTextButton(
+                        text: "Sign In",
                         onPressed: () async {
                           if (validateEmail(emailController.text) == null &&
-                              validatePassword(passwordController.text) ==
-                                  null) {
+                              validatePassword(passwordController.text) == null) {
                             try {
                               await login();
                               Navigator.of(context).pushReplacement(
@@ -143,14 +159,9 @@ backgroundColor: const Color(0xFFF3F3F3),    body: Stack(
                             );
                           }
                         },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF8DB600),
-                          minimumSize: const Size(150, 50),
-                        ),
-                        child: const Text('Login'),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -159,4 +170,10 @@ backgroundColor: const Color(0xFFF3F3F3),    body: Stack(
       ),
     );
   }
+}
+
+void main() {
+  runApp(const MaterialApp(
+    home: LoginPage(),
+  ));
 }
