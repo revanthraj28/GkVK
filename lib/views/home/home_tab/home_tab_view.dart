@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:gkvk/views/Generate_id/Completedetails/Watersheddetails/watersheddetails.dart';// Import services.dart for SystemChrome
 
 class HomeTabView extends StatelessWidget {
-  const HomeTabView({Key? key}) : super(key: key);
+  const HomeTabView({super.key});
 
   @override
   Widget build(BuildContext context) {
     // Ensure status bar is transparent and content extends beneath it
-    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
       statusBarColor: Colors.transparent, // Transparent status bar
       statusBarIconBrightness: Brightness.dark, // Dark icons for status bar
       statusBarBrightness: Brightness.dark, // Dark content behind status bar
@@ -40,7 +40,7 @@ class HomeTabView extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                         decoration: BoxDecoration(
-                          color: Color(0xFFFEF8E0),
+                          color: const Color(0xFFFEF8E0),
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Stack(
@@ -89,20 +89,20 @@ class HomeTabView extends StatelessWidget {
                                 MaterialPageRoute(builder: (context) => WatershedView()),
                               );
                             })),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(child: _buildMenuBox('Edit', 'Farmer Profile', Icons.edit, Colors.orange, () {
                               // Handle Edit Farmer Profile tap
                             })),
                           ],
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(child: _buildMenuBox('Add', 'Farmer Land', Icons.landscape, Colors.brown, () {
                               // Handle Add Farmer Land tap
                             })),
-                            SizedBox(width: 10),
+                            const SizedBox(width: 10),
                             Expanded(child: _buildMenuBox('Enter', 'Crop Details', Icons.grain, Colors.yellow, () {
                               // Handle Enter Crop Details tap
                             })),
@@ -125,14 +125,14 @@ class HomeTabView extends StatelessWidget {
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Color(0xFFFEF8E0),
+          color: const Color(0xFFFEF8E0),
           borderRadius: BorderRadius.circular(5),
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.2),
               spreadRadius: 2,
               blurRadius: 5,
-              offset: Offset(0, 3),
+              offset: const Offset(0, 3),
             ),
           ],
         ),
@@ -142,7 +142,7 @@ class HomeTabView extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Icon(icon, size: 25, color: color),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Expanded(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,

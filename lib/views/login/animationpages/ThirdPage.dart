@@ -9,41 +9,75 @@ class ThirdPage extends StatefulWidget {
   _ThirdPageState createState() => _ThirdPageState();
 }
 
-class _ThirdPageState extends State<ThirdPage> {
+class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<double> _fadeAnimation;
+
   @override
   void initState() {
     super.initState();
-    // Navigate to LoginPage after 2 seconds
+
+    _controller = AnimationController(
+      duration: const Duration(seconds: 2),
+      vsync: this,
+    );
+
+    _fadeAnimation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeIn,
+    );
+
+    _controller.forward();
+
     Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginPage()),
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const LoginPage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        ),
       );
     });
   }
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset(
-              'assets/images/gkvk_icon.png',
-              width: 150,
-              height: 150,
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Accelerating agriculture through innovative solutions!',
-              style: TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.normal,
+      backgroundColor: const Color(0xFFFEF8E0),
+      body: FadeTransition(
+        opacity: _fadeAnimation,
+        child: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.agriculture,
+                size: 200,
+                color: Color(0xFF8DB600),
               ),
-              textAlign: TextAlign.center,
-            ),
-          ],
+              SizedBox(height: 20),
+              Text(
+                'AgriConnect',
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xFF8DB600),
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
         ),
       ),
     );
