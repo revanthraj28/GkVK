@@ -69,14 +69,14 @@ class _LoginPageState extends State<LoginPage> {
               child: IntrinsicHeight(
                 child: Container(
                   decoration: BoxDecoration(
-                    color: Color(0xFFFEF8E0),
+                    color: const Color(0xFFFEF8E0),
                     borderRadius: BorderRadius.circular(10),
                     boxShadow: [
                       BoxShadow(
                         color: Colors.black.withOpacity(0.2),
                         spreadRadius: 2,
                         blurRadius: 5,
-                        offset: Offset(0, 3),
+                        offset: const Offset(0, 3),
                       ),
                     ],
                   ),
