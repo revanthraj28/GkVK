@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:gkvk/database/gkvk_db.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gkvk/database/survey_page1_db.dart';

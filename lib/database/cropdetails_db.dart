@@ -40,6 +40,8 @@ class CropdetailsDB {
         "animalDrawnCost" REAL,
         "animalMechanizedCost" REAL,
         "irrigationCost" REAL,
+        "otherProductionCost" REAL,
+        "totalProductionCost" REAL,
         "mainProductQuantity" REAL,
         "mainProductPrice" REAL,
         "mainProductAmount" REAL,
@@ -93,4 +95,6 @@ class CropdetailsDB {
       whereArgs: [aadharId],
     );
   }
+
+  insert(Map<String, dynamic> data) {}
 }

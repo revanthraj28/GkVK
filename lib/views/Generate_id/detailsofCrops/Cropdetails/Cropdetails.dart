@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
@@ -51,6 +52,10 @@ class _CropdetailsState extends State<Cropdetails> {
   final TextEditingController _animalMechanizedCostController =
       TextEditingController();
   final TextEditingController _irrigationCostController =
+      TextEditingController();
+  final TextEditingController _otherProductionCostController =
+      TextEditingController();
+  final TextEditingController _totalProductionCostController =
       TextEditingController();
 
   final TextEditingController _mainProductQuantityController =
@@ -141,6 +146,9 @@ class _CropdetailsState extends State<Cropdetails> {
       'animalMechanizedCost':
           double.tryParse(_animalMechanizedCostController.text),
       'irrigationCost': double.tryParse(_irrigationCostController.text),
+      'otherProductionCost':
+          double.tryParse(_otherProductionCostController.text),
+      'totalProductionCost': double.tryParse(_totalProductionCostController.text),
       'mainProductQuantity':
           double.tryParse(_mainProductQuantityController.text),
       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
@@ -599,13 +607,13 @@ class _CropdetailsState extends State<Cropdetails> {
                   const SizedBox(height: 20.0),
                   CustomTextFormField(
                     labelText: "Other production cost, if any (Rs.)",
-                    controller: _irrigationCostController,
+                    controller: _otherProductionCostController,
                     keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 20.0),
                   CustomTextFormField(
                     labelText: "Total cost of production",
-                    controller: _irrigationCostController,
+                    controller: _totalProductionCostController,
                     keyboardType: TextInputType.number,
                   ),
                   const SizedBox(height: 20.0),
@@ -676,659 +684,659 @@ class _CropdetailsState extends State<Cropdetails> {
     );
   }
 }
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:gkvk/shared/components/CustomTextFormField.dart';
-// import 'package:gkvk/shared/components/SelectionButton.dart';
-// import 'package:gkvk/database/cropdetails_db.dart';
+// // import 'package:flutter/material.dart';
+// // import 'package:get/get.dart';
+// // import 'package:gkvk/shared/components/CustomTextFormField.dart';
+// // import 'package:gkvk/shared/components/SelectionButton.dart';
+// // import 'package:gkvk/database/cropdetails_db.dart';
 
-// class Cropdetails extends StatefulWidget {
-//   final int aadharId;
-//   const Cropdetails({required this.aadharId, super.key});
+// // class Cropdetails extends StatefulWidget {
+// //   final int aadharId;
+// //   const Cropdetails({required this.aadharId, super.key});
 
-//   @override
-//   _CropdetailsState createState() => _CropdetailsState();
-// }
+// //   @override
+// //   _CropdetailsState createState() => _CropdetailsState();
+// // }
 
-// class _CropdetailsState extends State<Cropdetails> {
-//   // General Details
-//   final _cropNameController = TextEditingController();
-//   final _areaController = TextEditingController();
-//   final _surveyHissaController = TextEditingController();
-//   final _varietyController = TextEditingController();
-//   final _durationController = TextEditingController();
-//   final _costController = TextEditingController();
-//   final _rdfNitrogenController = TextEditingController();
-//   final _rdfPhosphorousController = TextEditingController();
-//   final _rdfPotassiumController = TextEditingController();
-//   final _adjustedrdfNitrogenController = TextEditingController();
-//   final _adjustedrdfPhosphorousController = TextEditingController();
-//   final _adjustedrdfPotassiumController = TextEditingController();
+// // class _CropdetailsState extends State<Cropdetails> {
+// //   // General Details
+// //   final _cropNameController = TextEditingController();
+// //   final _areaController = TextEditingController();
+// //   final _surveyHissaController = TextEditingController();
+// //   final _varietyController = TextEditingController();
+// //   final _durationController = TextEditingController();
+// //   final _costController = TextEditingController();
+// //   final _rdfNitrogenController = TextEditingController();
+// //   final _rdfPhosphorousController = TextEditingController();
+// //   final _rdfPotassiumController = TextEditingController();
+// //   final _adjustedrdfNitrogenController = TextEditingController();
+// //   final _adjustedrdfPhosphorousController = TextEditingController();
+// //   final _adjustedrdfPotassiumController = TextEditingController();
 
-//   // Organic Manures
-//   final _organicManureNameController = TextEditingController();
-//   final _organicManureQuantityController = TextEditingController();
-//   final _organicManureCostController = TextEditingController();
+// //   // Organic Manures
+// //   final _organicManureNameController = TextEditingController();
+// //   final _organicManureQuantityController = TextEditingController();
+// //   final _organicManureCostController = TextEditingController();
 
-//   // Bio-fertilizers
-//   final _bioFertilizerNameController = TextEditingController();
-//   final _bioFertilizerQuantityController = TextEditingController();
-//   final _bioFertilizerCostController = TextEditingController();
+// //   // Bio-fertilizers
+// //   final _bioFertilizerNameController = TextEditingController();
+// //   final _bioFertilizerQuantityController = TextEditingController();
+// //   final _bioFertilizerCostController = TextEditingController();
 
-//   // Labour Details
-//   final TextEditingController _plantProtectionCostController = TextEditingController();
-//   final TextEditingController _ownLabourNumberController = TextEditingController();
-//   final TextEditingController _ownLabourCostController = TextEditingController();
-//   final TextEditingController _hiredLabourNumberController = TextEditingController();
-//   final TextEditingController _hiredLabourCostController = TextEditingController();
-//   final TextEditingController _animalDrawnCostController = TextEditingController();
-//   final TextEditingController _animalMechanizedCostController = TextEditingController();
-//   final TextEditingController _irrigationCostController = TextEditingController();
-//   final TextEditingController _otherProductionCostController = TextEditingController();
-//   final TextEditingController _totalProductionCostController = TextEditingController();
+// //   // Labour Details
+// //   final TextEditingController _plantProtectionCostController = TextEditingController();
+// //   final TextEditingController _ownLabourNumberController = TextEditingController();
+// //   final TextEditingController _ownLabourCostController = TextEditingController();
+// //   final TextEditingController _hiredLabourNumberController = TextEditingController();
+// //   final TextEditingController _hiredLabourCostController = TextEditingController();
+// //   final TextEditingController _animalDrawnCostController = TextEditingController();
+// //   final TextEditingController _animalMechanizedCostController = TextEditingController();
+// //   final TextEditingController _irrigationCostController = TextEditingController();
+// //   final TextEditingController _otherProductionCostController = TextEditingController();
+// //   final TextEditingController _totalProductionCostController = TextEditingController();
 
-//   // Returns
-//   final TextEditingController _mainProductQuantityController = TextEditingController();
-//   final TextEditingController _mainProductPriceController = TextEditingController();
-//   final TextEditingController _mainProductAmountController = TextEditingController();
-//   final TextEditingController _byProductQuantityController = TextEditingController();
-//   final TextEditingController _byProductPriceController = TextEditingController();
-//   final TextEditingController _byProductAmountController = TextEditingController();
-//   final TextEditingController _totalByProductAmountController1 = TextEditingController();
-//   final TextEditingController _totalReturnsController = TextEditingController();
+// //   // Returns
+// //   final TextEditingController _mainProductQuantityController = TextEditingController();
+// //   final TextEditingController _mainProductPriceController = TextEditingController();
+// //   final TextEditingController _mainProductAmountController = TextEditingController();
+// //   final TextEditingController _byProductQuantityController = TextEditingController();
+// //   final TextEditingController _byProductPriceController = TextEditingController();
+// //   final TextEditingController _byProductAmountController = TextEditingController();
+// //   final TextEditingController _totalByProductAmountController1 = TextEditingController();
+// //   final TextEditingController _totalReturnsController = TextEditingController();
 
-//   // Rx variables for selection fields
-//   final RxString _selectedTypeOfLand = ''.obs;
-//   final RxString _selectedSeason = ''.obs;
-//   final RxString _selectedSourceOfIrrigation = ''.obs;
-//   final RxString _selectedNitrogen = ''.obs;
-//   final RxString _selectedPhosphorous = ''.obs;
-//   final RxString _selectedPotassium = ''.obs;
-//   final RxString _Methodsoffertilizer = ''.obs;
+// //   // Rx variables for selection fields
+// //   final RxString _selectedTypeOfLand = ''.obs;
+// //   final RxString _selectedSeason = ''.obs;
+// //   final RxString _selectedSourceOfIrrigation = ''.obs;
+// //   final RxString _selectedNitrogen = ''.obs;
+// //   final RxString _selectedPhosphorous = ''.obs;
+// //   final RxString _selectedPotassium = ''.obs;
+// //   final RxString _Methodsoffertilizer = ''.obs;
 
-//   // List of chemical fertilizers
-//   final List<Map<String, TextEditingController>> chemicalFertilizers = [];
+// //   // List of chemical fertilizers
+// //   final List<Map<String, TextEditingController>> chemicalFertilizers = [];
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     addNewFertilizer();
-//   }
+// //   @override
+// //   void initState() {
+// //     super.initState();
+// //     addNewFertilizer();
+// //   }
 
-//   void addNewFertilizer() {
-//     setState(() {
-//       chemicalFertilizers.add({
-//         "name": TextEditingController(),
-//         "basal": TextEditingController(),
-//         "topDress": TextEditingController(),
-//         "totalQuantity": TextEditingController(),
-//         "totalCost": TextEditingController(),
-//       });
-//     });
-//   }
+// //   void addNewFertilizer() {
+// //     setState(() {
+// //       chemicalFertilizers.add({
+// //         "name": TextEditingController(),
+// //         "basal": TextEditingController(),
+// //         "topDress": TextEditingController(),
+// //         "totalQuantity": TextEditingController(),
+// //         "totalCost": TextEditingController(),
+// //       });
+// //     });
+// //   }
 
-//   Future<void> _submitData(BuildContext context) async {
-//     final cropDetailsDB = CropdetailsDB();
+// //   Future<void> _submitData(BuildContext context) async {
+// //     final cropDetailsDB = CropdetailsDB();
 
-//     Map<String, dynamic> data = {
-//       'aadharId': widget.aadharId,
-//       'cropName': _cropNameController.text,
-//       'area': double.tryParse(_areaController.text),
-//       'surveyHissa': _surveyHissaController.text,
-//       'variety': _varietyController.text,
-//       'duration': int.tryParse(_durationController.text),
-//       'season': _selectedSeason.value,
-//       'typeOfLand': _selectedTypeOfLand.value,
-//       'sourceOfIrrigation': _selectedSourceOfIrrigation.value,
-//       'cost': int.tryParse(_costController.text),
-//       'nitrogen': _selectedNitrogen.value,
-//       'phosphorous': _selectedPhosphorous.value,
-//       'potassium': _selectedPotassium.value,
-//       'rdfNitrogen': _rdfNitrogenController.text,
-//       'rdfPhosphorous': _rdfPhosphorousController.text,
-//       'rdfPotassium': _rdfPotassiumController.text,
-//       'adjustedrdfNitrogen': _adjustedrdfNitrogenController.text,
-//       'adjustedrdfPhosphorous': _adjustedrdfPhosphorousController.text,
-//       'adjustedrdfPotassium': _adjustedrdfPotassiumController.text,
-//       'organicManureName': _organicManureNameController.text,
-//       'organicManureQuantity': double.tryParse(_organicManureQuantityController.text),
-//       'organicManureCost': double.tryParse(_organicManureCostController.text),
-//       'bioFertilizerName': _bioFertilizerNameController.text,
-//       'bioFertilizerQuantity': double.tryParse(_bioFertilizerQuantityController.text),
-//       'bioFertilizerCost': double.tryParse(_bioFertilizerCostController.text),
-//       'plantProtectionCost': double.tryParse(_plantProtectionCostController.text),
-//       'ownLabourNumber': int.tryParse(_ownLabourNumberController.text),
-//       'ownLabourCost': double.tryParse(_ownLabourCostController.text),
-//       'hiredLabourNumber': int.tryParse(_hiredLabourNumberController.text),
-//       'hiredLabourCost': double.tryParse(_hiredLabourCostController.text),
-//       'animalDrawnCost': double.tryParse(_animalDrawnCostController.text),
-//       'animalMechanizedCost': double.tryParse(_animalMechanizedCostController.text),
-//       'irrigationCost': double.tryParse(_irrigationCostController.text),
-//       'mainProductQuantity': double.tryParse(_mainProductQuantityController.text),
-//       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
-//       'mainProductAmount': double.tryParse(_mainProductAmountController.text),
-//       'byProductQuantity': double.tryParse(_byProductQuantityController.text),
-//       'byProductPrice': double.tryParse(_byProductPriceController.text),
-//       'byProductAmount': double.tryParse(_byProductAmountController.text),
-//       'totalByProductAmount1': double.tryParse(_totalByProductAmountController1.text),
-//       'totalReturns': double.tryParse(_totalReturnsController.text),
-//       'methodsoffertilizer': _Methodsoffertilizer.value,
-//     };
+// //     Map<String, dynamic> data = {
+// //       'aadharId': widget.aadharId,
+// //       'cropName': _cropNameController.text,
+// //       'area': double.tryParse(_areaController.text),
+// //       'surveyHissa': _surveyHissaController.text,
+// //       'variety': _varietyController.text,
+// //       'duration': int.tryParse(_durationController.text),
+// //       'season': _selectedSeason.value,
+// //       'typeOfLand': _selectedTypeOfLand.value,
+// //       'sourceOfIrrigation': _selectedSourceOfIrrigation.value,
+// //       'cost': int.tryParse(_costController.text),
+// //       'nitrogen': _selectedNitrogen.value,
+// //       'phosphorous': _selectedPhosphorous.value,
+// //       'potassium': _selectedPotassium.value,
+// //       'rdfNitrogen': _rdfNitrogenController.text,
+// //       'rdfPhosphorous': _rdfPhosphorousController.text,
+// //       'rdfPotassium': _rdfPotassiumController.text,
+// //       'adjustedrdfNitrogen': _adjustedrdfNitrogenController.text,
+// //       'adjustedrdfPhosphorous': _adjustedrdfPhosphorousController.text,
+// //       'adjustedrdfPotassium': _adjustedrdfPotassiumController.text,
+// //       'organicManureName': _organicManureNameController.text,
+// //       'organicManureQuantity': double.tryParse(_organicManureQuantityController.text),
+// //       'organicManureCost': double.tryParse(_organicManureCostController.text),
+// //       'bioFertilizerName': _bioFertilizerNameController.text,
+// //       'bioFertilizerQuantity': double.tryParse(_bioFertilizerQuantityController.text),
+// //       'bioFertilizerCost': double.tryParse(_bioFertilizerCostController.text),
+// //       'plantProtectionCost': double.tryParse(_plantProtectionCostController.text),
+// //       'ownLabourNumber': int.tryParse(_ownLabourNumberController.text),
+// //       'ownLabourCost': double.tryParse(_ownLabourCostController.text),
+// //       'hiredLabourNumber': int.tryParse(_hiredLabourNumberController.text),
+// //       'hiredLabourCost': double.tryParse(_hiredLabourCostController.text),
+// //       'animalDrawnCost': double.tryParse(_animalDrawnCostController.text),
+// //       'animalMechanizedCost': double.tryParse(_animalMechanizedCostController.text),
+// //       'irrigationCost': double.tryParse(_irrigationCostController.text),
+// //       'mainProductQuantity': double.tryParse(_mainProductQuantityController.text),
+// //       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
+// //       'mainProductAmount': double.tryParse(_mainProductAmountController.text),
+// //       'byProductQuantity': double.tryParse(_byProductQuantityController.text),
+// //       'byProductPrice': double.tryParse(_byProductPriceController.text),
+// //       'byProductAmount': double.tryParse(_byProductAmountController.text),
+// //       'totalByProductAmount1': double.tryParse(_totalByProductAmountController1.text),
+// //       'totalReturns': double.tryParse(_totalReturnsController.text),
+// //       'methodsoffertilizer': _Methodsoffertilizer.value,
+// //     };
 
-//     // Add chemical fertilizers details
-//     for (var i = 0; i < chemicalFertilizers.length; i++) {
-//       data['chemicalFertilizerName$i'] = chemicalFertilizers[i]['name']!.text;
-//       data['chemicalFertilizerBasal$i'] = chemicalFertilizers[i]['basal']!.text;
-//       data['chemicalFertilizerTopDress$i'] = chemicalFertilizers[i]['topDress']!.text;
-//       data['chemicalFertilizerTotalQuantity$i'] = double.tryParse(chemicalFertilizers[i]['totalQuantity']!.text);
-//       data['chemicalFertilizerTotalCost$i'] = double.tryParse(chemicalFertilizers[i]['totalCost']!.text);
-//     }
+// //     // Add chemical fertilizers details
+// //     for (var i = 0; i < chemicalFertilizers.length; i++) {
+// //       data['chemicalFertilizerName$i'] = chemicalFertilizers[i]['name']!.text;
+// //       data['chemicalFertilizerBasal$i'] = chemicalFertilizers[i]['basal']!.text;
+// //       data['chemicalFertilizerTopDress$i'] = chemicalFertilizers[i]['topDress']!.text;
+// //       data['chemicalFertilizerTotalQuantity$i'] = double.tryParse(chemicalFertilizers[i]['totalQuantity']!.text);
+// //       data['chemicalFertilizerTotalCost$i'] = double.tryParse(chemicalFertilizers[i]['totalCost']!.text);
+// //     }
 
-//     await cropDetailsDB.create(data);
+// //     await cropDetailsDB.create(data);
 
-//     print('Data submitted successfully');
-//     Navigator.pop(context);
-//   }
+// //     print('Data submitted successfully');
+// //     Navigator.pop(context);
+// //   }
 
-//   Future<void> _showExitConfirmationDialog(BuildContext context) async {
-//     return showDialog<void>(
-//       context: context,
-//       barrierDismissible: true,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: const Text('Exit'),
-//           content: const Text('Do you want to return to the home page?'),
-//           actions: <Widget>[
-//             TextButton(
-//               child: const Text('Cancel'),
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-//               },
-//             ),
-//             TextButton(
-//               child: const Text('OK'),
-//               onPressed: () {
-//                 Navigator.of(context).popUntil((route) => route.isFirst);
-//               },
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
+// //   Future<void> _showExitConfirmationDialog(BuildContext context) async {
+// //     return showDialog<void>(
+// //       context: context,
+// //       barrierDismissible: true,
+// //       builder: (BuildContext context) {
+// //         return AlertDialog(
+// //           title: const Text('Exit'),
+// //           content: const Text('Do you want to return to the home page?'),
+// //           actions: <Widget>[
+// //             TextButton(
+// //               child: const Text('Cancel'),
+// //               onPressed: () {
+// //                 Navigator.of(context).pop();
+// //               },
+// //             ),
+// //             TextButton(
+// //               child: const Text('OK'),
+// //               onPressed: () {
+// //                 Navigator.of(context).popUntil((route) => route.isFirst);
+// //               },
+// //             ),
+// //           ],
+// //         );
+// //       },
+// //     );
+// //   }
 
-//   Widget buildTextFormField(String labelText, TextEditingController controller, {TextInputType keyboardType = TextInputType.text}) {
-//     return CustomTextFormField(
-//       labelText: labelText,
-//       controller: controller,
-//       keyboardType: keyboardType,
-//     );
-//   }
+// //   Widget buildTextFormField(String labelText, TextEditingController controller, {TextInputType keyboardType = TextInputType.text}) {
+// //     return CustomTextFormField(
+// //       labelText: labelText,
+// //       controller: controller,
+// //       keyboardType: keyboardType,
+// //     );
+// //   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Crop Management'),
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.home),
-//             onPressed: () {
-//               _showExitConfirmationDialog(context);
-//             },
-//           ),
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         padding: EdgeInsets.all(16.0),
-//         child: Form(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               buildTextFormField('Crop Name', _cropNameController),
-//               buildTextFormField('Area', _areaController, keyboardType: TextInputType.number),
-//               buildTextFormField('Survey/Hissa Number', _surveyHissaController),
-//               buildTextFormField('Variety', _varietyController),
-//               buildTextFormField('Duration', _durationController, keyboardType: TextInputType.number),
-//               buildTextFormField('Cost', _costController, keyboardType: TextInputType.number),
-//               Obx(() => SelectionButton(
-//                     label: 'Season',
-//                     options: ['Kharif', 'Rabi', 'Summer'],
-//                     selectedOption: _selectedSeason.value,
-//                     onChanged: (value) => _selectedSeason.value = value ?? '', onPressed: (String? ) {  },
-//                   )),
-//               Obx(() => SelectionButton(
-//                     label: 'Type of Land',
-//                     options: ['Wetland', 'Dryland', 'Gardenland'],
-//                     selectedOption: _selectedTypeOfLand.value,
-//                     onChanged: (value) => _selectedTypeOfLand.value = value ?? '',
-//                   )),
-//               Obx(() => SelectionButton(
-//                     label: 'Source of Irrigation',
-//                     options: ['Open well', 'Borewell', 'Canal', 'Tank', 'River'],
-//                     selectedOption: _selectedSourceOfIrrigation.value,
-//                     onChanged: (value) => _selectedSourceOfIrrigation.value = value ?? '',
-//                   )),
-//               buildTextFormField('Nitrogen', _rdfNitrogenController),
-//               buildTextFormField('Phosphorous', _rdfPhosphorousController),
-//               buildTextFormField('Potassium', _rdfPotassiumController),
-//               buildTextFormField('Adjusted RDF Nitrogen', _adjustedrdfNitrogenController),
-//               buildTextFormField('Adjusted RDF Phosphorous', _adjustedrdfPhosphorousController),
-//               buildTextFormField('Adjusted RDF Potassium', _adjustedrdfPotassiumController),
-//               buildTextFormField('Organic Manure Name', _organicManureNameController),
-//               buildTextFormField('Organic Manure Quantity', _organicManureQuantityController, keyboardType: TextInputType.number),
-//               buildTextFormField('Organic Manure Cost', _organicManureCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Bio-Fertilizer Name', _bioFertilizerNameController),
-//               buildTextFormField('Bio-Fertilizer Quantity', _bioFertilizerQuantityController, keyboardType: TextInputType.number),
-//               buildTextFormField('Bio-Fertilizer Cost', _bioFertilizerCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Plant Protection Cost', _plantProtectionCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Number of Own Labourers', _ownLabourNumberController, keyboardType: TextInputType.number),
-//               buildTextFormField('Cost of Own Labour', _ownLabourCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Number of Hired Labourers', _hiredLabourNumberController, keyboardType: TextInputType.number),
-//               buildTextFormField('Cost of Hired Labour', _hiredLabourCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Animal Drawn Cost', _animalDrawnCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Animal Mechanized Cost', _animalMechanizedCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Irrigation Cost', _irrigationCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Other Production Cost', _otherProductionCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Total Cost of Production', _totalProductionCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Main Product Quantity', _mainProductQuantityController, keyboardType: TextInputType.number),
-//               buildTextFormField('Main Product Price', _mainProductPriceController, keyboardType: TextInputType.number),
-//               buildTextFormField('Main Product Amount', _mainProductAmountController, keyboardType: TextInputType.number),
-//               buildTextFormField('By Product Quantity', _byProductQuantityController, keyboardType: TextInputType.number),
-//               buildTextFormField('By Product Price', _byProductPriceController, keyboardType: TextInputType.number),
-//               buildTextFormField('By Product Amount', _byProductAmountController, keyboardType: TextInputType.number),
-//               buildTextFormField('Total By Product Amount', _totalByProductAmountController1, keyboardType: TextInputType.number),
-//               buildTextFormField('Total Returns', _totalReturnsController, keyboardType: TextInputType.number),
-//               Obx(() => SelectionButton(
-//                     label: 'Methods of Fertilizer',
-//                     options: ['Broadcasting', 'Placement', 'Foliar application'],
-//                     selectedOption: _Methodsoffertilizer.value,
-//                     onChanged: (value) => _Methodsoffertilizer.value = value,
-//                   )),
-//               ElevatedButton(
-//                 onPressed: () => _submitData(context),
-//                 child: const Text('Submit'),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return Scaffold(
+// //       appBar: AppBar(
+// //         title: Text('Crop Management'),
+// //         actions: [
+// //           IconButton(
+// //             icon: Icon(Icons.home),
+// //             onPressed: () {
+// //               _showExitConfirmationDialog(context);
+// //             },
+// //           ),
+// //         ],
+// //       ),
+// //       body: SingleChildScrollView(
+// //         padding: EdgeInsets.all(16.0),
+// //         child: Form(
+// //           child: Column(
+// //             crossAxisAlignment: CrossAxisAlignment.start,
+// //             children: [
+// //               buildTextFormField('Crop Name', _cropNameController),
+// //               buildTextFormField('Area', _areaController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Survey/Hissa Number', _surveyHissaController),
+// //               buildTextFormField('Variety', _varietyController),
+// //               buildTextFormField('Duration', _durationController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Cost', _costController, keyboardType: TextInputType.number),
+// //               Obx(() => SelectionButton(
+// //                     label: 'Season',
+// //                     options: ['Kharif', 'Rabi', 'Summer'],
+// //                     selectedOption: _selectedSeason.value,
+// //                     onChanged: (value) => _selectedSeason.value = value ?? '', onPressed: (String? ) {  },
+// //                   )),
+// //               Obx(() => SelectionButton(
+// //                     label: 'Type of Land',
+// //                     options: ['Wetland', 'Dryland', 'Gardenland'],
+// //                     selectedOption: _selectedTypeOfLand.value,
+// //                     onChanged: (value) => _selectedTypeOfLand.value = value ?? '',
+// //                   )),
+// //               Obx(() => SelectionButton(
+// //                     label: 'Source of Irrigation',
+// //                     options: ['Open well', 'Borewell', 'Canal', 'Tank', 'River'],
+// //                     selectedOption: _selectedSourceOfIrrigation.value,
+// //                     onChanged: (value) => _selectedSourceOfIrrigation.value = value ?? '',
+// //                   )),
+// //               buildTextFormField('Nitrogen', _rdfNitrogenController),
+// //               buildTextFormField('Phosphorous', _rdfPhosphorousController),
+// //               buildTextFormField('Potassium', _rdfPotassiumController),
+// //               buildTextFormField('Adjusted RDF Nitrogen', _adjustedrdfNitrogenController),
+// //               buildTextFormField('Adjusted RDF Phosphorous', _adjustedrdfPhosphorousController),
+// //               buildTextFormField('Adjusted RDF Potassium', _adjustedrdfPotassiumController),
+// //               buildTextFormField('Organic Manure Name', _organicManureNameController),
+// //               buildTextFormField('Organic Manure Quantity', _organicManureQuantityController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Organic Manure Cost', _organicManureCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Bio-Fertilizer Name', _bioFertilizerNameController),
+// //               buildTextFormField('Bio-Fertilizer Quantity', _bioFertilizerQuantityController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Bio-Fertilizer Cost', _bioFertilizerCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Plant Protection Cost', _plantProtectionCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Number of Own Labourers', _ownLabourNumberController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Cost of Own Labour', _ownLabourCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Number of Hired Labourers', _hiredLabourNumberController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Cost of Hired Labour', _hiredLabourCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Animal Drawn Cost', _animalDrawnCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Animal Mechanized Cost', _animalMechanizedCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Irrigation Cost', _irrigationCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Other Production Cost', _otherProductionCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Total Cost of Production', _totalProductionCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Main Product Quantity', _mainProductQuantityController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Main Product Price', _mainProductPriceController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Main Product Amount', _mainProductAmountController, keyboardType: TextInputType.number),
+// //               buildTextFormField('By Product Quantity', _byProductQuantityController, keyboardType: TextInputType.number),
+// //               buildTextFormField('By Product Price', _byProductPriceController, keyboardType: TextInputType.number),
+// //               buildTextFormField('By Product Amount', _byProductAmountController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Total By Product Amount', _totalByProductAmountController1, keyboardType: TextInputType.number),
+// //               buildTextFormField('Total Returns', _totalReturnsController, keyboardType: TextInputType.number),
+// //               Obx(() => SelectionButton(
+// //                     label: 'Methods of Fertilizer',
+// //                     options: ['Broadcasting', 'Placement', 'Foliar application'],
+// //                     selectedOption: _Methodsoffertilizer.value,
+// //                     onChanged: (value) => _Methodsoffertilizer.value = value,
+// //                   )),
+// //               ElevatedButton(
+// //                 onPressed: () => _submitData(context),
+// //                 child: const Text('Submit'),
+// //               ),
+// //             ],
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
 
-//   @override
-//   void dispose() {
-//     _cropNameController.dispose();
-//     _areaController.dispose();
-//     _surveyHissaController.dispose();
-//     _varietyController.dispose();
-//     _durationController.dispose();
-//     _costController.dispose();
-//     _rdfNitrogenController.dispose();
-//     _rdfPhosphorousController.dispose();
-//     _rdfPotassiumController.dispose();
-//     _adjustedrdfNitrogenController.dispose();
-//     _adjustedrdfPhosphorousController.dispose();
-//     _adjustedrdfPotassiumController.dispose();
-//     _organicManureNameController.dispose();
-//     _organicManureQuantityController.dispose();
-//     _organicManureCostController.dispose();
-//     _bioFertilizerNameController.dispose();
-//     _bioFertilizerQuantityController.dispose();
-//     _bioFertilizerCostController.dispose();
-//     _plantProtectionCostController.dispose();
-//     _ownLabourNumberController.dispose();
-//     _ownLabourCostController.dispose();
-//     _hiredLabourNumberController.dispose();
-//     _hiredLabourCostController.dispose();
-//     _animalDrawnCostController.dispose();
-//     _animalMechanizedCostController.dispose();
-//     _irrigationCostController.dispose();
-//     _otherProductionCostController.dispose();
-//     _totalProductionCostController.dispose();
-//     _mainProductQuantityController.dispose();
-//     _mainProductPriceController.dispose();
-//     _mainProductAmountController.dispose();
-//     _byProductQuantityController.dispose();
-//     _byProductPriceController.dispose();
-//     _byProductAmountController.dispose();
-//     _totalByProductAmountController1.dispose();
-//     _totalReturnsController.dispose();
-//     for (var i = 0; i < chemicalFertilizers.length; i++) {
-//       chemicalFertilizers[i]['name']!.dispose();
-//       chemicalFertilizers[i]['basal']!.dispose();
-//       chemicalFertilizers[i]['topDress']!.dispose();
-//       chemicalFertilizers[i]['totalQuantity']!.dispose();
-//       chemicalFertilizers[i]['totalCost']!.dispose();
-//     }
-//     super.dispose();
-//   }
-// }
-// import 'package:flutter/material.dart';
-// import 'package:get/get.dart';
-// import 'package:gkvk/shared/components/CustomTextFormField.dart';
-// import 'package:gkvk/shared/components/SelectionButton.dart';
-// import 'package:gkvk/database/cropdetails_db.dart';
+// //   @override
+// //   void dispose() {
+// //     _cropNameController.dispose();
+// //     _areaController.dispose();
+// //     _surveyHissaController.dispose();
+// //     _varietyController.dispose();
+// //     _durationController.dispose();
+// //     _costController.dispose();
+// //     _rdfNitrogenController.dispose();
+// //     _rdfPhosphorousController.dispose();
+// //     _rdfPotassiumController.dispose();
+// //     _adjustedrdfNitrogenController.dispose();
+// //     _adjustedrdfPhosphorousController.dispose();
+// //     _adjustedrdfPotassiumController.dispose();
+// //     _organicManureNameController.dispose();
+// //     _organicManureQuantityController.dispose();
+// //     _organicManureCostController.dispose();
+// //     _bioFertilizerNameController.dispose();
+// //     _bioFertilizerQuantityController.dispose();
+// //     _bioFertilizerCostController.dispose();
+// //     _plantProtectionCostController.dispose();
+// //     _ownLabourNumberController.dispose();
+// //     _ownLabourCostController.dispose();
+// //     _hiredLabourNumberController.dispose();
+// //     _hiredLabourCostController.dispose();
+// //     _animalDrawnCostController.dispose();
+// //     _animalMechanizedCostController.dispose();
+// //     _irrigationCostController.dispose();
+// //     _otherProductionCostController.dispose();
+// //     _totalProductionCostController.dispose();
+// //     _mainProductQuantityController.dispose();
+// //     _mainProductPriceController.dispose();
+// //     _mainProductAmountController.dispose();
+// //     _byProductQuantityController.dispose();
+// //     _byProductPriceController.dispose();
+// //     _byProductAmountController.dispose();
+// //     _totalByProductAmountController1.dispose();
+// //     _totalReturnsController.dispose();
+// //     for (var i = 0; i < chemicalFertilizers.length; i++) {
+// //       chemicalFertilizers[i]['name']!.dispose();
+// //       chemicalFertilizers[i]['basal']!.dispose();
+// //       chemicalFertilizers[i]['topDress']!.dispose();
+// //       chemicalFertilizers[i]['totalQuantity']!.dispose();
+// //       chemicalFertilizers[i]['totalCost']!.dispose();
+// //     }
+// //     super.dispose();
+// //   }
+// // }
+// // import 'package:flutter/material.dart';
+// // import 'package:get/get.dart';
+// // import 'package:gkvk/shared/components/CustomTextFormField.dart';
+// // import 'package:gkvk/shared/components/SelectionButton.dart';
+// // import 'package:gkvk/database/cropdetails_db.dart';
 
-// class Cropdetails extends StatefulWidget {
-//   final int aadharId;
-//   const Cropdetails({required this.aadharId, super.key});
+// // class Cropdetails extends StatefulWidget {
+// //   final int aadharId;
+// //   const Cropdetails({required this.aadharId, super.key});
 
-//   @override
-//   _CropdetailsState createState() => _CropdetailsState();
-// }
+// //   @override
+// //   _CropdetailsState createState() => _CropdetailsState();
+// // }
 
-// class _CropdetailsState extends State<Cropdetails> {
-//   // General Details
-//   final _cropNameController = TextEditingController();
-//   final _areaController = TextEditingController();
-//   final _surveyHissaController = TextEditingController();
-//   final _varietyController = TextEditingController();
-//   final _durationController = TextEditingController();
-//   final _costController = TextEditingController();
-//   final _rdfNitrogenController = TextEditingController();
-//   final _rdfPhosphorousController = TextEditingController();
-//   final _rdfPotassiumController = TextEditingController();
-//   final _adjustedrdfNitrogenController = TextEditingController();
-//   final _adjustedrdfPhosphorousController = TextEditingController();
-//   final _adjustedrdfPotassiumController = TextEditingController();
+// // class _CropdetailsState extends State<Cropdetails> {
+// //   // General Details
+// //   final _cropNameController = TextEditingController();
+// //   final _areaController = TextEditingController();
+// //   final _surveyHissaController = TextEditingController();
+// //   final _varietyController = TextEditingController();
+// //   final _durationController = TextEditingController();
+// //   final _costController = TextEditingController();
+// //   final _rdfNitrogenController = TextEditingController();
+// //   final _rdfPhosphorousController = TextEditingController();
+// //   final _rdfPotassiumController = TextEditingController();
+// //   final _adjustedrdfNitrogenController = TextEditingController();
+// //   final _adjustedrdfPhosphorousController = TextEditingController();
+// //   final _adjustedrdfPotassiumController = TextEditingController();
 
-//   // Organic Manures
-//   final _organicManureNameController = TextEditingController();
-//   final _organicManureQuantityController = TextEditingController();
-//   final _organicManureCostController = TextEditingController();
+// //   // Organic Manures
+// //   final _organicManureNameController = TextEditingController();
+// //   final _organicManureQuantityController = TextEditingController();
+// //   final _organicManureCostController = TextEditingController();
 
-//   // Bio-fertilizers
-//   final _bioFertilizerNameController = TextEditingController();
-//   final _bioFertilizerQuantityController = TextEditingController();
-//   final _bioFertilizerCostController = TextEditingController();
+// //   // Bio-fertilizers
+// //   final _bioFertilizerNameController = TextEditingController();
+// //   final _bioFertilizerQuantityController = TextEditingController();
+// //   final _bioFertilizerCostController = TextEditingController();
 
-//   // Labour Details
-//   final TextEditingController _plantProtectionCostController = TextEditingController();
-//   final TextEditingController _ownLabourNumberController = TextEditingController();
-//   final TextEditingController _ownLabourCostController = TextEditingController();
-//   final TextEditingController _hiredLabourNumberController = TextEditingController();
-//   final TextEditingController _hiredLabourCostController = TextEditingController();
-//   final TextEditingController _animalDrawnCostController = TextEditingController();
-//   final TextEditingController _animalMechanizedCostController = TextEditingController();
-//   final TextEditingController _irrigationCostController = TextEditingController();
-//   final TextEditingController _otherProductionCostController = TextEditingController();
-//   final TextEditingController _totalProductionCostController = TextEditingController();
+// //   // Labour Details
+// //   final TextEditingController _plantProtectionCostController = TextEditingController();
+// //   final TextEditingController _ownLabourNumberController = TextEditingController();
+// //   final TextEditingController _ownLabourCostController = TextEditingController();
+// //   final TextEditingController _hiredLabourNumberController = TextEditingController();
+// //   final TextEditingController _hiredLabourCostController = TextEditingController();
+// //   final TextEditingController _animalDrawnCostController = TextEditingController();
+// //   final TextEditingController _animalMechanizedCostController = TextEditingController();
+// //   final TextEditingController _irrigationCostController = TextEditingController();
+// //   final TextEditingController _otherProductionCostController = TextEditingController();
+// //   final TextEditingController _totalProductionCostController = TextEditingController();
 
-//   // Returns
-//   final TextEditingController _mainProductQuantityController = TextEditingController();
-//   final TextEditingController _mainProductPriceController = TextEditingController();
-//   final TextEditingController _mainProductAmountController = TextEditingController();
-//   final TextEditingController _byProductQuantityController = TextEditingController();
-//   final TextEditingController _byProductPriceController = TextEditingController();
-//   final TextEditingController _byProductAmountController = TextEditingController();
-//   final TextEditingController _totalByProductAmountController1 = TextEditingController();
-//   final TextEditingController _totalReturnsController = TextEditingController();
+// //   // Returns
+// //   final TextEditingController _mainProductQuantityController = TextEditingController();
+// //   final TextEditingController _mainProductPriceController = TextEditingController();
+// //   final TextEditingController _mainProductAmountController = TextEditingController();
+// //   final TextEditingController _byProductQuantityController = TextEditingController();
+// //   final TextEditingController _byProductPriceController = TextEditingController();
+// //   final TextEditingController _byProductAmountController = TextEditingController();
+// //   final TextEditingController _totalByProductAmountController1 = TextEditingController();
+// //   final TextEditingController _totalReturnsController = TextEditingController();
 
-//   // Rx variables for selection fields
-//   final RxString _selectedTypeOfLand = ''.obs;
-//   final RxString _selectedSeason = ''.obs;
-//   final RxString _selectedSourceOfIrrigation = ''.obs;
-//   final RxString _selectedNitrogen = ''.obs;
-//   final RxString _selectedPhosphorous = ''.obs;
-//   final RxString _selectedPotassium = ''.obs;
-//   final RxString _Methodsoffertilizer = ''.obs;
+// //   // Rx variables for selection fields
+// //   final RxString _selectedTypeOfLand = ''.obs;
+// //   final RxString _selectedSeason = ''.obs;
+// //   final RxString _selectedSourceOfIrrigation = ''.obs;
+// //   final RxString _selectedNitrogen = ''.obs;
+// //   final RxString _selectedPhosphorous = ''.obs;
+// //   final RxString _selectedPotassium = ''.obs;
+// //   final RxString _Methodsoffertilizer = ''.obs;
 
-//   // List of chemical fertilizers
-//   final List<Map<String, TextEditingController>> chemicalFertilizers = [];
+// //   // List of chemical fertilizers
+// //   final List<Map<String, TextEditingController>> chemicalFertilizers = [];
 
-//   @override
-//   void initState() {
-//     super.initState();
-//     addNewFertilizer();
-//   }
+// //   @override
+// //   void initState() {
+// //     super.initState();
+// //     addNewFertilizer();
+// //   }
 
-//   void addNewFertilizer() {
-//     setState(() {
-//       chemicalFertilizers.add({
-//         "name": TextEditingController(),
-//         "basal": TextEditingController(),
-//         "topDress": TextEditingController(),
-//         "totalQuantity": TextEditingController(),
-//         "totalCost": TextEditingController(),
-//       });
-//     });
-//   }
+// //   void addNewFertilizer() {
+// //     setState(() {
+// //       chemicalFertilizers.add({
+// //         "name": TextEditingController(),
+// //         "basal": TextEditingController(),
+// //         "topDress": TextEditingController(),
+// //         "totalQuantity": TextEditingController(),
+// //         "totalCost": TextEditingController(),
+// //       });
+// //     });
+// //   }
 
-//   Future<void> _submitData(BuildContext context) async {
-//     final cropDetailsDB = CropdetailsDB();
+// //   Future<void> _submitData(BuildContext context) async {
+// //     final cropDetailsDB = CropdetailsDB();
 
-//     Map<String, dynamic> data = {
-//       'aadharId': widget.aadharId,
-//       'cropName': _cropNameController.text,
-//       'area': double.tryParse(_areaController.text),
-//       'surveyHissa': _surveyHissaController.text,
-//       'variety': _varietyController.text,
-//       'duration': int.tryParse(_durationController.text),
-//       'season': _selectedSeason.value,
-//       'typeOfLand': _selectedTypeOfLand.value,
-//       'sourceOfIrrigation': _selectedSourceOfIrrigation.value,
-//       'cost': int.tryParse(_costController.text),
-//       'nitrogen': _selectedNitrogen.value,
-//       'phosphorous': _selectedPhosphorous.value,
-//       'potassium': _selectedPotassium.value,
-//       'rdfNitrogen': _rdfNitrogenController.text,
-//       'rdfPhosphorous': _rdfPhosphorousController.text,
-//       'rdfPotassium': _rdfPotassiumController.text,
-//       'adjustedrdfNitrogen': _adjustedrdfNitrogenController.text,
-//       'adjustedrdfPhosphorous': _adjustedrdfPhosphorousController.text,
-//       'adjustedrdfPotassium': _adjustedrdfPotassiumController.text,
-//       'organicManureName': _organicManureNameController.text,
-//       'organicManureQuantity': double.tryParse(_organicManureQuantityController.text),
-//       'organicManureCost': double.tryParse(_organicManureCostController.text),
-//       'bioFertilizerName': _bioFertilizerNameController.text,
-//       'bioFertilizerQuantity': double.tryParse(_bioFertilizerQuantityController.text),
-//       'bioFertilizerCost': double.tryParse(_bioFertilizerCostController.text),
-//       'plantProtectionCost': double.tryParse(_plantProtectionCostController.text),
-//       'ownLabourNumber': int.tryParse(_ownLabourNumberController.text),
-//       'ownLabourCost': double.tryParse(_ownLabourCostController.text),
-//       'hiredLabourNumber': int.tryParse(_hiredLabourNumberController.text),
-//       'hiredLabourCost': double.tryParse(_hiredLabourCostController.text),
-//       'animalDrawnCost': double.tryParse(_animalDrawnCostController.text),
-//       'animalMechanizedCost': double.tryParse(_animalMechanizedCostController.text),
-//       'irrigationCost': double.tryParse(_irrigationCostController.text),
-//       'mainProductQuantity': double.tryParse(_mainProductQuantityController.text),
-//       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
-//       'mainProductAmount': double.tryParse(_mainProductAmountController.text),
-//       'byProductQuantity': double.tryParse(_byProductQuantityController.text),
-//       'byProductPrice': double.tryParse(_byProductPriceController.text),
-//       'byProductAmount': double.tryParse(_byProductAmountController.text),
-//       'totalByProductAmount1': double.tryParse(_totalByProductAmountController1.text),
-//       'totalReturns': double.tryParse(_totalReturnsController.text),
-//       'methodsoffertilizer': _Methodsoffertilizer.value,
-//     };
+// //     Map<String, dynamic> data = {
+// //       'aadharId': widget.aadharId,
+// //       'cropName': _cropNameController.text,
+// //       'area': double.tryParse(_areaController.text),
+// //       'surveyHissa': _surveyHissaController.text,
+// //       'variety': _varietyController.text,
+// //       'duration': int.tryParse(_durationController.text),
+// //       'season': _selectedSeason.value,
+// //       'typeOfLand': _selectedTypeOfLand.value,
+// //       'sourceOfIrrigation': _selectedSourceOfIrrigation.value,
+// //       'cost': int.tryParse(_costController.text),
+// //       'nitrogen': _selectedNitrogen.value,
+// //       'phosphorous': _selectedPhosphorous.value,
+// //       'potassium': _selectedPotassium.value,
+// //       'rdfNitrogen': _rdfNitrogenController.text,
+// //       'rdfPhosphorous': _rdfPhosphorousController.text,
+// //       'rdfPotassium': _rdfPotassiumController.text,
+// //       'adjustedrdfNitrogen': _adjustedrdfNitrogenController.text,
+// //       'adjustedrdfPhosphorous': _adjustedrdfPhosphorousController.text,
+// //       'adjustedrdfPotassium': _adjustedrdfPotassiumController.text,
+// //       'organicManureName': _organicManureNameController.text,
+// //       'organicManureQuantity': double.tryParse(_organicManureQuantityController.text),
+// //       'organicManureCost': double.tryParse(_organicManureCostController.text),
+// //       'bioFertilizerName': _bioFertilizerNameController.text,
+// //       'bioFertilizerQuantity': double.tryParse(_bioFertilizerQuantityController.text),
+// //       'bioFertilizerCost': double.tryParse(_bioFertilizerCostController.text),
+// //       'plantProtectionCost': double.tryParse(_plantProtectionCostController.text),
+// //       'ownLabourNumber': int.tryParse(_ownLabourNumberController.text),
+// //       'ownLabourCost': double.tryParse(_ownLabourCostController.text),
+// //       'hiredLabourNumber': int.tryParse(_hiredLabourNumberController.text),
+// //       'hiredLabourCost': double.tryParse(_hiredLabourCostController.text),
+// //       'animalDrawnCost': double.tryParse(_animalDrawnCostController.text),
+// //       'animalMechanizedCost': double.tryParse(_animalMechanizedCostController.text),
+// //       'irrigationCost': double.tryParse(_irrigationCostController.text),
+// //       'mainProductQuantity': double.tryParse(_mainProductQuantityController.text),
+// //       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
+// //       'mainProductAmount': double.tryParse(_mainProductAmountController.text),
+// //       'byProductQuantity': double.tryParse(_byProductQuantityController.text),
+// //       'byProductPrice': double.tryParse(_byProductPriceController.text),
+// //       'byProductAmount': double.tryParse(_byProductAmountController.text),
+// //       'totalByProductAmount1': double.tryParse(_totalByProductAmountController1.text),
+// //       'totalReturns': double.tryParse(_totalReturnsController.text),
+// //       'methodsoffertilizer': _Methodsoffertilizer.value,
+// //     };
 
-//     // Add chemical fertilizers details
-//     for (var i = 0; i < chemicalFertilizers.length; i++) {
-//       data['chemicalFertilizerName$i'] = chemicalFertilizers[i]['name']!.text;
-//       data['chemicalFertilizerBasal$i'] = chemicalFertilizers[i]['basal']!.text;
-//       data['chemicalFertilizerTopDress$i'] = chemicalFertilizers[i]['topDress']!.text;
-//       data['chemicalFertilizerTotalQuantity$i'] = double.tryParse(chemicalFertilizers[i]['totalQuantity']!.text);
-//       data['chemicalFertilizerTotalCost$i'] = double.tryParse(chemicalFertilizers[i]['totalCost']!.text);
-//     }
+// //     // Add chemical fertilizers details
+// //     for (var i = 0; i < chemicalFertilizers.length; i++) {
+// //       data['chemicalFertilizerName$i'] = chemicalFertilizers[i]['name']!.text;
+// //       data['chemicalFertilizerBasal$i'] = chemicalFertilizers[i]['basal']!.text;
+// //       data['chemicalFertilizerTopDress$i'] = chemicalFertilizers[i]['topDress']!.text;
+// //       data['chemicalFertilizerTotalQuantity$i'] = double.tryParse(chemicalFertilizers[i]['totalQuantity']!.text);
+// //       data['chemicalFertilizerTotalCost$i'] = double.tryParse(chemicalFertilizers[i]['totalCost']!.text);
+// //     }
 
-//     await cropDetailsDB.create(data);
+// //     await cropDetailsDB.create(data);
 
-//     print('Data submitted successfully');
-//     Navigator.pop(context);
-//   }
+// //     print('Data submitted successfully');
+// //     Navigator.pop(context);
+// //   }
 
-//   Future<void> _showExitConfirmationDialog(BuildContext context) async {
-//     return showDialog<void>(
-//       context: context,
-//       barrierDismissible: true,
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: const Text('Exit'),
-//           content: const Text('Do you want to return to the home page?'),
-//           actions: <Widget>[
-//             TextButton(
-//               child: const Text('Cancel'),
-//               onPressed: () {
-//                 Navigator.of(context).pop();
-//               },
-//             ),
-//             TextButton(
-//               child: const Text('OK'),
-//               onPressed: () {
-//                 Navigator.of(context).popUntil((route) => route.isFirst);
-//               },
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
+// //   Future<void> _showExitConfirmationDialog(BuildContext context) async {
+// //     return showDialog<void>(
+// //       context: context,
+// //       barrierDismissible: true,
+// //       builder: (BuildContext context) {
+// //         return AlertDialog(
+// //           title: const Text('Exit'),
+// //           content: const Text('Do you want to return to the home page?'),
+// //           actions: <Widget>[
+// //             TextButton(
+// //               child: const Text('Cancel'),
+// //               onPressed: () {
+// //                 Navigator.of(context).pop();
+// //               },
+// //             ),
+// //             TextButton(
+// //               child: const Text('OK'),
+// //               onPressed: () {
+// //                 Navigator.of(context).popUntil((route) => route.isFirst);
+// //               },
+// //             ),
+// //           ],
+// //         );
+// //       },
+// //     );
+// //   }
 
-//   Widget buildTextFormField(String labelText, TextEditingController controller, {TextInputType keyboardType = TextInputType.text}) {
-//     return CustomTextFormField(
-//       labelText: labelText,
-//       controller: controller,
-//       keyboardType: keyboardType,
-//     );
-//   }
+// //   Widget buildTextFormField(String labelText, TextEditingController controller, {TextInputType keyboardType = TextInputType.text}) {
+// //     return CustomTextFormField(
+// //       labelText: labelText,
+// //       controller: controller,
+// //       keyboardType: keyboardType,
+// //     );
+// //   }
 
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         title: Text('Crop Management'),
-//         actions: [
-//           IconButton(
-//             icon: Icon(Icons.home),
-//             onPressed: () {
-//               _showExitConfirmationDialog(context);
-//             },
-//           ),
-//         ],
-//       ),
-//       body: SingleChildScrollView(
-//         padding: EdgeInsets.all(16.0),
-//         child: Form(
-//           child: Column(
-//             crossAxisAlignment: CrossAxisAlignment.start,
-//             children: [
-//               buildTextFormField('Crop Name', _cropNameController),
-//               buildTextFormField('Area', _areaController, keyboardType: TextInputType.number),
-//               buildTextFormField('Survey/Hissa Number', _surveyHissaController),
-//               buildTextFormField('Variety', _varietyController),
-//               buildTextFormField('Duration', _durationController, keyboardType: TextInputType.number),
-//               buildTextFormField('Cost', _costController, keyboardType: TextInputType.number),
-//               Obx(() => SelectionButton(
-//                     label: 'Season',
-//                     options: ['Kharif', 'Rabi', 'Summer'],
-//                     selectedOption: _selectedSeason.value,
-//                     onChanged: (value) => _selectedSeason.value = value ?? '', onPressed: (String? ) {  },
-//                   )),
-//               Obx(() => SelectionButton(
-//                     label: 'Type of Land',
-//                     options: ['Wetland', 'Dryland', 'Gardenland'],
-//                     selectedOption: _selectedTypeOfLand.value,
-//                     onChanged: (value) => _selectedTypeOfLand.value = value ?? '',
-//                   )),
-//               Obx(() => SelectionButton(
-//                     label: 'Source of Irrigation',
-//                     options: ['Open well', 'Borewell', 'Canal', 'Tank', 'River'],
-//                     selectedOption: _selectedSourceOfIrrigation.value,
-//                     onChanged: (value) => _selectedSourceOfIrrigation.value = value ?? '',
-//                   )),
-//               buildTextFormField('Nitrogen', _rdfNitrogenController),
-//               buildTextFormField('Phosphorous', _rdfPhosphorousController),
-//               buildTextFormField('Potassium', _rdfPotassiumController),
-//               buildTextFormField('Adjusted RDF Nitrogen', _adjustedrdfNitrogenController),
-//               buildTextFormField('Adjusted RDF Phosphorous', _adjustedrdfPhosphorousController),
-//               buildTextFormField('Adjusted RDF Potassium', _adjustedrdfPotassiumController),
-//               buildTextFormField('Organic Manure Name', _organicManureNameController),
-//               buildTextFormField('Organic Manure Quantity', _organicManureQuantityController, keyboardType: TextInputType.number),
-//               buildTextFormField('Organic Manure Cost', _organicManureCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Bio-Fertilizer Name', _bioFertilizerNameController),
-//               buildTextFormField('Bio-Fertilizer Quantity', _bioFertilizerQuantityController, keyboardType: TextInputType.number),
-//               buildTextFormField('Bio-Fertilizer Cost', _bioFertilizerCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Plant Protection Cost', _plantProtectionCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Number of Own Labourers', _ownLabourNumberController, keyboardType: TextInputType.number),
-//               buildTextFormField('Cost of Own Labour', _ownLabourCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Number of Hired Labourers', _hiredLabourNumberController, keyboardType: TextInputType.number),
-//               buildTextFormField('Cost of Hired Labour', _hiredLabourCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Animal Drawn Cost', _animalDrawnCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Animal Mechanized Cost', _animalMechanizedCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Irrigation Cost', _irrigationCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Other Production Cost', _otherProductionCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Total Cost of Production', _totalProductionCostController, keyboardType: TextInputType.number),
-//               buildTextFormField('Main Product Quantity', _mainProductQuantityController, keyboardType: TextInputType.number),
-//               buildTextFormField('Main Product Price', _mainProductPriceController, keyboardType: TextInputType.number),
-//               buildTextFormField('Main Product Amount', _mainProductAmountController, keyboardType: TextInputType.number),
-//               buildTextFormField('By Product Quantity', _byProductQuantityController, keyboardType: TextInputType.number),
-//               buildTextFormField('By Product Price', _byProductPriceController, keyboardType: TextInputType.number),
-//               buildTextFormField('By Product Amount', _byProductAmountController, keyboardType: TextInputType.number),
-//               buildTextFormField('Total By Product Amount', _totalByProductAmountController1, keyboardType: TextInputType.number),
-//               buildTextFormField('Total Returns', _totalReturnsController, keyboardType: TextInputType.number),
-//               Obx(() => SelectionButton(
-//                     label: 'Methods of Fertilizer',
-//                     options: ['Broadcasting', 'Placement', 'Foliar application'],
-//                     selectedOption: _Methodsoffertilizer.value,
-//                     onChanged: (value) => _Methodsoffertilizer.value = value,
-//                   )),
-//               ElevatedButton(
-//                 onPressed: () => _submitData(context),
-//                 child: const Text('Submit'),
-//               ),
-//             ],
-//           ),
-//         ),
-//       ),
-//     );
-//   }
+// //   @override
+// //   Widget build(BuildContext context) {
+// //     return Scaffold(
+// //       appBar: AppBar(
+// //         title: Text('Crop Management'),
+// //         actions: [
+// //           IconButton(
+// //             icon: Icon(Icons.home),
+// //             onPressed: () {
+// //               _showExitConfirmationDialog(context);
+// //             },
+// //           ),
+// //         ],
+// //       ),
+// //       body: SingleChildScrollView(
+// //         padding: EdgeInsets.all(16.0),
+// //         child: Form(
+// //           child: Column(
+// //             crossAxisAlignment: CrossAxisAlignment.start,
+// //             children: [
+// //               buildTextFormField('Crop Name', _cropNameController),
+// //               buildTextFormField('Area', _areaController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Survey/Hissa Number', _surveyHissaController),
+// //               buildTextFormField('Variety', _varietyController),
+// //               buildTextFormField('Duration', _durationController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Cost', _costController, keyboardType: TextInputType.number),
+// //               Obx(() => SelectionButton(
+// //                     label: 'Season',
+// //                     options: ['Kharif', 'Rabi', 'Summer'],
+// //                     selectedOption: _selectedSeason.value,
+// //                     onChanged: (value) => _selectedSeason.value = value ?? '', onPressed: (String? ) {  },
+// //                   )),
+// //               Obx(() => SelectionButton(
+// //                     label: 'Type of Land',
+// //                     options: ['Wetland', 'Dryland', 'Gardenland'],
+// //                     selectedOption: _selectedTypeOfLand.value,
+// //                     onChanged: (value) => _selectedTypeOfLand.value = value ?? '',
+// //                   )),
+// //               Obx(() => SelectionButton(
+// //                     label: 'Source of Irrigation',
+// //                     options: ['Open well', 'Borewell', 'Canal', 'Tank', 'River'],
+// //                     selectedOption: _selectedSourceOfIrrigation.value,
+// //                     onChanged: (value) => _selectedSourceOfIrrigation.value = value ?? '',
+// //                   )),
+// //               buildTextFormField('Nitrogen', _rdfNitrogenController),
+// //               buildTextFormField('Phosphorous', _rdfPhosphorousController),
+// //               buildTextFormField('Potassium', _rdfPotassiumController),
+// //               buildTextFormField('Adjusted RDF Nitrogen', _adjustedrdfNitrogenController),
+// //               buildTextFormField('Adjusted RDF Phosphorous', _adjustedrdfPhosphorousController),
+// //               buildTextFormField('Adjusted RDF Potassium', _adjustedrdfPotassiumController),
+// //               buildTextFormField('Organic Manure Name', _organicManureNameController),
+// //               buildTextFormField('Organic Manure Quantity', _organicManureQuantityController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Organic Manure Cost', _organicManureCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Bio-Fertilizer Name', _bioFertilizerNameController),
+// //               buildTextFormField('Bio-Fertilizer Quantity', _bioFertilizerQuantityController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Bio-Fertilizer Cost', _bioFertilizerCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Plant Protection Cost', _plantProtectionCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Number of Own Labourers', _ownLabourNumberController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Cost of Own Labour', _ownLabourCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Number of Hired Labourers', _hiredLabourNumberController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Cost of Hired Labour', _hiredLabourCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Animal Drawn Cost', _animalDrawnCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Animal Mechanized Cost', _animalMechanizedCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Irrigation Cost', _irrigationCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Other Production Cost', _otherProductionCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Total Cost of Production', _totalProductionCostController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Main Product Quantity', _mainProductQuantityController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Main Product Price', _mainProductPriceController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Main Product Amount', _mainProductAmountController, keyboardType: TextInputType.number),
+// //               buildTextFormField('By Product Quantity', _byProductQuantityController, keyboardType: TextInputType.number),
+// //               buildTextFormField('By Product Price', _byProductPriceController, keyboardType: TextInputType.number),
+// //               buildTextFormField('By Product Amount', _byProductAmountController, keyboardType: TextInputType.number),
+// //               buildTextFormField('Total By Product Amount', _totalByProductAmountController1, keyboardType: TextInputType.number),
+// //               buildTextFormField('Total Returns', _totalReturnsController, keyboardType: TextInputType.number),
+// //               Obx(() => SelectionButton(
+// //                     label: 'Methods of Fertilizer',
+// //                     options: ['Broadcasting', 'Placement', 'Foliar application'],
+// //                     selectedOption: _Methodsoffertilizer.value,
+// //                     onChanged: (value) => _Methodsoffertilizer.value = value,
+// //                   )),
+// //               ElevatedButton(
+// //                 onPressed: () => _submitData(context),
+// //                 child: const Text('Submit'),
+// //               ),
+// //             ],
+// //           ),
+// //         ),
+// //       ),
+// //     );
+// //   }
 
-//   @override
-//   void dispose() {
-//     _cropNameController.dispose();
-//     _areaController.dispose();
-//     _surveyHissaController.dispose();
-//     _varietyController.dispose();
-//     _durationController.dispose();
-//     _costController.dispose();
-//     _rdfNitrogenController.dispose();
-//     _rdfPhosphorousController.dispose();
-//     _rdfPotassiumController.dispose();
-//     _adjustedrdfNitrogenController.dispose();
-//     _adjustedrdfPhosphorousController.dispose();
-//     _adjustedrdfPotassiumController.dispose();
-//     _organicManureNameController.dispose();
-//     _organicManureQuantityController.dispose();
-//     _organicManureCostController.dispose();
-//     _bioFertilizerNameController.dispose();
-//     _bioFertilizerQuantityController.dispose();
-//     _bioFertilizerCostController.dispose();
-//     _plantProtectionCostController.dispose();
-//     _ownLabourNumberController.dispose();
-//     _ownLabourCostController.dispose();
-//     _hiredLabourNumberController.dispose();
-//     _hiredLabourCostController.dispose();
-//     _animalDrawnCostController.dispose();
-//     _animalMechanizedCostController.dispose();
-//     _irrigationCostController.dispose();
-//     _otherProductionCostController.dispose();
-//     _totalProductionCostController.dispose();
-//     _mainProductQuantityController.dispose();
-//     _mainProductPriceController.dispose();
-//     _mainProductAmountController.dispose();
-//     _byProductQuantityController.dispose();
-//     _byProductPriceController.dispose();
-//     _byProductAmountController.dispose();
-//     _totalByProductAmountController1.dispose();
-//     _totalReturnsController.dispose();
-//     for (var i = 0; i < chemicalFertilizers.length; i++) {
-//       chemicalFertilizers[i]['name']!.dispose();
-//       chemicalFertilizers[i]['basal']!.dispose();
-//       chemicalFertilizers[i]['topDress']!.dispose();
-//       chemicalFertilizers[i]['totalQuantity']!.dispose();
-//       chemicalFertilizers[i]['totalCost']!.dispose();
-//     }
-//     super.dispose();
-//   }
-// }
+// //   @override
+// //   void dispose() {
+// //     _cropNameController.dispose();
+// //     _areaController.dispose();
+// //     _surveyHissaController.dispose();
+// //     _varietyController.dispose();
+// //     _durationController.dispose();
+// //     _costController.dispose();
+// //     _rdfNitrogenController.dispose();
+// //     _rdfPhosphorousController.dispose();
+// //     _rdfPotassiumController.dispose();
+// //     _adjustedrdfNitrogenController.dispose();
+// //     _adjustedrdfPhosphorousController.dispose();
+// //     _adjustedrdfPotassiumController.dispose();
+// //     _organicManureNameController.dispose();
+// //     _organicManureQuantityController.dispose();
+// //     _organicManureCostController.dispose();
+// //     _bioFertilizerNameController.dispose();
+// //     _bioFertilizerQuantityController.dispose();
+// //     _bioFertilizerCostController.dispose();
+// //     _plantProtectionCostController.dispose();
+// //     _ownLabourNumberController.dispose();
+// //     _ownLabourCostController.dispose();
+// //     _hiredLabourNumberController.dispose();
+// //     _hiredLabourCostController.dispose();
+// //     _animalDrawnCostController.dispose();
+// //     _animalMechanizedCostController.dispose();
+// //     _irrigationCostController.dispose();
+// //     _otherProductionCostController.dispose();
+// //     _totalProductionCostController.dispose();
+// //     _mainProductQuantityController.dispose();
+// //     _mainProductPriceController.dispose();
+// //     _mainProductAmountController.dispose();
+// //     _byProductQuantityController.dispose();
+// //     _byProductPriceController.dispose();
+// //     _byProductAmountController.dispose();
+// //     _totalByProductAmountController1.dispose();
+// //     _totalReturnsController.dispose();
+// //     for (var i = 0; i < chemicalFertilizers.length; i++) {
+// //       chemicalFertilizers[i]['name']!.dispose();
+// //       chemicalFertilizers[i]['basal']!.dispose();
+// //       chemicalFertilizers[i]['topDress']!.dispose();
+// //       chemicalFertilizers[i]['totalQuantity']!.dispose();
+// //       chemicalFertilizers[i]['totalCost']!.dispose();
+// //     }
+// //     super.dispose();
+// //   }
+// // }
