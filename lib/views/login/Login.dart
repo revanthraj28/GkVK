@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 children: [
                   // Background Image
                   Image.asset(
-                    'assets/images/bg3.png', // Replace with your image asset path
+                    'assets/images/bg2.png', // Replace with your image asset path
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.cover,
@@ -129,6 +129,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                               const SizedBox(height: 20),
                               CustomTextButton(
                                 text: "Sign In",
+                                buttonColor: Color(0xFFFB812C),
                                 onPressed: () async {
                                   if (validateEmail(emailController.text) == null &&
                                       validatePassword(passwordController.text) == null) {

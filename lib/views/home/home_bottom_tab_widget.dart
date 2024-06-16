@@ -23,7 +23,7 @@ class HomeBottomTabWidget extends StatelessWidget {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.list),
-              label: 'List', // Label is required but will be hidden
+              label: 'Upload Status', // Label is required but will be hidden
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),

@@ -5,6 +5,7 @@ import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/Cropdetails.dart';
+import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
   final int waterShedId;
@@ -50,7 +51,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Cropdetails(aadharId: int.parse(_aadharController.text)),
+          builder: (context) => SurveyPage1(aadharId: int.parse(_aadharController.text)),
         ),
       );
     } catch (e) {
@@ -134,12 +135,12 @@ class GenerateFarmersIdPage extends StatelessWidget {
             title: const Text(
               'ENTER FARMER DETAILS',
               style: TextStyle(
-                color: Color(0xFF8DB600),
+                color: Color(0xFFFB812C),
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            iconTheme: const IconThemeData(color: Color(0xFF8DB600)),
+            iconTheme: const IconThemeData(color: Color(0xFFFB812C)),
           ),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -343,6 +344,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
               children: [
                 CustomTextButton(
                   text: 'NEXT',
+                  buttonColor: Color(0xFFFB812C),
                   onPressed: () {
                     if (_validateForm()) {
                       try {

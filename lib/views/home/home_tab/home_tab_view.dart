@@ -54,7 +54,7 @@ class HomeTabView extends StatelessWidget {
                                   // fontFamily: 'Quando', // Use the Quando font family
                                   fontSize: 20,
                                   fontWeight: FontWeight.w600,
-                                  color: Color(0xFF8DB600),
+                                  color: Color(0xFFFB812C),
                                 ),
                               ),
                             ),
@@ -154,7 +154,7 @@ class HomeTabView extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF8DB600),
+                        color: Color(0xFFFB812C),
                       ),
                     ),
                     Text(

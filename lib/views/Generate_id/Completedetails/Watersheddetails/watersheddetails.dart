@@ -213,12 +213,12 @@ class WatershedView extends StatelessWidget {
             title: const Text(
               'ENTER WATER-SHED DETAILS',
               style: TextStyle(
-                color: Color(0xFF8DB600),
+                color: Color(0xFFFB812C),
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            iconTheme: const IconThemeData(color: Color(0xFF8DB600)),
+            iconTheme: const IconThemeData(color: Color(0xFFFB812C),),
           ),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -318,6 +318,7 @@ class WatershedView extends StatelessWidget {
                         onPressed: (option) {
                           _selectedCategory.value = option ?? '';
                         },
+                        errorMessage: _selectedCategory.value.isEmpty ? 'Please select Treatment option' : null,
                       )),
                       const SizedBox(height: 110.0),
                     ],
@@ -335,12 +336,14 @@ class WatershedView extends StatelessWidget {
               children: [
                 CustomTextButton(
                   text: 'PREVIOUS WATERSHED',
+                  buttonColor: Color(0xFFFB812C),
                   onPressed: () {
                     _navigateWithLatestWaterShedId(context);
                   },
                 ),
                 CustomTextButton(
                   text: 'NEXT',
+                  buttonColor: Color(0xFFFB812C),
                   onPressed: () {
                     if (_formKey.currentState?.validate() ?? false) {
                       if (_selectedCategory.value.isEmpty) {
