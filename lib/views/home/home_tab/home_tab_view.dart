@@ -84,14 +84,14 @@ class HomeTabView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(child: _buildMenuBox('Create', 'Farmer Profile', Icons.person_add, Color(0xFF8DB600), () {
+                            Expanded(child: _buildMenuBox('Create', 'Farmer Profile', Icons.person_add, Colors.black, () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => WatershedView()),
                               );
                             })),
                             const SizedBox(width: 10),
-                            Expanded(child: _buildMenuBox('Edit', 'Farmer Profile', Icons.edit, Color(0xFF8DB600), () {
+                            Expanded(child: _buildMenuBox('Edit', 'Farmer Profile', Icons.edit, Colors.black, () {
                               // Handle Edit Farmer Profile tap
                             })),
                           ],
@@ -100,11 +100,11 @@ class HomeTabView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(child: _buildMenuBox('Add', 'Farmer Land', Icons.landscape, Color(0xFF8DB600), () {
+                            Expanded(child: _buildMenuBox('Add', 'Farmer Land', Icons.landscape, Colors.black, () {
                               // Handle Add Farmer Land tap
                             })),
                             const SizedBox(width: 10),
-                            Expanded(child: _buildMenuBox('Enter', 'Crop Details', Icons.grain, Color(0xFF8DB600), () {
+                            Expanded(child: _buildMenuBox('Enter', 'Crop Details', Icons.grain, Colors.black, () {
                               // Handle Enter Crop Details tap
                             })),
                           ],
@@ -161,7 +161,7 @@ class HomeTabView extends StatelessWidget {
                       secondLine,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Color(0xFF8DB600),
+                        color: Colors.black,
                       ),
                     ),
                   ],
