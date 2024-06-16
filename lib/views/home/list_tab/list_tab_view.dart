@@ -111,7 +111,7 @@ class _ListTabViewState extends State<ListTabView> {
         children: [
           Positioned.fill(
             child: Image.asset(
-              'assets/images/bg5.png',
+              'assets/images/bg2.png',
               fit: BoxFit.cover,
             ),
           ),

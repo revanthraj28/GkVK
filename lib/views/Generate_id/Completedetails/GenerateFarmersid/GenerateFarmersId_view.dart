@@ -115,7 +115,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
           },
           child: Scaffold(
             appBar: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: Color(0xFFFEF8E0),
               centerTitle: true,
               title: const Text(
                 'ENTER FARMER DETAILS',
@@ -130,7 +130,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
             body: SafeArea(
               child: SingleChildScrollView(
                 child: Container(
-                  color: const Color(0xFFF3F3F3),
+                  color: const Color(0xFFFEF8E0),
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
@@ -282,7 +282,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
             ),
             bottomNavigationBar: BottomAppBar(
               height: 65,
-              color: Colors.transparent,
+              color: Color(0xFFFEF8E0),
               child: CustomTextButton(
                 text: 'CREATE',
                 onPressed: () {
