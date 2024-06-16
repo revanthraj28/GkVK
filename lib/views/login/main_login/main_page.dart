@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gkvk/views/home/home_view.dart';
 import 'package:gkvk/views/login/animationpages/FirstPage.dart';
+import 'package:gkvk/views/login/animationpages/ThirdPage.dart';
 
 class MainPage extends StatelessWidget {
   const MainPage({super.key});
@@ -18,7 +19,7 @@ class MainPage extends StatelessWidget {
         } else if (snapshot.hasData) {
           return const HomeScreen(); // Navigate to HomeScreen
         } else {
-          return const FirstPage(); // Navigate to FirstPage
+          return const ThirdPage(); // Navigate to FirstPage
         }
       },
     );
