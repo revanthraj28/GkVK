@@ -17,6 +17,7 @@ class WatershedView extends StatelessWidget {
   final TextEditingController _villageController = TextEditingController();
 
   final RxString _selectedCategory = ''.obs;
+  final _formKey = GlobalKey<FormState>();
 
   WatershedView({super.key});
 
@@ -98,19 +99,15 @@ class WatershedView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
-                      'Do you want to continue with the latest watershed details?'),
+                  const Text('Do you want to continue with the latest watershed details?'),
                   const SizedBox(height: 20),
                   Text('District: ${watershedDetails['district']}'),
                   Text('Taluk: ${watershedDetails['taluk']}'),
                   Text('Hobli: ${watershedDetails['hobli']}'),
-                  Text(
-                      'Sub-Watershed Name: ${watershedDetails['subWatershedName']}'),
-                  Text(
-                      'Sub-Watershed Code: ${watershedDetails['subWatershedCode']}'),
+                  Text('Sub-Watershed Name: ${watershedDetails['subWatershedName']}'),
+                  Text('Sub-Watershed Code: ${watershedDetails['subWatershedCode']}'),
                   Text('Village: ${watershedDetails['village']}'),
-                  Text(
-                      'Selected Category: ${watershedDetails['selectedCategory']}'),
+                  Text('Selected Category: ${watershedDetails['selectedCategory']}'),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -122,8 +119,7 @@ class WatershedView extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) =>
-                                  GenerateFarmersIdPage(waterShedId: latestId),
+                              builder: (context) => GenerateFarmersIdPage(waterShedId: latestId),
                             ),
                           );
                         },
@@ -181,56 +177,55 @@ class WatershedView extends StatelessWidget {
     }
   }
 
-
   Future<bool> _onWillPop(BuildContext context) async {
     return (await showDialog(
       context: context,
-      builder: (context) =>
-          AlertDialog(
-            title: const Text('Confirm Exit'),
-            content: const Text('Do you want to return to the home page?'),
-            actions: [
-              TextButton(
-                child: const Text('Cancel'),
-                onPressed: () => Navigator.of(context).pop(false),
-              ),
-              TextButton(
-                child: const Text('OK'),
-                onPressed: () => Navigator.of(context).pop(true),
-              ),
-            ],
+      builder: (context) => AlertDialog(
+        title: const Text('Confirm Exit'),
+        content: const Text('Do you want to return to the home page?'),
+        actions: [
+          TextButton(
+            child: const Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(false),
           ),
-    )) ??
-        false;
+          TextButton(
+            child: const Text('OK'),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    )) ?? false;
   }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-        onTap: () {
-          FocusScope.of(context).unfocus(); // Dismiss keyboard on tap outside
-        },
-        child: WillPopScope(
-          onWillPop: () => _onWillPop(context),
-          child: Scaffold(
-            backgroundColor: Colors.white,
-            appBar: AppBar(
-              backgroundColor: Colors.white,
-              centerTitle: true,
-              title: const Text(
-                'ENTER WATER-SHED DETAILS',
-                style: TextStyle(
-                  color: Color(0xFF8DB600),
-                  fontSize: 18,
-                  fontWeight: FontWeight.w500,
-                ),
+      onTap: () {
+        FocusScope.of(context).unfocus(); // Dismiss keyboard on tap outside
+      },
+      child: WillPopScope(
+        onWillPop: () => _onWillPop(context),
+        child: Scaffold(
+          backgroundColor: Color(0xFFFEF8E0),
+          appBar: AppBar(
+            backgroundColor: Color(0xFFFEF8E0),
+            centerTitle: true,
+            title: const Text(
+              'ENTER WATER-SHED DETAILS',
+              style: TextStyle(
+                color: Color(0xFF8DB600),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
               ),
-              iconTheme: const IconThemeData(color: Color(0xFF8DB600)),
             ),
-            body: SafeArea(
-              child: SingleChildScrollView(
+            iconTheme: const IconThemeData(color: Color(0xFF8DB600)),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
                 child: Container(
-                  color: const Color(0xFFF3F3F3),
+                  color: const Color(0xFFFEF8E0),
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     children: [
@@ -241,6 +236,12 @@ class WatershedView extends StatelessWidget {
                               labelText: "District",
                               controller: _districtController,
                               keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter district';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                           const SizedBox(width: 10.0),
@@ -249,6 +250,12 @@ class WatershedView extends StatelessWidget {
                               labelText: "Taluk",
                               controller: _talukController,
                               keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return 'Please enter taluk';
+                                }
+                                return null;
+                              },
                             ),
                           ),
                         ],
@@ -258,66 +265,85 @@ class WatershedView extends StatelessWidget {
                         labelText: "Hobli",
                         controller: _hobliController,
                         keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter hobli';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Sub-Watershed Name",
                         controller: _subWatershedNameController,
                         keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter sub-watershed name';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Sub-Watershed Code",
                         controller: _subWatershedCodeController,
                         keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter sub-watershed code';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Village",
                         controller: _villageController,
                         keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter village';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10.0),
-                      Obx(() =>
-                          SelectionButton(
-                            label: "Treatment",
-                            options: const ['T1', 'T2', 'T3', 'T4'],
-                            selectedOption: _selectedCategory.value.isEmpty
-                                ? null
-                                : _selectedCategory.value,
-                            onPressed: (option) {
-                              _selectedCategory.value = option ?? '';
-                            },
-                          )),
+                      Obx(() => SelectionButton(
+                        label: "Treatment",
+                        options: const ['T1', 'T2', 'T3', 'T4'],
+                        selectedOption: _selectedCategory.value.isEmpty
+                            ? null
+                            : _selectedCategory.value,
+                        onPressed: (option) {
+                          _selectedCategory.value = option ?? '';
+                        },
+                      )),
                       const SizedBox(height: 110.0),
                     ],
                   ),
                 ),
               ),
             ),
-            bottomNavigationBar: BottomAppBar(
-              height: 130,
-              color: Colors.transparent,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  CustomTextButton(
-                    text: 'PREVIOUS WATERSHED',
-                    onPressed: () {
-                      _navigateWithLatestWaterShedId(context);
-                    },
-                  ),
-                  CustomTextButton(
-                    text: 'NEXT',
-                    onPressed: () {
-                      if (_districtController.text.isEmpty ||
-                          _talukController.text.isEmpty ||
-                          _hobliController.text.isEmpty ||
-                          _subWatershedNameController.text.isEmpty ||
-                          _subWatershedCodeController.text.isEmpty ||
-                          _villageController.text.isEmpty ||
-                          _selectedCategory.value.isEmpty) {
+          ),
+          bottomNavigationBar: BottomAppBar(
+            height: 130,
+            color: Colors.transparent,
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomTextButton(
+                  text: 'PREVIOUS WATERSHED',
+                  onPressed: () {
+                    _navigateWithLatestWaterShedId(context);
+                  },
+                ),
+                CustomTextButton(
+                  text: 'NEXT',
+                  onPressed: () {
+                    if (_formKey.currentState?.validate() ?? false) {
+                      if (_selectedCategory.value.isEmpty) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -339,14 +365,14 @@ class WatershedView extends StatelessWidget {
                       } else {
                         _uploadData(context);
                       }
-                    },
-                  ),
-                ],
-              ),
+                    }
+                  },
+                ),
+              ],
             ),
-
           ),
-        )
+        ),
+      ),
     );
   }
 }

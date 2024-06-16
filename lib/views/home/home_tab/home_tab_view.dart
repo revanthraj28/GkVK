@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gkvk/shared/components/appbar_widget.dart';
 import 'package:gkvk/views/Generate_id/Completedetails/Watersheddetails/watersheddetails.dart';// Import services.dart for SystemChrome
 
 class HomeTabView extends StatelessWidget {
@@ -25,7 +26,7 @@ class HomeTabView extends StatelessWidget {
               children: [
                 // Background Image
                 Image.asset(
-                  'assets/images/bg4.png', // Replace with your image asset path
+                  'assets/images/bg3.png', // Replace with your image asset path
                   width: double.infinity,
                   height: double.infinity,
                   fit: BoxFit.cover,
@@ -40,7 +41,7 @@ class HomeTabView extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                         decoration: BoxDecoration(
-                          color: const Color(0xFFFEF8E0),
+                          color: const Color(0xFFFEF8E0),//Color(0xFFFEF8E0)
                           borderRadius: BorderRadius.circular(5),
                         ),
                         child: Stack(
@@ -50,20 +51,20 @@ class HomeTabView extends StatelessWidget {
                               child: Text(
                                 'AgriConnect',
                                 style: TextStyle(
-                                  fontFamily: 'Quando', // Use the Quando font family
+                                  // fontFamily: 'Quando', // Use the Quando font family
                                   fontSize: 20,
-                                  fontWeight: FontWeight.w500,
-                                  color: Colors.green[600],
+                                  fontWeight: FontWeight.w600,
+                                  color: Color(0xFF8DB600),
                                 ),
                               ),
                             ),
-                            Positioned(
-                              left: 0,
-                              child: Image.asset(
-                                'assets/images/gkvk_icon.png', // Replace with your logo asset path
-                                height: 30,
-                              ),
-                            ),
+                            // Positioned(
+                            //   left: 0,
+                            //   child: Image.asset(
+                            //     'assets/images/gkvk_icon.png', // Replace with your logo asset path
+                            //     height: 30,
+                            //   ),
+                            // ),
                           ],
                         ),
                       ),
@@ -83,14 +84,14 @@ class HomeTabView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(child: _buildMenuBox('Create', 'Farmer Profile', Icons.person_add, Colors.green, () {
+                            Expanded(child: _buildMenuBox('Create', 'Farmer Profile', Icons.person_add, Color(0xFF8DB600), () {
                               Navigator.push(
                                 context,
                                 MaterialPageRoute(builder: (context) => WatershedView()),
                               );
                             })),
                             const SizedBox(width: 10),
-                            Expanded(child: _buildMenuBox('Edit', 'Farmer Profile', Icons.edit, Colors.orange, () {
+                            Expanded(child: _buildMenuBox('Edit', 'Farmer Profile', Icons.edit, Color(0xFF8DB600), () {
                               // Handle Edit Farmer Profile tap
                             })),
                           ],
@@ -99,11 +100,11 @@ class HomeTabView extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Expanded(child: _buildMenuBox('Add', 'Farmer Land', Icons.landscape, Colors.brown, () {
+                            Expanded(child: _buildMenuBox('Add', 'Farmer Land', Icons.landscape, Color(0xFF8DB600), () {
                               // Handle Add Farmer Land tap
                             })),
                             const SizedBox(width: 10),
-                            Expanded(child: _buildMenuBox('Enter', 'Crop Details', Icons.grain, Colors.yellow, () {
+                            Expanded(child: _buildMenuBox('Enter', 'Crop Details', Icons.grain, Color(0xFF8DB600), () {
                               // Handle Enter Crop Details tap
                             })),
                           ],
@@ -153,14 +154,14 @@ class HomeTabView extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
-                        color: Colors.green[600],
+                        color: Color(0xFF8DB600),
                       ),
                     ),
                     Text(
                       secondLine,
                       style: TextStyle(
                         fontSize: 12,
-                        color: Colors.green[400],
+                        color: Color(0xFF8DB600),
                       ),
                     ),
                   ],

@@ -4,19 +4,19 @@ class SelectionButton extends StatelessWidget {
   final String label;
   final List<String> options;
   final String? selectedOption;
-  final Function(String?) onPressed;
+  final Function(String) onPressed;
   final Function(String?)? onChanged;
-  // final FormFieldValidator<String>? validator;
+  final String? errorMessage;
 
   const SelectionButton({
-    super.key,
+    Key? key,
     required this.label,
     required this.options,
     required this.selectedOption,
     required this.onPressed,
     this.onChanged,
-    // this.validator,
-  });
+    this.errorMessage,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -45,8 +45,11 @@ class SelectionButton extends StatelessWidget {
               child: ElevatedButton(
                 onPressed: () => onPressed(option),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: option == selectedOption ? const Color(0xFF8DB600) : Colors.white,
-                  foregroundColor: option == selectedOption ? Colors.white : Colors.black,
+                  backgroundColor: option == selectedOption
+                      ? const Color(0xFF8DB600)
+                      : Colors.white,
+                  foregroundColor:
+                  option == selectedOption ? Colors.white : Colors.black,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0),
                   ),
@@ -63,6 +66,17 @@ class SelectionButton extends StatelessWidget {
           )
               .toList(),
         ),
+        if (errorMessage != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0, top: 5.0),
+            child: Text(
+              errorMessage!,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
+              ),
+            ),
+          ),
       ],
     );
   }

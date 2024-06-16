@@ -61,7 +61,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                 children: [
                   // Background Image
                   Image.asset(
-                    'assets/images/bg2.png', // Replace with your image asset path
+                    'assets/images/bg3.png', // Replace with your image asset path
                     width: double.infinity,
                     height: double.infinity,
                     fit: BoxFit.cover,
