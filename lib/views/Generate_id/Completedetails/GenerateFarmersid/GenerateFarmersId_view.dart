@@ -274,15 +274,15 @@ class GenerateFarmersIdPage extends StatelessWidget {
                               _selectedLRIReceived.value = option ?? '';
                             },
                           )),
-                      const SizedBox(height: 60.0),
+                      const SizedBox(height: 20.0),
                     ],
                   ),
                 ),
               ),
             ),
-            floatingActionButton: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            bottomNavigationBar: BottomAppBar(
+              height: 65,
+              color: Colors.transparent,
               child: CustomTextButton(
                 text: 'CREATE',
                 onPressed: () {
@@ -323,7 +323,6 @@ class GenerateFarmersIdPage extends StatelessWidget {
                 },
               ),
             ),
-            floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
           )
       ),
     );
