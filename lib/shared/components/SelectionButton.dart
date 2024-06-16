@@ -6,6 +6,7 @@ class SelectionButton extends StatelessWidget {
   final String? selectedOption;
   final Function(String) onPressed;
   final Function(String?)? onChanged;
+  final String? errorMessage;
 
   const SelectionButton({
     Key? key,
@@ -14,6 +15,7 @@ class SelectionButton extends StatelessWidget {
     required this.selectedOption,
     required this.onPressed,
     this.onChanged,
+    this.errorMessage,
   }) : super(key: key);
 
   @override
@@ -64,6 +66,17 @@ class SelectionButton extends StatelessWidget {
           )
               .toList(),
         ),
+        if (errorMessage != null)
+          Padding(
+            padding: const EdgeInsets.only(left: 5.0, top: 5.0),
+            child: Text(
+              errorMessage!,
+              style: const TextStyle(
+                color: Colors.red,
+                fontSize: 12,
+              ),
+            ),
+          ),
       ],
     );
   }
