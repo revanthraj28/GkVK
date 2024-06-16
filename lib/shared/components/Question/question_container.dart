@@ -6,8 +6,15 @@ class QuestionContainer extends StatelessWidget {
   final Question question;
   final ValueChanged<String?> onChanged;
   final String? selectedOption;
+  final String? errorText; // Add errorText parameter
 
-  const QuestionContainer({super.key, required this.question, required this.onChanged, this.selectedOption});
+  const QuestionContainer({
+    Key? key,
+    required this.question,
+    required this.onChanged,
+    this.selectedOption,
+    this.errorText, // Include errorText as an optional parameter
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +24,10 @@ class QuestionContainer extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.transparent,
         borderRadius: BorderRadius.circular(8.0),
+        // border: Border.all(
+        //   color: errorText != null ? Colors.red : Colors.transparent, // Highlight border if errorText is not null
+        //   width: 2.0,
+        // ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,6 +42,17 @@ class QuestionContainer extends StatelessWidget {
             selectedOption: selectedOption,
             onPressed: onChanged,
           ),
+          if (errorText != null) // Display error text if provided
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0),
+              child: Text(
+                errorText!,
+                style: TextStyle(
+                  color: Colors.red,
+                  fontSize: 12.0,
+                ),
+              ),
+            ),
         ],
       ),
     );

@@ -5,11 +5,11 @@ import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages2.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/database/survey_page1_db.dart';
-import 'package:gkvk/shared/components/Question/question_container.dart';  // Import your new component
+import 'package:gkvk/shared/components/Question/question_container.dart';
 
 class SurveyPage1 extends StatefulWidget {
   final int aadharId;
-  const SurveyPage1({required this.aadharId, super.key});
+  const SurveyPage1({required this.aadharId, Key? key}) : super(key: key);
 
   @override
   State<SurveyPage1> createState() => _SurveyPage1State();
@@ -17,10 +17,12 @@ class SurveyPage1 extends StatefulWidget {
 
 class _SurveyPage1State extends State<SurveyPage1> {
   List<String?> selectedOptions = List<String?>.filled(questionsPage1.length, null);
+  List<String?> errors = List<String?>.filled(questionsPage1.length, null); // Track errors
 
   void _handleOptionChange(int index, String? value) {
     setState(() {
       selectedOptions[index] = value;
+      errors[index] = null; // Reset error when option is selected
     });
   }
 
@@ -31,6 +33,7 @@ class _SurveyPage1State extends State<SurveyPage1> {
         _handleOptionChange(index, value);
       },
       selectedOption: selectedOptions[index],
+      errorText: errors[index], // Pass error text to QuestionContainer
     );
   }
 
@@ -39,8 +42,10 @@ class _SurveyPage1State extends State<SurveyPage1> {
 
     for (int i = 0; i < selectedOptions.length; i++) {
       if (selectedOptions[i] == null) {
+        setState(() {
+          errors[i] = 'Please select an option'; // Set error message
+        });
         allAnswered = false;
-        break;
       }
     }
 
@@ -113,55 +118,60 @@ class _SurveyPage1State extends State<SurveyPage1> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-        onWillPop: () async {
-          _showExitConfirmationDialog(context);
-          return false;
-        },
-        child: Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.white,
-            centerTitle: true,
-            title: const Text(
-              'Survey Page 1',
-              style: TextStyle(
-                color: Color(0xFF8DB600),
-                fontSize: 18,
-                fontWeight: FontWeight.w500,
-              ),
+      onWillPop: () async {
+        _showExitConfirmationDialog(context);
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Color(0xFFFEF8E0),
+          centerTitle: true,
+          title: const Text(
+            'Survey Page 1',
+            style: TextStyle(
+              color: Color(0xFFFB812C),
+              fontSize: 18,
+              fontWeight: FontWeight.w500,
             ),
-            iconTheme: const IconThemeData(color: Colors.black),
           ),
-          body: SafeArea(
-            child: Container(
-              color: const Color(0xFFF3F3F3),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: ListView.builder(
-                      itemCount: questionsPage1.length + 1,  // Increase item count by 1
-                      itemBuilder: (context, index) {
-                        if (index == questionsPage1.length) {
-                          return const SizedBox(height: 60);  // Add SizedBox at the end
-                        }
-                        return buildQuestion(questionsPage1[index], index);
-                      },
-                    ),
+          iconTheme: const IconThemeData(color: Color(0xFFFB812C)),
+        ),
+        body: SafeArea(
+          child: Container(
+            color: const Color(0xFFFEF8E0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: questionsPage1.length + 1,  // Increase item count by 1
+                    itemBuilder: (context, index) {
+                      if (index == questionsPage1.length) {
+                        return const SizedBox(height: 60);  // Add SizedBox at the end
+                      }
+                      return buildQuestion(questionsPage1[index], index);
+                    },
                   ),
-                ],
+                ),
+              ],
+            ),
+          ),
+        ),
+        bottomNavigationBar: BottomAppBar(
+          height: 75,
+          color: Color(0xFFFEF8E0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              CustomTextButton(
+                text: 'NEXT',
+                buttonColor: Color(0xFFFB812C),
+                onPressed: _validateAndProceed,
               ),
-            ),
+            ],
           ),
-          floatingActionButton: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: CustomTextButton(
-              text: 'NEXT',
-              onPressed: _validateAndProceed,
-            ),
-          ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        )
+        ),
+      ),
     );
   }
-
 }

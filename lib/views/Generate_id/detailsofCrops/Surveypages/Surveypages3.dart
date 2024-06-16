@@ -18,10 +18,12 @@ class Surveypages3 extends StatefulWidget {
 
 class _Surveypages3 extends State<Surveypages3> {
   List<String?> selectedOptions = List<String?>.filled(questionsPage3.length, null);
+  List<String?> errors = List<String?>.filled(questionsPage3.length, null);
 
   void _handleOptionChange(int index, String? value) {
     setState(() {
       selectedOptions[index] = value;
+      errors[index] = null;
     });
   }
 
@@ -32,6 +34,7 @@ class _Surveypages3 extends State<Surveypages3> {
         _handleOptionChange(index, value);
       },
       selectedOption: selectedOptions[index],
+      errorText: errors[index],
     );
   }
 
@@ -40,8 +43,10 @@ class _Surveypages3 extends State<Surveypages3> {
 
     for (int i = 0; i < selectedOptions.length; i++) {
       if (selectedOptions[i] == null) {
+        setState(() {
+          errors[i] = 'Please select an option'; // Set error message
+        });
         allAnswered = false;
-        break;
       }
     }
 
@@ -122,22 +127,21 @@ class _Surveypages3 extends State<Surveypages3> {
         },
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.white,
-            elevation: 2,
+            backgroundColor: Color(0xFFFEF8E0),
             centerTitle: true,
             title: const Text(
               'SURVEY PAGE 3',
               style: TextStyle(
-                color: Color(0xFF8DB600),
+                color: Color(0xFFFB812C),
                 fontSize: 18,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            iconTheme: const IconThemeData(color: Colors.black),
+            iconTheme: const IconThemeData(color: Color(0xFFFB812C)),
           ),
           body: SafeArea(
             child: Container(
-              color: const Color(0xFFF3F3F3),
+              color: const Color(0xFFFEF8E0),
               child: Column(
                 children: [
                   Expanded(
@@ -155,15 +159,21 @@ class _Surveypages3 extends State<Surveypages3> {
               ),
             ),
           ),
-          floatingActionButton: Container(
-            width: double.infinity,
-            padding: const EdgeInsets.symmetric(horizontal: 20.0),
-            child: CustomTextButton(
-              text: 'NEXT',
-              onPressed: _validateAndProceed,
+          bottomNavigationBar: BottomAppBar(
+            height: 75,
+            color: Color(0xFFFEF8E0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomTextButton(
+                  text: 'NEXT',
+                  buttonColor: Color(0xFFFB812C),
+                  onPressed: _validateAndProceed,
+                ),
+              ],
             ),
           ),
-          floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         )
     );
   }
