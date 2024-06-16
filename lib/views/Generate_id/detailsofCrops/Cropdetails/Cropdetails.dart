@@ -16,6 +16,7 @@ class Cropdetails extends StatefulWidget {
 }
 
 class _CropdetailsState extends State<Cropdetails> {
+  final _formKey = GlobalKey<FormState>();
   final _cropNameController = TextEditingController();
   final _areaController = TextEditingController();
   final _surveyHissaController = TextEditingController();
@@ -148,7 +149,8 @@ class _CropdetailsState extends State<Cropdetails> {
       'irrigationCost': double.tryParse(_irrigationCostController.text),
       'otherProductionCost':
           double.tryParse(_otherProductionCostController.text),
-      'totalProductionCost': double.tryParse(_totalProductionCostController.text),
+      'totalProductionCost':
+          double.tryParse(_totalProductionCostController.text),
       'mainProductQuantity':
           double.tryParse(_mainProductQuantityController.text),
       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
@@ -215,468 +217,835 @@ class _CropdetailsState extends State<Cropdetails> {
     );
   }
 
+  bool _validateForm() {
+    if (!_formKey.currentState!.validate()) {
+      return false;
+    }
+
+    if (_selectedSeason.value.isEmpty ||
+        _selectedTypeOfLand.value.isEmpty ||
+        _selectedSourceOfIrrigation.value.isEmpty ||
+        _selectedNitrogen.value.isEmpty ||
+        _selectedPhosphorous.value.isEmpty ||
+        _selectedPotassium.value.isEmpty ||
+        _Methodsoffertilizer.value.isEmpty) {
+      return false;
+    }
+
+    for (var fertilizer in chemicalFertilizers) {
+      if (fertilizer['name']!.text.isEmpty ||
+          fertilizer['basal']!.text.isEmpty ||
+          fertilizer['topDress']!.text.isEmpty ||
+          fertilizer['totalQuantity']!.text.isEmpty ||
+          fertilizer['totalCost']!.text.isEmpty) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        _showExitConfirmationDialog(context);
-        return false;
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus();
       },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.white,
-          centerTitle: true,
-          title: const Text(
-            'Enter the Crop details',
-            style: TextStyle(
-              color: Color(0xFF8DB600),
-              fontSize: 18,
-              fontWeight: FontWeight.w500,
+      child: WillPopScope(
+        onWillPop: () async {
+          _showExitConfirmationDialog(context);
+          return false;
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            backgroundColor: Color(0xFFFEF8E0),
+            centerTitle: true,
+            title: const Text(
+              'Enter the Crop details',
+              style: TextStyle(
+                color: Color(0xFFFB812C),
+                fontSize: 18,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            iconTheme: const IconThemeData(color: Color(0xFFFB812C)),
+          ),
+          body: SafeArea(
+            child: SingleChildScrollView(
+              child: Form(
+                key: _formKey,
+                child: Container(
+                  color: const Color(0xFFFEF8E0),
+                  padding: const EdgeInsets.all(20.0),
+                  child: Column(
+                    children: [
+                      CustomTextFormField(
+                        labelText: "Crop Name",
+                        controller: _cropNameController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Crop Name";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Area in acres",
+                        controller: _areaController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Area";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Survey and Hissa no.",
+                        controller: _surveyHissaController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Survey and Hissa no";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Variety of crop",
+                        controller: _varietyController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Variety of crop";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Duration (in days)",
+                        controller: _durationController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Duration";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      Obx(() => SelectionButton(
+                            label: "Season",
+                            options: const ['Kharif', 'Rabi', 'Summer'],
+                            selectedOption: _selectedSeason.value.isEmpty
+                                ? null
+                                : _selectedSeason.value,
+                            onPressed: (option) {
+                              _selectedSeason.value = option;
+                            },
+                            errorMessage: _selectedSeason.value.isEmpty
+                                ? 'Please select a season'
+                                : null,
+                          )),
+                      const SizedBox(height: 20.0),
+                      Obx(() => SelectionButton(
+                            label: "Type of land",
+                            options: const ['Rain-fed', 'Irrigated'],
+                            selectedOption: _selectedTypeOfLand.value.isEmpty
+                                ? null
+                                : _selectedTypeOfLand.value,
+                            onPressed: (option) {
+                              _selectedTypeOfLand.value = option;
+                            },
+                            errorMessage: _selectedTypeOfLand.value.isEmpty
+                                ? 'Please select a type of land'
+                                : null,
+                          )),
+                      const SizedBox(height: 20.0),
+                      Obx(() => SelectionButton(
+                            label: "Source of irrigation",
+                            options: const [
+                              'Borewell',
+                              'Tank',
+                              'Canal',
+                              'Others'
+                            ],
+                            selectedOption:
+                                _selectedSourceOfIrrigation.value.isEmpty
+                                    ? null
+                                    : _selectedSourceOfIrrigation.value,
+                            onPressed: (option) {
+                              _selectedSourceOfIrrigation.value = option;
+                            },
+                            errorMessage:
+                                _selectedSourceOfIrrigation.value.isEmpty
+                                    ? 'Please select a source of irrigation'
+                                    : null,
+                          )),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Cost of seed (including own seed)(in Rs.)",
+                        controller: _costController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Cost of seed";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Fertility status according to LRI card',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Nitrogen',
+                        style: TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w500),
+                      ),
+                      Obx(() => SelectionButton(
+                            label: '',
+                            options: const [
+                              'Very low',
+                              'Low',
+                              'Medium',
+                              'High',
+                              'Very high'
+                            ],
+                            selectedOption: _selectedNitrogen.value.isEmpty
+                                ? null
+                                : _selectedNitrogen.value,
+                            onPressed: (option) {
+                              _selectedNitrogen.value = option;
+                            },
+                            errorMessage: _selectedNitrogen.value.isEmpty
+                                ? 'Please select a nitrogen level'
+                                : null,
+                          )),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Phosphorous',
+                        style: TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w500),
+                      ),
+                      Obx(() => SelectionButton(
+                            label: '',
+                            options: const [
+                              'Very low',
+                              'Low',
+                              'Medium',
+                              'High',
+                              'Very high'
+                            ],
+                            selectedOption: _selectedPhosphorous.value.isEmpty
+                                ? null
+                                : _selectedPhosphorous.value,
+                            onPressed: (option) {
+                              _selectedPhosphorous.value = option;
+                            },
+                            errorMessage: _selectedPhosphorous.value.isEmpty
+                                ? 'Please select a phosphorous level'
+                                : null,
+                          )),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Potassium',
+                        style: TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w500),
+                      ),
+                      Obx(() => SelectionButton(
+                            label: '',
+                            options: const [
+                              'Very low',
+                              'Low',
+                              'Medium',
+                              'High',
+                              'Very high'
+                            ],
+                            selectedOption: _selectedPotassium.value.isEmpty
+                                ? null
+                                : _selectedPotassium.value,
+                            onPressed: (option) {
+                              _selectedPotassium.value = option;
+                            },
+                            errorMessage: _selectedPotassium.value.isEmpty
+                                ? 'Please select a potassium level'
+                                : null,
+                          )),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'RDF of crop (kg/ac)',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Nitrogen",
+                        controller: _rdfNitrogenController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Nitrogen";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Phosphorous",
+                        controller: _rdfPhosphorousController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Phosphorous";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Potassium",
+                        controller: _rdfPotassiumController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Potassium";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Adjusted RDF of crop according to LRI card (kg/ac)',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Nitrogen",
+                        controller: _adjustedrdfNitrogenController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Nitrogen";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Phosphorous",
+                        controller: _adjustedrdfPhosphorousController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Phosphorous";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Potassium",
+                        controller: _adjustedrdfPotassiumController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Potassium";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Manures and fertilizers',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Organic manures',
+                        style: TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Name",
+                        controller: _organicManureNameController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Name";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Quantity (in tonnes)",
+                        controller: _organicManureQuantityController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Quantity";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Cost (in Rs.)",
+                        controller: _organicManureCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Cost";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Bio-fertilizers',
+                        style: TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.bold),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Name",
+                        controller: _bioFertilizerNameController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Name";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Quantity (in kgs)",
+                        controller: _bioFertilizerQuantityController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Quantity";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Cost (in Rs.)",
+                        controller: _bioFertilizerCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Cost";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Chemical fertilizers',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                      ),
+                      ...chemicalFertilizers.map((fertilizer) {
+                        return Column(
+                          children: [
+                            CustomTextFormField(
+                              labelText: "Name",
+                              controller: fertilizer['name']!,
+                              keyboardType: TextInputType.text,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter Name";
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            CustomTextFormField(
+                              labelText: "Basal dose (in kgs)",
+                              controller: fertilizer['basal']!,
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter Basal doseName";
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            CustomTextFormField(
+                              labelText: "Top dress (in kgs)",
+                              controller: fertilizer['topDress']!,
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter Top dress";
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            CustomTextFormField(
+                              labelText: "Total quantity (in kgs)",
+                              controller: fertilizer['totalQuantity']!,
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter Total quantity";
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                            CustomTextFormField(
+                              labelText: "Total cost (in Rs.)",
+                              controller: fertilizer['totalCost']!,
+                              keyboardType: TextInputType.number,
+                              validator: (value) {
+                                if (value == null || value.isEmpty) {
+                                  return "Please enter Total cost";
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 20.0),
+                          ],
+                        );
+                      }),
+                      ElevatedButton(
+                        onPressed: addNewFertilizer,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: const Color(0xFF8DB600),
+                        ),
+                        child: const Text('Add new fertilizer'),
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Method of application of fertilizers',
+                        style: TextStyle(
+                            fontSize: 14.0, fontWeight: FontWeight.w500),
+                      ),
+                      Obx(() => SelectionButton(
+                            label: '',
+                            options: const [
+                              'Broadcasting',
+                              'line',
+                              'band',
+                              'spot'
+                            ],
+                            selectedOption: _Methodsoffertilizer.value.isEmpty
+                                ? null
+                                : _Methodsoffertilizer.value,
+                            onPressed: (option) {
+                              _Methodsoffertilizer.value = option;
+                            },
+                            errorMessage: _Methodsoffertilizer.value.isEmpty
+                                ? 'Please select a method of application'
+                                : null,
+                          )),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Plant Protection Cost (in Rs.)",
+                        controller: _plantProtectionCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Plant Protection Cost";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Labour Details',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w500),
+                      ),
+                      CustomTextFormField(
+                        labelText: "Own Labour(number)",
+                        controller: _ownLabourNumberController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Own Labour";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Cost (in Rs.)",
+                        controller: _ownLabourCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Cost";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Hired Labour(number)",
+                        controller: _hiredLabourNumberController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Hired Labour(number)";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Cost (in Rs.)",
+                        controller: _hiredLabourCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Cost";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Cost of animal drawn work (Rs.)",
+                        controller: _animalDrawnCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Cost of animal drawn work";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Cost of mechanized works (Rs.)",
+                        controller: _animalMechanizedCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter mechanized works ";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Irrigation cost (in Rs.)",
+                        controller: _irrigationCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Irrigation cost";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Other production cost, if any (Rs.)",
+                        controller: _otherProductionCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Other production cost";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Total cost of production",
+                        controller: _totalProductionCostController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Total cost of production";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      const Text(
+                        'Returns',
+                        style: TextStyle(
+                            fontSize: 16.0, fontWeight: FontWeight.w500),
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Quantity of main product",
+                        controller: _mainProductQuantityController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Quantity of main product";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Quantity of main product(in quintal)",
+                        controller: _mainProductPriceController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Quantity of main product";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Price/unit (in Rs.)",
+                        controller: _mainProductAmountController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Price/unit";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Total main product amount(in quintal)",
+                        controller: _byProductQuantityController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please Total main product amount";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Quantity of By-products(in tons)",
+                        controller: _byProductPriceController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Quantity of By-product";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Price/unit (in Rs.)",
+                        controller: _byProductAmountController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Price/unit";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Total By- product amount(in Rs.)",
+                        controller: _totalByProductAmountController1,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Total By- product amount";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Total returns (main and by product) (Rs.)",
+                        controller: _totalByProductAmountController2,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Total returns";
+                          }
+                          return null;
+                        },
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
-          iconTheme: const IconThemeData(color: Color(0xFF8DB600)),
-        ),
-        body: SafeArea(
-          child: SingleChildScrollView(
-            child: Container(
-              color: const Color(0xFFF3F3F3),
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                children: [
-                  CustomTextFormField(
-                    labelText: "Crop Name",
-                    controller: _cropNameController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Area in acres",
-                    controller: _areaController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Survey and Hissa no.",
-                    controller: _surveyHissaController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Variety of crop",
-                    controller: _varietyController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Duration (in days)",
-                    controller: _durationController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  Obx(() => SelectionButton(
-                        label: "Season",
-                        options: const ['Kharif', 'Rabi', 'Summer'],
-                        selectedOption: _selectedSeason.value.isEmpty
-                            ? null
-                            : _selectedSeason.value,
-                        onPressed: (option) {
-                          _selectedSeason.value = option ?? '';
+          bottomNavigationBar: BottomAppBar(
+            height: 75,
+            color: Color(0xFFFEF8E0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomTextButton(
+                  text: 'NEXT',
+                  buttonColor: Color(0xFFFB812C),
+                  onPressed: () {
+                    if (_validateForm()) {
+                      try {
+                        _submitData(context);
+                      } catch (e) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text(
+                                  'Failed to upload data. Please check your input and try again.'),
+                              actions: [
+                                TextButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    } else {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Alert!'),
+                            content: const Text('Fill the fields properly'),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
                         },
-                      )),
-                  const SizedBox(height: 20.0),
-                  Obx(() => SelectionButton(
-                        label: "Type of land",
-                        options: const ['Rain-fed', 'Irrigated'],
-                        selectedOption: _selectedTypeOfLand.value.isEmpty
-                            ? null
-                            : _selectedTypeOfLand.value,
-                        onPressed: (option) {
-                          _selectedTypeOfLand.value = option ?? '';
-                        },
-                      )),
-                  const SizedBox(height: 20.0),
-                  Obx(() => SelectionButton(
-                        label: "Source of irrigation",
-                        options: const ['Borewell', 'Tank', 'Canal', 'Others'],
-                        selectedOption:
-                            _selectedSourceOfIrrigation.value.isEmpty
-                                ? null
-                                : _selectedSourceOfIrrigation.value,
-                        onPressed: (option) {
-                          _selectedSourceOfIrrigation.value = option ?? '';
-                        },
-                      )),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Cost of seed (including own seed)(in Rs.)",
-                    controller: _costController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Fertility status according to LRI card',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Nitrogen',
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
-                  ),
-                  Obx(() => SelectionButton(
-                        label: '',
-                        options: const [
-                          'Very low',
-                          'Low',
-                          'Medium',
-                          'High',
-                          'Very high'
-                        ],
-                        selectedOption: _selectedNitrogen.value.isEmpty
-                            ? null
-                            : _selectedNitrogen.value,
-                        onPressed: (option) {
-                          _selectedNitrogen.value = option ?? '';
-                        },
-                      )),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Phosphorous',
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
-                  ),
-                  Obx(() => SelectionButton(
-                        label: '',
-                        options: const [
-                          'Very low',
-                          'Low',
-                          'Medium',
-                          'High',
-                          'Very high'
-                        ],
-                        selectedOption: _selectedPhosphorous.value.isEmpty
-                            ? null
-                            : _selectedPhosphorous.value,
-                        onPressed: (option) {
-                          _selectedPhosphorous.value = option ?? '';
-                        },
-                      )),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Potassium',
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
-                  ),
-                  Obx(() => SelectionButton(
-                        label: '',
-                        options: const [
-                          'Very low',
-                          'Low',
-                          'Medium',
-                          'High',
-                          'Very high'
-                        ],
-                        selectedOption: _selectedPotassium.value.isEmpty
-                            ? null
-                            : _selectedPotassium.value,
-                        onPressed: (option) {
-                          _selectedPotassium.value = option ?? '';
-                        },
-                      )),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'RDF of crop (kg/ac)',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Nitrogen",
-                    controller: _rdfNitrogenController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Phosphorous",
-                    controller: _rdfPhosphorousController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Potassium",
-                    controller: _rdfPotassiumController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Adjusted RDF of crop according to LRI card (kg/ac)',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Nitrogen",
-                    controller: _adjustedrdfNitrogenController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Phosphorous",
-                    controller: _adjustedrdfPhosphorousController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Potassium",
-                    controller: _adjustedrdfPotassiumController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Manures and fertilizers',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Organic manures',
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Name",
-                    controller: _organicManureNameController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Quantity (in tonnes)",
-                    controller: _organicManureQuantityController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Cost (in Rs.)",
-                    controller: _organicManureCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Bio-fertilizers',
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Name",
-                    controller: _bioFertilizerNameController,
-                    keyboardType: TextInputType.text,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Quantity (in kgs)",
-                    controller: _bioFertilizerQuantityController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Cost (in Rs.)",
-                    controller: _bioFertilizerCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Chemical fertilizers',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
-                  ),
-                  ...chemicalFertilizers.map((fertilizer) {
-                    return Column(
-                      children: [
-                        CustomTextFormField(
-                          labelText: "Name",
-                          controller: fertilizer['name']!,
-                          keyboardType: TextInputType.text,
-                        ),
-                        const SizedBox(height: 20.0),
-                        CustomTextFormField(
-                          labelText: "Basal dose (in kgs)",
-                          controller: fertilizer['basal']!,
-                          keyboardType: TextInputType.number,
-                        ),
-                        const SizedBox(height: 20.0),
-                        CustomTextFormField(
-                          labelText: "Top dress (in kgs)",
-                          controller: fertilizer['topDress']!,
-                          keyboardType: TextInputType.number,
-                        ),
-                        const SizedBox(height: 20.0),
-                        CustomTextFormField(
-                          labelText: "Total quantity (in kgs)",
-                          controller: fertilizer['totalQuantity']!,
-                          keyboardType: TextInputType.number,
-                        ),
-                        const SizedBox(height: 20.0),
-                        CustomTextFormField(
-                          labelText: "Total cost (in Rs.)",
-                          controller: fertilizer['totalCost']!,
-                          keyboardType: TextInputType.number,
-                        ),
-                        const SizedBox(height: 20.0),
-                      ],
-                    );
-                  }),
-                  ElevatedButton(
-                    onPressed: addNewFertilizer,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8DB600),
-                    ),
-                    child: const Text('Add new fertilizer'),
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Method of application of fertilizers',
-                    style:
-                        TextStyle(fontSize: 14.0, fontWeight: FontWeight.w500),
-                  ),
-                  Obx(() => SelectionButton(
-                        label: '',
-                        options: const ['Broadcasting', 'line', 'band', 'spot'],
-                        selectedOption: _Methodsoffertilizer.value.isEmpty
-                            ? null
-                            : _Methodsoffertilizer.value,
-                        onPressed: (option) {
-                          _Methodsoffertilizer.value = option ?? '';
-                        },
-                      )),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Plant Protection Cost (in Rs.)",
-                    controller: _plantProtectionCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Labour Details',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
-                  ),
-                  CustomTextFormField(
-                    labelText: "Own Labour(number)",
-                    controller: _ownLabourNumberController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Cost (in Rs.)",
-                    controller: _ownLabourCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Hired Labour(number)",
-                    controller: _hiredLabourNumberController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Cost (in Rs.)",
-                    controller: _hiredLabourCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Cost of animal drawn work (Rs.)",
-                    controller: _animalDrawnCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Cost of mechanized works (Rs.)",
-                    controller: _animalMechanizedCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Irrigation cost (in Rs.)",
-                    controller: _irrigationCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Other production cost, if any (Rs.)",
-                    controller: _otherProductionCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Total cost of production",
-                    controller: _totalProductionCostController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  const Text(
-                    'Returns',
-                    style:
-                        TextStyle(fontSize: 16.0, fontWeight: FontWeight.w500),
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Quantity of main product",
-                    controller: _mainProductQuantityController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Quantity of main product(in quintal)",
-                    controller: _mainProductPriceController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Price/unit (in Rs.)",
-                    controller: _mainProductAmountController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Total main product amount(in quintal)",
-                    controller: _byProductQuantityController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Quantity of By-products(in tons)",
-                    controller: _byProductPriceController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Price/unit (in Rs.)",
-                    controller: _byProductAmountController,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Total By- product amount(in Rs.)",
-                    controller: _totalByProductAmountController1,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextFormField(
-                    labelText: "Total returns (main and by product) (Rs.)",
-                    controller: _totalByProductAmountController2,
-                    keyboardType: TextInputType.number,
-                  ),
-                  const SizedBox(height: 20.0),
-                  CustomTextButton(
-                    text: "NEXT",
-                    onPressed: () => _submitData(context),
-                  ),
-                ],
-              ),
+                      );
+                    }
+                  },
+                ),
+              ],
             ),
           ),
         ),

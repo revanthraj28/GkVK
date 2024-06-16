@@ -96,5 +96,8 @@ class CropdetailsDB {
     );
   }
 
-  insert(Map<String, dynamic> data) {}
+  Future<int> saveCropDetails(Map<String, dynamic> data) async {
+    final database = await DatabaseService().database;
+    return await database.insert(tableName, data);
+  }
 }
