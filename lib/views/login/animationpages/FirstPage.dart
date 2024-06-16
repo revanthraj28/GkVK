@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:flutter_animate/flutter_animate.dart';
 import 'package:gkvk/views/login/animationpages/SecondPage.dart';
 
 class FirstPage extends StatefulWidget {
