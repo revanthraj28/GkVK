@@ -216,7 +216,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             ? null
                             : _selectedGender.value,
                         onPressed: (option) {
-                          _selectedGender.value = option ?? '';
+                          _selectedGender.value = option;
                         },
                         errorMessage: _selectedGender.value.isEmpty ? 'Please select gender' : null,
                       )),
@@ -228,7 +228,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             ? null
                             : _selectedCategory.value,
                         onPressed: (option) {
-                          _selectedCategory.value = option ?? '';
+                          _selectedCategory.value = option;
                         },
                         errorMessage: _selectedCategory.value.isEmpty ? 'Please select category' : null,
                       )),
@@ -240,7 +240,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             ? null
                             : _selectedLandHolding.value,
                         onPressed: (option) {
-                          _selectedLandHolding.value = option ?? '';
+                          _selectedLandHolding.value = option;
                         },
                         errorMessage: _selectedLandHolding.value.isEmpty ? 'Please select land holding' : null,
                       )),
@@ -287,7 +287,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             ? null
                             : _selectedFertilizerSource.value,
                         onPressed: (option) {
-                          _selectedFertilizerSource.value = option ?? '';
+                          _selectedFertilizerSource.value = option;
                         },
                         errorMessage: _selectedFertilizerSource.value.isEmpty ? 'Please select source' : null,
                       )),
@@ -311,7 +311,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             ? null
                             : _selectedSalesOfProduce.value,
                         onPressed: (option) {
-                          _selectedSalesOfProduce.value = option ?? '';
+                          _selectedSalesOfProduce.value = option;
                         },
                         errorMessage: _selectedSalesOfProduce.value.isEmpty ? 'Please select sales option' : null,
                       )),
@@ -323,7 +323,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             ? null
                             : _selectedLRIReceived.value,
                         onPressed: (option) {
-                          _selectedLRIReceived.value = option ?? '';
+                          _selectedLRIReceived.value = option;
                         },
                         errorMessage: _selectedLRIReceived.value.isEmpty ? 'Please select LRI option' : null,
                       )),
