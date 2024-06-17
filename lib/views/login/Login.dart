@@ -174,7 +174,14 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
               ),
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return const Scaffold(
+              backgroundColor: Color(0xFFFEF8E0), // Background color
+              body: Center(
+                child: CircularProgressIndicator(
+                  color: Color(0xFFFB812C), // Progress indicator color
+                ),
+              ),
+            );
           }
         },
       ),
