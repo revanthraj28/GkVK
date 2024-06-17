@@ -4,7 +4,6 @@ import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
-import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 import '../../detailsofCrops/Cropdetails/Cropdetails.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
@@ -51,8 +50,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => FarmerAreaPage(),
-          // Cropdetails(aadharId: int.parse(_aadharController.text))
+          builder: (context) => Cropdetails(aadharId: int.parse(_aadharController.text)),
         ),
       );
     } catch (e) {

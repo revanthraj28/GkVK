@@ -547,7 +547,6 @@ bool _validatecontrollers() {
                               'Tank',
                               'Canal',
                               'Others',
-                              'None'
                             ],
                             selectedOption:
                                 _selectedSourceOfIrrigation.value.isEmpty
