@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gkvk/views/home/home_view.dart';
 import 'package:gkvk/views/login/Login.dart';
 
 class ThirdPage extends StatefulWidget {
@@ -30,6 +32,29 @@ class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMix
     _controller.forward();
 
     Timer(const Duration(seconds: 2), () {
+      _checkAuthState();
+    });
+  }
+
+  Future<void> _checkAuthState() async {
+    User? user = FirebaseAuth.instance.currentUser;
+
+    if (user != null) {
+      // User is signed in
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => const HomeScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(
+              opacity: animation,
+              child: child,
+            );
+          },
+        ),
+      );
+    } else {
+      // User is not signed in
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
@@ -42,7 +67,7 @@ class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMix
           },
         ),
       );
-    });
+    }
   }
 
   @override
@@ -72,7 +97,7 @@ class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMix
                 style: TextStyle(
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
-                  color: Color(0xFF8DB600),
+                  color: Color(0xFFFB812C),
                 ),
                 textAlign: TextAlign.center,
               ),
