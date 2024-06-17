@@ -258,7 +258,7 @@ class _CropdetailsState extends State<Cropdetails> {
         },
         child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xFFFEF8E0),
+            backgroundColor: const Color(0xFFFEF8E0),
             centerTitle: true,
             title: const Text(
               'Enter the Crop details',
@@ -992,14 +992,14 @@ class _CropdetailsState extends State<Cropdetails> {
           ),
           bottomNavigationBar: BottomAppBar(
             height: 75,
-            color: Color(0xFFFEF8E0),
+            color: const Color(0xFFFEF8E0),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 CustomTextButton(
                   text: 'NEXT',
-                  buttonColor: Color(0xFFFB812C),
+                  buttonColor: const Color(0xFFFB812C),
                   onPressed: () {
                     if (_validateForm()) {
                       try {

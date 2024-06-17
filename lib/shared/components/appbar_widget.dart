@@ -10,7 +10,7 @@ class AppbarWidget extends StatelessWidget  implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      backgroundColor: Color(0xFFFEF8E0),
+      backgroundColor: const Color(0xFFFEF8E0),
       // Set the app bar color to white
       // centerTitle: true,
       title: Row(
@@ -20,7 +20,7 @@ class AppbarWidget extends StatelessWidget  implements PreferredSizeWidget {
             size: 30,
             color: Colors.green[600],
           ),
-          SizedBox(width: 20,),
+          const SizedBox(width: 20,),
           Text(
             'AgriConnect',
             style: TextStyle(

@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                               const SizedBox(height: 20),
                               CustomTextButton(
                                 text: "Sign In",
-                                buttonColor: Color(0xFFFB812C),
+                                buttonColor: const Color(0xFFFB812C),
                                 onPressed: () async {
                                   if (validateEmail(emailController.text) == null &&
                                       validatePassword(passwordController.text) == null) {

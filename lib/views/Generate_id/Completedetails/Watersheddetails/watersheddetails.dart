@@ -292,9 +292,9 @@ class WatershedView extends StatelessWidget {
       child: WillPopScope(
         onWillPop: () => _onWillPop(context),
         child: Scaffold(
-          backgroundColor: Color(0xFFFEF8E0),
+          backgroundColor: const Color(0xFFFEF8E0),
           appBar: AppBar(
-            backgroundColor: Color(0xFFFEF8E0),
+            backgroundColor: const Color(0xFFFEF8E0),
             centerTitle: true,
             title: const Text(
               'ENTER WATER-SHED DETAILS',
@@ -422,14 +422,14 @@ class WatershedView extends StatelessWidget {
               children: [
                 CustomTextButton(
                   text: 'PREVIOUS WATERSHED',
-                  buttonColor: Color(0xFFFB812C),
+                  buttonColor: const Color(0xFFFB812C),
                   onPressed: () {
                     _navigateWithLatestWaterShedId(context);
                   },
                 ),
                 CustomTextButton(
                   text: 'NEXT',
-                  buttonColor: Color(0xFFFB812C),
+                  buttonColor: const Color(0xFFFB812C),
                   onPressed: () {
                     if (_formKey.currentState?.validate()?? false) {
                       if (_selectedCategory.value.isEmpty) {

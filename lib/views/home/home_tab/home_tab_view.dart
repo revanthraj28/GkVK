@@ -44,7 +44,7 @@ class HomeTabView extends StatelessWidget {
                           color: const Color(0xFFFEF8E0),//Color(0xFFFEF8E0)
                           borderRadius: BorderRadius.circular(5),
                         ),
-                        child: Stack(
+                        child: const Stack(
                           children: [
                             Align(
                               alignment: Alignment.center,
@@ -151,7 +151,7 @@ class HomeTabView extends StatelessWidget {
                   children: [
                     Text(
                       firstLine,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w600,
                         color: Color(0xFFFB812C),
@@ -159,7 +159,7 @@ class HomeTabView extends StatelessWidget {
                     ),
                     Text(
                       secondLine,
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 12,
                         color: Colors.black,
                       ),

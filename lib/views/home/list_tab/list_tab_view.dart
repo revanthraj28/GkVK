@@ -15,7 +15,7 @@ void main() {
 }
 
 class ListTabView extends StatefulWidget {
-  const ListTabView({Key? key}) : super(key: key);
+  const ListTabView({super.key});
 
   @override
   _ListTabViewState createState() => _ListTabViewState();
@@ -134,7 +134,7 @@ class _ListTabViewState extends State<ListTabView> {
                       return Container(
                         height: MediaQuery.of(context).size.height / 2,
                         decoration: BoxDecoration(
-                          color: Color(0xFFFEF8E0),
+                          color: const Color(0xFFFEF8E0),
                           borderRadius: BorderRadius.circular(10),
                           boxShadow: [
                             BoxShadow(
@@ -200,7 +200,7 @@ class _ListTabViewState extends State<ListTabView> {
     return Container(
       height: MediaQuery.of(context).size.height / 2,
       decoration: BoxDecoration(
-        color: Color(0xFFFEF8E0),
+        color: const Color(0xFFFEF8E0),
         borderRadius: BorderRadius.circular(10),
         boxShadow: [
           BoxShadow(
@@ -216,14 +216,14 @@ class _ListTabViewState extends State<ListTabView> {
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
+          const Text(
             'No farmers to upload.',
             style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 20),
           CustomTextButton(
             text: 'REFRESH',
-            buttonColor: Color(0xFFFB812C),
+            buttonColor: const Color(0xFFFB812C),
             onPressed: () {
               setState(() {
                 _farmersFuture = fetchAllFarmers();
@@ -241,10 +241,10 @@ class UploadStatusTile extends StatelessWidget {
   final Function(int) uploadFunction;
 
   const UploadStatusTile({
-    Key? key,
+    super.key,
     required this.aadharNumber,
     required this.uploadFunction,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
