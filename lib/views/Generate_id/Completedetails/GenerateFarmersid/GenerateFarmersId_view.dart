@@ -405,7 +405,8 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             );
                           },
                         );
-                      } else if (_farmerNameController.text.isEmpty ||
+                      }
+                      if (_farmerNameController.text.isEmpty ||
                           _fatherNameController.text.isEmpty ||
                           _aadharController.text.isEmpty ||
                           _schoolingController.text.isEmpty ||

@@ -470,7 +470,8 @@ class WatershedView extends StatelessWidget {
                             );
                           },
                         );
-                      } else if (_districtController.text.isEmpty ||
+                      }
+                      if (_districtController.text.isEmpty ||
                           _talukController.text.isEmpty ||
                           _hobliController.text.isEmpty ||
                           _subWatershedNameController.text.isEmpty ||
