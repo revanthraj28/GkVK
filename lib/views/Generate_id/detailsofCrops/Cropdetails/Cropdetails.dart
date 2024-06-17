@@ -245,6 +245,54 @@ class _CropdetailsState extends State<Cropdetails> {
     return true;
   }
 
+  bool _validatecontrollers() {
+    if (!_formKey.currentState!.validate()) {
+      return false;
+    }
+
+    if (_cropNameController.text.isEmpty ||
+        _areaController.text.isEmpty ||
+        _surveyHissaController.text.isEmpty ||
+        _varietyController.text.isEmpty ||
+        _durationController.text.isEmpty ||
+        _costController.text.isEmpty ||
+        _rdfNitrogenController.text.isEmpty ||
+        _rdfPhosphorousController.text.isEmpty ||
+        _rdfPotassiumController.text.isEmpty ||
+        _adjustedrdfNitrogenController.text.isEmpty ||
+        _adjustedrdfPhosphorousController.text.isEmpty ||
+        _adjustedrdfPotassiumController.text.isEmpty ||
+        _organicManureNameController.text.isEmpty ||
+        _organicManureQuantityController.text.isEmpty ||
+        _organicManureCostController.text.isEmpty ||
+        _bioFertilizerNameController.text.isEmpty ||
+        _bioFertilizerQuantityController.text.isEmpty ||
+        _bioFertilizerCostController.text.isEmpty ||
+        _plantProtectionCostController.text.isEmpty ||
+        _ownLabourNumberController.text.isEmpty ||
+        _ownLabourCostController.text.isEmpty ||
+        _hiredLabourNumberController.text.isEmpty ||
+        _hiredLabourCostController.text.isEmpty ||
+        _animalDrawnCostController.text.isEmpty ||
+        _animalMechanizedCostController.text.isEmpty ||
+        _irrigationCostController.text.isEmpty ||
+        _otherProductionCostController.text.isEmpty ||
+        _totalProductionCostController.text.isEmpty ||
+        _mainProductQuantityController.text.isEmpty ||
+        _mainProductPriceController.text.isEmpty ||
+        _mainProductAmountController.text.isEmpty ||
+        _byProductQuantityController.text.isEmpty ||
+        _byProductPriceController.text.isEmpty ||
+        _byProductAmountController.text.isEmpty ||
+        _totalByProductAmountController1.text.isEmpty ||
+        _totalByProductAmountController2.text.isEmpty ||
+        _totalByProductAmountController3.text.isEmpty) {
+      return false;
+    }
+
+    return true;
+  }
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -373,7 +421,8 @@ class _CropdetailsState extends State<Cropdetails> {
                               'Borewell',
                               'Tank',
                               'Canal',
-                              'Others'
+                              'Others',
+                              'None'
                             ],
                             selectedOption:
                                 _selectedSourceOfIrrigation.value.isEmpty
@@ -1001,10 +1050,31 @@ class _CropdetailsState extends State<Cropdetails> {
                   text: 'NEXT',
                   buttonColor: const Color(0xFFFB812C),
                   onPressed: () {
-                    if (_validateForm()) {
+                    if (_validateForm() || _validatecontrollers() == false) {
+                      // Show dialog if either validation fails
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Alert!'),
+                            content: const Text('Fill the fields properly'),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    } else {
+                      // Try submitting data if both validations pass
                       try {
                         _submitData(context);
                       } catch (e) {
+                        // Show error dialog if data submission fails
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
@@ -1024,24 +1094,6 @@ class _CropdetailsState extends State<Cropdetails> {
                           },
                         );
                       }
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Alert!'),
-                            content: const Text('Fill the fields properly'),
-                            actions: [
-                              TextButton(
-                                child: const Text('OK'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ],
-                          );
-                        },
-                      );
                     }
                   },
                 ),
