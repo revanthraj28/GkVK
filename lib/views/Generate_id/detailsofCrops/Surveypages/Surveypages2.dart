@@ -77,17 +77,38 @@ class _SurveyPage2State extends State<SurveyPage2> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: const Text('Incomplete Survey'),
-            content: const Text('Please answer all questions before proceeding.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            backgroundColor: const Color(0xFFFEF8E0),
+            title: const Text(
+              'Incomplete Survey',
+              style: TextStyle(
+                color: Color(0xFFFB812C),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: const Text(
+              'Please answer all questions before proceeding.',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
             actions: [
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
-                child: const Text('OK'),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(
+                    color: Color(0xFFFB812C),
+                  ),
+                ),
               ),
             ],
           );
+
         },
       );
     }
@@ -99,17 +120,42 @@ class _SurveyPage2State extends State<SurveyPage2> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Exit'),
-          content: const Text('Do you want to return to the home page?'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: const Color(0xFFFEF8E0),
+          title: const Text(
+            'Exit',
+            style: TextStyle(
+              color: Color(0xFFFB812C),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'Do you want to return to the home page?',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('OK'),
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
@@ -119,6 +165,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
       },
     );
   }
+
 
   @override
   Widget build(BuildContext context) {

@@ -43,6 +43,12 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     });
   }
 
+  void validate() {
+    setState(() {
+      _errorText = widget.validator != null ? widget.validator!(widget.controller.text) : null;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -55,6 +61,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
         filled: true,
         fillColor: Colors.white,
         errorText: _errorText,
+        errorStyle: const TextStyle(color: Colors.red),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(5),
           borderSide: const BorderSide(color: Colors.transparent), // Transparent border

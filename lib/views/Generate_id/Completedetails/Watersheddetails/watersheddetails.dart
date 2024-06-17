@@ -80,11 +80,11 @@ class WatershedView extends StatelessWidget {
   void _navigateWithLatestWaterShedId(BuildContext context) async {
     final latestId = await _getLatestWaterShedId();
     print('Data uploaded successfully with ID: $latestId');
-    if (latestId != null) {
+    if (latestId!= null) {
       final database = await DatabaseService().database;
       final List<Map<String, dynamic>> result = await database.query(
         'water_shed_table',
-        where: 'watershedId = ?',
+        where: 'watershedId =?',
         whereArgs: [latestId],
       );
 
@@ -94,7 +94,17 @@ class WatershedView extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Confirm'),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              backgroundColor: const Color(0xFFFEF8E0),
+              title: const Text(
+                'Confirm',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
               content: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +123,12 @@ class WatershedView extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       TextButton(
-                        child: const Text('Continue'),
+                        child: const Text(
+                          'Continue',
+                          style: TextStyle(
+                            color: Color(0xFFFB812C),
+                          ),
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop();
                           Navigator.push(
@@ -125,7 +140,12 @@ class WatershedView extends StatelessWidget {
                         },
                       ),
                       TextButton(
-                        child: const Text('Cancel'),
+                        child: const Text(
+                          'Cancel',
+                          style: TextStyle(
+                            color: Color(0xFFFB812C),
+                          ),
+                        ),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
@@ -142,11 +162,31 @@ class WatershedView extends StatelessWidget {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: const Text('Error'),
-              content: const Text('No previous watershed data found.'),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15.0),
+              ),
+              backgroundColor: const Color(0xFFFEF8E0),
+              title: const Text(
+                'ALERT',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              content: const Text(
+                'No previous watershed data found.',
+                style: TextStyle(
+                  color: Colors.black,
+                ),
+              ),
               actions: [
                 TextButton(
-                  child: const Text('OK'),
+                  child: const Text(
+                    'OK',
+                    style: TextStyle(
+                      color: Color(0xFFFB812C),
+                    ),
+                  ),
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
@@ -161,11 +201,31 @@ class WatershedView extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Error'),
-            content: const Text('No previous watershed data found.'),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            backgroundColor: const Color(0xFFFEF8E0),
+            title: const Text(
+              'ALERT',
+              style: TextStyle(
+                color: Color(0xFFFB812C),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: const Text(
+              'No previous watershed data found.',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
             actions: [
               TextButton(
-                child: const Text('OK'),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(
+                    color: Color(0xFFFB812C),
+                  ),
+                ),
                 onPressed: () {
                   Navigator.of(context).pop();
                 },
@@ -177,19 +237,45 @@ class WatershedView extends StatelessWidget {
     }
   }
 
+
   Future<bool> _onWillPop(BuildContext context) async {
     return (await showDialog(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('Confirm Exit'),
-        content: const Text('Do you want to return to the home page?'),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        backgroundColor: const Color(0xFFFEF8E0),
+        title: const Text(
+          'Confirm Exit',
+          style: TextStyle(
+            color: Color(0xFFFB812C),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: const Text(
+          'Do you want to return to the home page?',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
         actions: [
           TextButton(
-            child: const Text('Cancel'),
+            child: const Text(
+              'Cancel',
+              style: TextStyle(
+                color: Color(0xFFFB812C),
+              ),
+            ),
             onPressed: () => Navigator.of(context).pop(false),
           ),
           TextButton(
-            child: const Text('OK'),
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: Color(0xFFFB812C),
+              ),
+            ),
             onPressed: () => Navigator.of(context).pop(true),
           ),
         ],
@@ -345,18 +431,80 @@ class WatershedView extends StatelessWidget {
                   text: 'NEXT',
                   buttonColor: Color(0xFFFB812C),
                   onPressed: () {
-                    if (_formKey.currentState?.validate() ?? false) {
+                    if (_formKey.currentState?.validate()?? false) {
                       if (_selectedCategory.value.isEmpty) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text('Error'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              backgroundColor: const Color(0xFFFEF8E0),
+                              title: const Text(
+                                'ALERT',
+                                style: TextStyle(
+                                  color: Color(0xFFFB812C),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               content: const Text(
-                                  'All fields must be filled and a treatment option selected.'),
+                                'All fields must be filled and a treatment option selected.',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
                               actions: [
                                 TextButton(
-                                  child: const Text('OK'),
+                                  child: const Text(
+                                    'OK',
+                                    style: TextStyle(
+                                      color: Color(0xFFFB812C),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else if (_districtController.text.isEmpty ||
+                          _talukController.text.isEmpty ||
+                          _hobliController.text.isEmpty ||
+                          _subWatershedNameController.text.isEmpty ||
+                          _subWatershedCodeController.text.isEmpty ||
+                          _villageController.text.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              backgroundColor: const Color(0xFFFEF8E0),
+                              title: const Text(
+                                'ALERT',
+                                style: TextStyle(
+                                  color: Color(0xFFFB812C),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: const Text(
+                                'All fields must be filled.',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text(
+                                    'OK',
+                                    style: TextStyle(
+                                      color: Color(0xFFFB812C),
+                                    ),
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -370,7 +518,8 @@ class WatershedView extends StatelessWidget {
                       }
                     }
                   },
-                ),
+                )
+
               ],
             ),
           ),

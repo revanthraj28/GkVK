@@ -46,7 +46,7 @@ class SelectionButton extends StatelessWidget {
                 onPressed: () => onPressed(option),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: option == selectedOption
-                      ? const Color(0xFF8DB600)
+                      ?  Colors.black
                       : Colors.white,
                   foregroundColor:
                   option == selectedOption ? Colors.white : Colors.black,
