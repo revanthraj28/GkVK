@@ -6,15 +6,15 @@ class CustomTextButton extends StatelessWidget {
   final Color? buttonColor; // Optional parameter for button background color
 
   const CustomTextButton({
-    Key? key,
+    super.key,
     required this.text,
     required this.onPressed,
     this.buttonColor, // Optional button color parameter
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
-    final defaultButtonColor = const Color(0xFF8DB600); // Default button color if not provided
+    const defaultButtonColor = Color(0xFF8DB600); // Default button color if not provided
 
     return SizedBox(
       width: double.infinity, // Make the button occupy the full width

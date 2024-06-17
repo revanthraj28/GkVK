@@ -9,12 +9,12 @@ class QuestionContainer extends StatelessWidget {
   final String? errorText; // Add errorText parameter
 
   const QuestionContainer({
-    Key? key,
+    super.key,
     required this.question,
     required this.onChanged,
     this.selectedOption,
     this.errorText, // Include errorText as an optional parameter
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +47,7 @@ class QuestionContainer extends StatelessWidget {
               padding: const EdgeInsets.only(top: 8.0),
               child: Text(
                 errorText!,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.red,
                   fontSize: 12.0,
                 ),

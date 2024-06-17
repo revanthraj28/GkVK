@@ -15,7 +15,7 @@ class HomeBodyWidget extends StatelessWidget {
     const ProfilePage(),
   ];
 
-  HomeBodyWidget({Key? key}) : super(key: key);
+  HomeBodyWidget({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -10,7 +10,7 @@ import 'package:gkvk/shared/components/Question/question_container.dart';
 
 class SurveyPage2 extends StatefulWidget {
   final int aadharId;
-  const SurveyPage2({Key? key, required this.aadharId}) : super(key: key);
+  const SurveyPage2({super.key, required this.aadharId});
 
   @override
   State<SurveyPage2> createState() => _SurveyPage2State();
@@ -129,7 +129,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
       },
       child: Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFFFEF8E0),
+          backgroundColor: const Color(0xFFFEF8E0),
           centerTitle: true,
           title: const Text(
             'SURVEY PAGE 2',
@@ -163,14 +163,14 @@ class _SurveyPage2State extends State<SurveyPage2> {
         ),
         bottomNavigationBar: BottomAppBar(
           height: 75,
-          color: Color(0xFFFEF8E0),
+          color: const Color(0xFFFEF8E0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               CustomTextButton(
                 text: 'NEXT',
-                buttonColor: Color(0xFFFB812C),
+                buttonColor: const Color(0xFFFB812C),
                 onPressed: _validateAndProceed,
               ),
             ],

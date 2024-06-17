@@ -9,14 +9,14 @@ class SelectionButton extends StatelessWidget {
   final String? errorMessage;
 
   const SelectionButton({
-    Key? key,
+    super.key,
     required this.label,
     required this.options,
     required this.selectedOption,
     required this.onPressed,
     this.onChanged,
     this.errorMessage,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
