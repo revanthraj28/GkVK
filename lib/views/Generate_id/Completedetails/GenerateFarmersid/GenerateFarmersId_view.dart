@@ -8,7 +8,7 @@ import '../../detailsofCrops/Cropdetails/Cropdetails.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
   final int waterShedId;
-  final _formKey = GlobalKey<FormState>(); // Add form key for validation
+// Add form key for validation
 
   final TextEditingController _farmerNameController = TextEditingController();
   final TextEditingController _fatherNameController = TextEditingController();
@@ -24,6 +24,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
   final RxString _selectedFertilizerSource = ''.obs;
   final RxString _selectedSalesOfProduce = ''.obs;
   final RxString _selectedLRIReceived = ''.obs;
+  final _formKey = GlobalKey<FormState>();
 
   GenerateFarmersIdPage({required this.waterShedId, super.key});
 
@@ -59,7 +60,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: Text('Failed to upload data: $e'),
+            content: Text('Failed to upload data'),
             actions: [
               TextButton(
                 child: const Text('OK'),
@@ -80,17 +81,42 @@ class GenerateFarmersIdPage extends StatelessWidget {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Exit'),
-          content: const Text('Do you want to return to the home page?'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: const Color(0xFFFEF8E0),
+          title: const Text(
+            'Exit',
+            style: TextStyle(
+              color: Color(0xFFFB812C),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'Do you want to return to the home page?',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('OK'),
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
@@ -99,21 +125,6 @@ class GenerateFarmersIdPage extends StatelessWidget {
         );
       },
     );
-  }
-
-  bool _validateForm() {
-    bool isValid = _formKey.currentState?.validate() ?? false;
-
-    if (_selectedGender.value.isEmpty ||
-        _selectedCategory.value.isEmpty ||
-        _selectedLandHolding.value.isEmpty ||
-        _selectedFertilizerSource.value.isEmpty ||
-        _selectedSalesOfProduce.value.isEmpty ||
-        _selectedLRIReceived.value.isEmpty) {
-      isValid = false;
-    }
-
-    return isValid;
   }
 
   @override
@@ -186,7 +197,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                                   return "Please enter pincode";
                                 }
                                 if (value.length != 6) {
-                                  return "Pincode must be 6 digits";
+                                  return "6 digits only";
                                 }
                                 return null;
                               },
@@ -202,10 +213,15 @@ class GenerateFarmersIdPage extends StatelessWidget {
                                 if (value == null || value.isEmpty) {
                                   return "Please enter years of schooling";
                                 }
+                                int? yearsOfSchooling = int.tryParse(value);
+                                if (yearsOfSchooling == null || yearsOfSchooling > 20) {
+                                  return "Less than 20 Only";
+                                }
                                 return null;
                               },
                             ),
                           ),
+
                         ],
                       ),
                       const SizedBox(height: 20.0),
@@ -257,7 +273,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                                   return "Please enter Aadhar number";
                                 }
                                 if (value.length != 12) {
-                                  return "Aadhar number must be 12 digits";
+                                  return "12 digits only";
                                 }
                                 return null;
                               },
@@ -345,19 +361,42 @@ class GenerateFarmersIdPage extends StatelessWidget {
                   text: 'NEXT',
                   buttonColor: const Color(0xFFFB812C),
                   onPressed: () {
-                    if (_validateForm()) {
-                      try {
-                        _uploadData(context);
-                      } catch (e) {
+                    if (_formKey.currentState?.validate()?? false) {
+                      if (_selectedGender.value.isEmpty ||
+                          _selectedCategory.value.isEmpty ||
+                          _selectedLandHolding.value.isEmpty ||
+                          _selectedFertilizerSource.value.isEmpty ||
+                          _selectedSalesOfProduce.value.isEmpty ||
+                          _selectedLRIReceived.value.isEmpty) {
                         showDialog(
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text('Error'),
-                              content: const Text('Failed to upload data. Please check your input and try again.'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              backgroundColor: const Color(0xFFFEF8E0),
+                              title: const Text(
+                                'Alert',
+                                style: TextStyle(
+                                  color: Color(0xFFFB812C),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: const Text(
+                                'All fields must be filled and a treatment option selected.',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
                               actions: [
                                 TextButton(
-                                  child: const Text('OK'),
+                                  child: const Text(
+                                    'OK',
+                                    style: TextStyle(
+                                      color: Color(0xFFFB812C),
+                                    ),
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -366,28 +405,57 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             );
                           },
                         );
-                      }
-                    } else {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return AlertDialog(
-                            title: const Text('Alert!'),
-                            content: const Text('Fill the fields properly'),
-                            actions: [
-                              TextButton(
-                                child: const Text('OK'),
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
+                      } else if (_farmerNameController.text.isEmpty ||
+                          _fatherNameController.text.isEmpty ||
+                          _aadharController.text.isEmpty ||
+                          _schoolingController.text.isEmpty ||
+                          _pincodeController.text.isEmpty ||
+                          _fruitsIdController.text.isEmpty ||
+                          _fertilizerAddressController.text.isEmpty) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
                               ),
-                            ],
-                          );
-                        },
-                      );
+                              backgroundColor: const Color(0xFFFEF8E0),
+                              title: const Text(
+                                'Alert',
+                                style: TextStyle(
+                                  color: Color(0xFFFB812C),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: const Text(
+                                'All fields must be filled.',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text(
+                                    'OK',
+                                    style: TextStyle(
+                                      color: Color(0xFFFB812C),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      } else {
+                        _uploadData(context);
+                      }
                     }
                   },
-                ),
+                )
+
               ],
             ),
           ),

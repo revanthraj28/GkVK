@@ -24,7 +24,7 @@ class OptionButtonGroup extends StatelessWidget {
           child: ElevatedButton(
             onPressed: () => onPressed(option),
             style: ElevatedButton.styleFrom(
-              backgroundColor: option == selectedOption ? const Color(0xFF8DB600) : Colors.white,
+              backgroundColor: option == selectedOption ? Colors.black : Colors.white,
               foregroundColor: option == selectedOption ? Colors.white : Colors.black,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5.0),

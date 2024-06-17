@@ -174,6 +174,7 @@ class _ListTabViewState extends State<ListTabView> {
                             const SizedBox(height: 20),
                             CustomTextButton(
                               text: 'UPLOAD ALL',
+                              buttonColor: Color(0xFFFB812C),
                               onPressed: () async {
                                 final farmers = await _farmersFuture;
                                 for (var farmer in farmers) {
@@ -252,7 +253,7 @@ class UploadStatusTile extends StatelessWidget {
       title: Text('Farmer Id: $aadharNumber'),
       subtitle: const Text('Upload pending'),
       trailing: IconButton(
-        icon: const Icon(Icons.cloud_upload, color: Color(0xFF8DB600)),
+        icon: const Icon(Icons.cloud_upload, color: Color(0xFFFB812C)),
         onPressed: () async {
           try {
             await uploadFunction(aadharNumber);
