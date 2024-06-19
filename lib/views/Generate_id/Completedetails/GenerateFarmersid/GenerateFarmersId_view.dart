@@ -4,6 +4,7 @@ import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
+import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 import '../../detailsofCrops/Cropdetails/Cropdetails.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
@@ -50,7 +51,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Cropdetails(aadharId: int.parse(_aadharController.text)),
+          builder: (context) => FarmerAreaPage(aadharId: int.parse(_aadharController.text)),
         ),
       );
     } catch (e) {
@@ -165,7 +166,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter farmer's name";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -177,7 +178,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter father's/husband name";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -192,7 +193,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                               keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please enter pincode";
+                                  return "Please provide details";
                                 }
                                 if (value.length != 6) {
                                   return "6 digits only";
@@ -204,12 +205,12 @@ class GenerateFarmersIdPage extends StatelessWidget {
                           const SizedBox(width: 10.0),
                           Expanded(
                             child: CustomTextFormField(
-                              labelText: "Year's of Schooling",
+                              labelText: "Schooling year's",
                               keyboardType: TextInputType.number,
                               controller: _schoolingController,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please enter years of schooling";
+                                  return "Please provide details";
                                 }
                                 int? yearsOfSchooling = int.tryParse(value);
                                 if (yearsOfSchooling == null || yearsOfSchooling > 20) {
@@ -268,7 +269,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                               keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please enter Aadhar number";
+                                  return "Please provide details";
                                 }
                                 if (value.length != 12) {
                                   return "12 digits only";
@@ -285,7 +286,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                               keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please enter Fruits ID number";
+                                  return "Please provide details";
                                 }
                                 return null;
                               },
@@ -312,7 +313,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                         keyboardType: TextInputType.streetAddress,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter address";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -382,7 +383,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                                 ),
                               ),
                               content: const Text(
-                                'All fields must be filled and a treatment option selected.',
+                                'All the details must be filled.',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -404,7 +405,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                           },
                         );
                       }
-                      if (_farmerNameController.text.isEmpty ||
+                      else if (_farmerNameController.text.isEmpty ||
                           _fatherNameController.text.isEmpty ||
                           _aadharController.text.isEmpty ||
                           _schoolingController.text.isEmpty ||
@@ -427,7 +428,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                                 ),
                               ),
                               content: const Text(
-                                'All fields must be filled.',
+                                'All the details must be filled.',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),

@@ -70,7 +70,7 @@ class SelectionButton extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 5.0, top: 5.0),
             child: Text(
-              errorMessage!,
+              'Please provide details',
               style: const TextStyle(
                 color: Colors.red,
                 fontSize: 12,
