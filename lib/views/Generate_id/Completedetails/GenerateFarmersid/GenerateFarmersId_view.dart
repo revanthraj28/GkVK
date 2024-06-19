@@ -5,7 +5,6 @@ import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
-import '../../detailsofCrops/Cropdetails/Cropdetails.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
   final int waterShedId;

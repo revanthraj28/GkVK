@@ -8,7 +8,7 @@ import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.d
 class FarmerAreaPage extends StatefulWidget {
   final int aadharId;
 
-  FarmerAreaPage({required this.aadharId, super.key});
+  const FarmerAreaPage({required this.aadharId, super.key});
   @override
   _FarmerAreaPageState createState() => _FarmerAreaPageState();
 }
@@ -115,7 +115,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                         const SizedBox(height: 20.0),
                       ],
                     );
-                  }).toList(),
+                  }),
                   CustomTextButton(
                     text: "Add area",
                     onPressed: addNewForm,
