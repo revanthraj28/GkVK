@@ -8,13 +8,13 @@ class CustomTextFormField extends StatefulWidget {
   final String? Function(String?)? validator;
 
   const CustomTextFormField({
-    super.key,
+    Key? key,
     required this.labelText,
     this.obscureText = false,
     required this.keyboardType,
     required this.controller,
     this.validator,
-  });
+  }) : super(key: key);
 
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
@@ -26,6 +26,8 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   void initState() {
     super.initState();
+    // Initialize error text with validation result
+    _errorText = widget.validator != null ? widget.validator!(widget.controller.text) : null;
     // Add a listener to the controller to validate on text change
     widget.controller.addListener(_validate);
   }
@@ -43,12 +45,6 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
     });
   }
 
-  void validate() {
-    setState(() {
-      _errorText = widget.validator != null ? widget.validator!(widget.controller.text) : null;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -57,6 +53,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
       keyboardType: widget.keyboardType,
       decoration: InputDecoration(
         labelText: _errorText == null ? widget.labelText : null, // Show labelText only if no error
+        hintText: _errorText != null ? widget.labelText : null, // Show labelText as hint when error
         labelStyle: const TextStyle(color: Colors.black45),
         filled: true,
         fillColor: Colors.white,

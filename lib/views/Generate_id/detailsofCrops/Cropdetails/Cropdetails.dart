@@ -1,5 +1,4 @@
 // ignore: file_names
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
@@ -44,44 +43,44 @@ class _CropdetailsState extends State<Cropdetails> {
   final _bioFertilizerCostController = TextEditingController();
 
   final TextEditingController _plantProtectionCostController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _ownLabourNumberController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _ownLabourCostController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _hiredLabourNumberController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _hiredLabourCostController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _animalDrawnCostController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _animalMechanizedCostController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _irrigationCostController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _otherProductionCostController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _totalProductionCostController =
-      TextEditingController();
+  TextEditingController();
 
   final TextEditingController _mainProductQuantityController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _mainProductPriceController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _mainProductAmountController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _byProductQuantityController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _byProductPriceController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _byProductAmountController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _totalByProductAmountController1 =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _totalByProductAmountController2 =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _totalByProductAmountController3 =
-      TextEditingController();
+  TextEditingController();
 
   final RxString _selectedTypeOfLand = ''.obs;
   final RxString _selectedSeason = ''.obs;
@@ -119,7 +118,7 @@ class _CropdetailsState extends State<Cropdetails> {
       'cropName': _cropNameController.text,
       'cropNumber': int.tryParse(_cropNumberController.text),
       'area': double.tryParse(_areaController.text),
-      'surveyHissa': _surveyHissaController.text,
+      'surveyHissa': widget.hissaNumber,
       'variety': _varietyController.text,
       'duration': int.tryParse(_durationController.text),
       'season': _selectedSeason.value,
@@ -137,39 +136,39 @@ class _CropdetailsState extends State<Cropdetails> {
       'adjustedrdfPotassium': _adjustedrdfPotassiumController.text,
       'organicManureName': _organicManureNameController.text,
       'organicManureQuantity':
-          double.tryParse(_organicManureQuantityController.text),
+      double.tryParse(_organicManureQuantityController.text),
       'organicManureCost': double.tryParse(_organicManureCostController.text),
       'bioFertilizerName': _bioFertilizerNameController.text,
       'bioFertilizerQuantity':
-          double.tryParse(_bioFertilizerQuantityController.text),
+      double.tryParse(_bioFertilizerQuantityController.text),
       'bioFertilizerCost': double.tryParse(_bioFertilizerCostController.text),
       'plantProtectionCost':
-          double.tryParse(_plantProtectionCostController.text),
+      double.tryParse(_plantProtectionCostController.text),
       'ownLabourNumber': int.tryParse(_ownLabourNumberController.text),
       'ownLabourCost': double.tryParse(_ownLabourCostController.text),
       'hiredLabourNumber': int.tryParse(_hiredLabourNumberController.text),
       'hiredLabourCost': double.tryParse(_hiredLabourCostController.text),
       'animalDrawnCost': double.tryParse(_animalDrawnCostController.text),
       'animalMechanizedCost':
-          double.tryParse(_animalMechanizedCostController.text),
+      double.tryParse(_animalMechanizedCostController.text),
       'irrigationCost': double.tryParse(_irrigationCostController.text),
       'otherProductionCost':
-          double.tryParse(_otherProductionCostController.text),
+      double.tryParse(_otherProductionCostController.text),
       'totalProductionCost':
-          double.tryParse(_totalProductionCostController.text),
+      double.tryParse(_totalProductionCostController.text),
       'mainProductQuantity':
-          double.tryParse(_mainProductQuantityController.text),
+      double.tryParse(_mainProductQuantityController.text),
       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
       'mainProductAmount': double.tryParse(_mainProductAmountController.text),
       'byProductQuantity': double.tryParse(_byProductQuantityController.text),
       'byProductPrice': double.tryParse(_byProductPriceController.text),
       'byProductAmount': double.tryParse(_byProductAmountController.text),
       'totalByProductAmount1':
-          double.tryParse(_totalByProductAmountController1.text),
+      double.tryParse(_totalByProductAmountController1.text),
       'totalByProductAmount2':
-          double.tryParse(_totalByProductAmountController2.text),
+      double.tryParse(_totalByProductAmountController2.text),
       'totalByProductAmount3':
-          double.tryParse(_totalByProductAmountController3.text),
+      double.tryParse(_totalByProductAmountController3.text),
       'methodsoffertilizer': _Methodsoffertilizer.value,
     };
 
@@ -253,132 +252,177 @@ class _CropdetailsState extends State<Cropdetails> {
       }
     }
 
-    return true;
-  }
+  return true;
+}
+// bool _validatecontrollers() {
+//   List<String> emptyFields = [];
+
+//   // Check if all text controllers have non-empty values
+//   if (_cropNameController.text.isEmpty) {
+//     emptyFields.add('Crop Name');
+//   }
+//   if (_areaController.text.isEmpty) {
+//     emptyFields.add('Area');
+//   }
+//   if (_surveyHissaController.text.isEmpty) {
+//     emptyFields.add('Survey Hissa');
+//   }
+//   if (_varietyController.text.isEmpty) {
+//     emptyFields.add('Variety');
+//   }
+//   if (_durationController.text.isEmpty) {
+//     emptyFields.add('Duration');
+//   }
+//   if (_costController.text.isEmpty) {
+//     emptyFields.add('Cost');
+//   }
+//   if (_rdfNitrogenController.text.isEmpty) {
+//     emptyFields.add('RDF Nitrogen');
+//   }
+//   if (_rdfPhosphorousController.text.isEmpty) {
+//     emptyFields.add('RDF Phosphorous');
+//   }
+//   if (_rdfPotassiumController.text.isEmpty) {
+//     emptyFields.add('RDF Potassium');
+//   }
+//   if (_adjustedrdfNitrogenController.text.isEmpty) {
+//     emptyFields.add('Adjusted RDF Nitrogen');
+//   }
+//   if (_adjustedrdfPhosphorousController.text.isEmpty) {
+//     emptyFields.add('Adjusted RDF Phosphorous');
+//   }
+//   if (_adjustedrdfPotassiumController.text.isEmpty) {
+//     emptyFields.add('Adjusted RDF Potassium');
+//   }
+//   if (_organicManureNameController.text.isEmpty) {
+//     emptyFields.add('Organic Manure Name');
+//   }
+//   if (_organicManureQuantityController.text.isEmpty) {
+//     emptyFields.add('Organic Manure Quantity');
+//   }
+//   if (_organicManureCostController.text.isEmpty) {
+//     emptyFields.add('Organic Manure Cost');
+//   }
+//   if (_bioFertilizerNameController.text.isEmpty) {
+//     emptyFields.add('Bio-Fertilizer Name');
+//   }
+//   if (_bioFertilizerQuantityController.text.isEmpty) {
+//     emptyFields.add('Bio-Fertilizer Quantity');
+//   }
+//   if (_bioFertilizerCostController.text.isEmpty) {
+//     emptyFields.add('Bio-Fertilizer Cost');
+//   }
+//   if (_plantProtectionCostController.text.isEmpty) {
+//     emptyFields.add('Plant Protection Cost');
+//   }
+//   if (_ownLabourNumberController.text.isEmpty) {
+//     emptyFields.add('Own Labour Number');
+//   }
+//   if (_ownLabourCostController.text.isEmpty) {
+//     emptyFields.add('Own Labour Cost');
+//   }
+//   if (_hiredLabourNumberController.text.isEmpty) {
+//     emptyFields.add('Hired Labour Number');
+//   }
+//   if (_hiredLabourCostController.text.isEmpty) {
+//     emptyFields.add('Hired Labour Cost');
+//   }
+//   if (_animalDrawnCostController.text.isEmpty) {
+//     emptyFields.add('Animal Drawn Cost');
+//   }
+//   if (_animalMechanizedCostController.text.isEmpty) {
+//     emptyFields.add('Animal Mechanized Cost');
+//   }
+//   if (_irrigationCostController.text.isEmpty) {
+//     emptyFields.add('Irrigation Cost');
+//   }
+//   if (_otherProductionCostController.text.isEmpty) {
+//     emptyFields.add('Other Production Cost');
+//   }
+//   if (_totalProductionCostController.text.isEmpty) {
+//     emptyFields.add('Total Production Cost');
+//   }
+//   if (_mainProductQuantityController.text.isEmpty) {
+//     emptyFields.add('Main Product Quantity');
+//   }
+//   if (_mainProductPriceController.text.isEmpty) {
+//     emptyFields.add('Main Product Price');
+//   }
+//   if (_mainProductAmountController.text.isEmpty) {
+//     emptyFields.add('Main Product Amount');
+//   }
+//   if (_byProductQuantityController.text.isEmpty) {
+//     emptyFields.add('By-Product Quantity');
+//   }
+//   if (_byProductPriceController.text.isEmpty) {
+//     emptyFields.add('By-Product Price');
+//   }
+//   if (_byProductAmountController.text.isEmpty) {
+//     emptyFields.add('By-Product Amount');
+//   }
+//   if (_totalByProductAmountController1.text.isEmpty) {
+//     emptyFields.add('Total By-Product Amount 1');
+//   }
+//   if (_totalByProductAmountController2.text.isEmpty) {
+//     emptyFields.add('Total By-Product Amount 2');
+//   }
+//   if (_totalByProductAmountController3.text.isEmpty) {
+//     emptyFields.add('Total By-Product Amount 3');
+//   }
+
+//   // Check if any field is empty, if yes, print and return false
+//   if (emptyFields.isNotEmpty) {
+//     print('Empty fields: $emptyFields');
+//     return false;
+//   }
+
+//   return true;
+// }
+
+
 bool _validatecontrollers() {
-  List<String> emptyFields = [];
-
   // Check if all text controllers have non-empty values
-  if (_cropNameController.text.isEmpty) {
-    emptyFields.add('Crop Name');
-  }
-  if (_cropNumberController.text.isEmpty) {
-    emptyFields.add('Crop Name');
-  }
-  if (_areaController.text.isEmpty) {
-    emptyFields.add('Area');
-  }
-  if (_surveyHissaController.text.isEmpty) {
-    emptyFields.add('Survey Hissa');
-  }
-  if (_varietyController.text.isEmpty) {
-    emptyFields.add('Variety');
-  }
-  if (_durationController.text.isEmpty) {
-    emptyFields.add('Duration');
-  }
-  if (_costController.text.isEmpty) {
-    emptyFields.add('Cost');
-  }
-  if (_rdfNitrogenController.text.isEmpty) {
-    emptyFields.add('RDF Nitrogen');
-  }
-  if (_rdfPhosphorousController.text.isEmpty) {
-    emptyFields.add('RDF Phosphorous');
-  }
-  if (_rdfPotassiumController.text.isEmpty) {
-    emptyFields.add('RDF Potassium');
-  }
-  if (_adjustedrdfNitrogenController.text.isEmpty) {
-    emptyFields.add('Adjusted RDF Nitrogen');
-  }
-  if (_adjustedrdfPhosphorousController.text.isEmpty) {
-    emptyFields.add('Adjusted RDF Phosphorous');
-  }
-  if (_adjustedrdfPotassiumController.text.isEmpty) {
-    emptyFields.add('Adjusted RDF Potassium');
-  }
-  if (_organicManureNameController.text.isEmpty) {
-    emptyFields.add('Organic Manure Name');
-  }
-  if (_organicManureQuantityController.text.isEmpty) {
-    emptyFields.add('Organic Manure Quantity');
-  }
-  if (_organicManureCostController.text.isEmpty) {
-    emptyFields.add('Organic Manure Cost');
-  }
-  if (_bioFertilizerNameController.text.isEmpty) {
-    emptyFields.add('Bio-Fertilizer Name');
-  }
-  if (_bioFertilizerQuantityController.text.isEmpty) {
-    emptyFields.add('Bio-Fertilizer Quantity');
-  }
-  if (_bioFertilizerCostController.text.isEmpty) {
-    emptyFields.add('Bio-Fertilizer Cost');
-  }
-  if (_plantProtectionCostController.text.isEmpty) {
-    emptyFields.add('Plant Protection Cost');
-  }
-  if (_ownLabourNumberController.text.isEmpty) {
-    emptyFields.add('Own Labour Number');
-  }
-  if (_ownLabourCostController.text.isEmpty) {
-    emptyFields.add('Own Labour Cost');
-  }
-  if (_hiredLabourNumberController.text.isEmpty) {
-    emptyFields.add('Hired Labour Number');
-  }
-  if (_hiredLabourCostController.text.isEmpty) {
-    emptyFields.add('Hired Labour Cost');
-  }
-  if (_animalDrawnCostController.text.isEmpty) {
-    emptyFields.add('Animal Drawn Cost');
-  }
-  if (_animalMechanizedCostController.text.isEmpty) {
-    emptyFields.add('Animal Mechanized Cost');
-  }
-  if (_irrigationCostController.text.isEmpty) {
-    emptyFields.add('Irrigation Cost');
-  }
-  if (_otherProductionCostController.text.isEmpty) {
-    emptyFields.add('Other Production Cost');
-  }
-  if (_totalProductionCostController.text.isEmpty) {
-    emptyFields.add('Total Production Cost');
-  }
-  if (_mainProductQuantityController.text.isEmpty) {
-    emptyFields.add('Main Product Quantity');
-  }
-  if (_mainProductPriceController.text.isEmpty) {
-    emptyFields.add('Main Product Price');
-  }
-  if (_mainProductAmountController.text.isEmpty) {
-    emptyFields.add('Main Product Amount');
-  }
-  if (_byProductQuantityController.text.isEmpty) {
-    emptyFields.add('By-Product Quantity');
-  }
-  if (_byProductPriceController.text.isEmpty) {
-    emptyFields.add('By-Product Price');
-  }
-  if (_byProductAmountController.text.isEmpty) {
-    emptyFields.add('By-Product Amount');
-  }
-  if (_totalByProductAmountController1.text.isEmpty) {
-    emptyFields.add('Total By-Product Amount 1');
-  }
-  if (_totalByProductAmountController2.text.isEmpty) {
-    emptyFields.add('Total By-Product Amount 2');
-  }
-
-  // Check if any field is empty, if yes, print and return false
-  if (emptyFields.isNotEmpty) {
-    print('Empty fields: $emptyFields');
+  if (_cropNameController.text.isEmpty ||
+      _areaController.text.isEmpty ||
+      _surveyHissaController.text.isEmpty ||
+      _varietyController.text.isEmpty ||
+      _durationController.text.isEmpty ||
+      _costController.text.isEmpty ||
+      _rdfNitrogenController.text.isEmpty ||
+      _rdfPhosphorousController.text.isEmpty ||
+      _rdfPotassiumController.text.isEmpty ||
+      _adjustedrdfNitrogenController.text.isEmpty ||
+      _adjustedrdfPhosphorousController.text.isEmpty ||
+      _adjustedrdfPotassiumController.text.isEmpty ||
+      _organicManureNameController.text.isEmpty ||
+      _organicManureQuantityController.text.isEmpty ||
+      _organicManureCostController.text.isEmpty ||
+      _bioFertilizerNameController.text.isEmpty ||
+      _bioFertilizerQuantityController.text.isEmpty ||
+      _bioFertilizerCostController.text.isEmpty ||
+      _plantProtectionCostController.text.isEmpty ||
+      _ownLabourNumberController.text.isEmpty ||
+      _ownLabourCostController.text.isEmpty ||
+      _hiredLabourNumberController.text.isEmpty ||
+      _hiredLabourCostController.text.isEmpty ||
+      _animalDrawnCostController.text.isEmpty ||
+      _animalMechanizedCostController.text.isEmpty ||
+      _irrigationCostController.text.isEmpty ||
+      _otherProductionCostController.text.isEmpty ||
+      _totalProductionCostController.text.isEmpty ||
+      _mainProductQuantityController.text.isEmpty ||
+      _mainProductPriceController.text.isEmpty ||
+      _mainProductAmountController.text.isEmpty ||
+      _byProductQuantityController.text.isEmpty ||
+      _byProductPriceController.text.isEmpty ||
+      _byProductAmountController.text.isEmpty ||
+      _totalByProductAmountController1.text.isEmpty ||
+      _totalByProductAmountController2.text.isEmpty  ){
     return false;
   }
 
-  return true;
-}
+    return true;
+  }
 
   // bool _validatecontrollers() {
   //   // Check if all text controllers have non-empty values
@@ -534,53 +578,53 @@ bool _validatecontrollers() {
                       ),
                       const SizedBox(height: 20.0),
                       Obx(() => SelectionButton(
-                            label: "Season",
-                            options: const ['Kharif', 'Rabi', 'Summer'],
-                            selectedOption: _selectedSeason.value.isEmpty
-                                ? null
-                                : _selectedSeason.value,
-                            onPressed: (option) {
-                              _selectedSeason.value = option;
-                            },
-                            errorMessage: _selectedSeason.value.isEmpty
-                                ? 'Please select a season'
-                                : null,
-                          )),
+                        label: "Season",
+                        options: const ['Kharif', 'Rabi', 'Summer'],
+                        selectedOption: _selectedSeason.value.isEmpty
+                            ? null
+                            : _selectedSeason.value,
+                        onPressed: (option) {
+                          _selectedSeason.value = option;
+                        },
+                        errorMessage: _selectedSeason.value.isEmpty
+                            ? 'Please select a season'
+                            : null,
+                      )),
                       const SizedBox(height: 20.0),
                       Obx(() => SelectionButton(
-                            label: "Type of land",
-                            options: const ['Rain-fed', 'Irrigated'],
-                            selectedOption: _selectedTypeOfLand.value.isEmpty
-                                ? null
-                                : _selectedTypeOfLand.value,
-                            onPressed: (option) {
-                              _selectedTypeOfLand.value = option;
-                            },
-                            errorMessage: _selectedTypeOfLand.value.isEmpty
-                                ? 'Please select a type of land'
-                                : null,
-                          )),
+                        label: "Type of land",
+                        options: const ['Rain-fed', 'Irrigated'],
+                        selectedOption: _selectedTypeOfLand.value.isEmpty
+                            ? null
+                            : _selectedTypeOfLand.value,
+                        onPressed: (option) {
+                          _selectedTypeOfLand.value = option;
+                        },
+                        errorMessage: _selectedTypeOfLand.value.isEmpty
+                            ? 'Please select a type of land'
+                            : null,
+                      )),
                       const SizedBox(height: 20.0),
                       Obx(() => SelectionButton(
-                            label: "Source of irrigation",
-                            options: const [
-                              'Borewell',
-                              'Tank',
-                              'Canal',
-                              'Others',
-                            ],
-                            selectedOption:
-                                _selectedSourceOfIrrigation.value.isEmpty
-                                    ? null
-                                    : _selectedSourceOfIrrigation.value,
-                            onPressed: (option) {
-                              _selectedSourceOfIrrigation.value = option;
-                            },
-                            errorMessage:
-                                _selectedSourceOfIrrigation.value.isEmpty
-                                    ? 'Please select a source of irrigation'
-                                    : null,
-                          )),
+                        label: "Source of irrigation",
+                        options: const [
+                          'Borewell',
+                          'Tank',
+                          'Canal',
+                          'Others',
+                        ],
+                        selectedOption:
+                        _selectedSourceOfIrrigation.value.isEmpty
+                            ? null
+                            : _selectedSourceOfIrrigation.value,
+                        onPressed: (option) {
+                          _selectedSourceOfIrrigation.value = option;
+                        },
+                        errorMessage:
+                        _selectedSourceOfIrrigation.value.isEmpty
+                            ? 'Please select a source of irrigation'
+                            : null,
+                      )),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Cost of seed (including own seed)(in Rs.)",
@@ -606,24 +650,24 @@ bool _validatecontrollers() {
                             fontSize: 14.0, fontWeight: FontWeight.w500),
                       ),
                       Obx(() => SelectionButton(
-                            label: '',
-                            options: const [
-                              'Very low',
-                              'Low',
-                              'Medium',
-                              'High',
-                              'Very high'
-                            ],
-                            selectedOption: _selectedNitrogen.value.isEmpty
-                                ? null
-                                : _selectedNitrogen.value,
-                            onPressed: (option) {
-                              _selectedNitrogen.value = option;
-                            },
-                            errorMessage: _selectedNitrogen.value.isEmpty
-                                ? 'Please select a nitrogen level'
-                                : null,
-                          )),
+                        label: '',
+                        options: const [
+                          'Very low',
+                          'Low',
+                          'Medium',
+                          'High',
+                          'Very high'
+                        ],
+                        selectedOption: _selectedNitrogen.value.isEmpty
+                            ? null
+                            : _selectedNitrogen.value,
+                        onPressed: (option) {
+                          _selectedNitrogen.value = option;
+                        },
+                        errorMessage: _selectedNitrogen.value.isEmpty
+                            ? 'Please select a nitrogen level'
+                            : null,
+                      )),
                       const SizedBox(height: 20.0),
                       const Text(
                         'Phosphorous',
@@ -631,24 +675,24 @@ bool _validatecontrollers() {
                             fontSize: 14.0, fontWeight: FontWeight.w500),
                       ),
                       Obx(() => SelectionButton(
-                            label: '',
-                            options: const [
-                              'Very low',
-                              'Low',
-                              'Medium',
-                              'High',
-                              'Very high'
-                            ],
-                            selectedOption: _selectedPhosphorous.value.isEmpty
-                                ? null
-                                : _selectedPhosphorous.value,
-                            onPressed: (option) {
-                              _selectedPhosphorous.value = option;
-                            },
-                            errorMessage: _selectedPhosphorous.value.isEmpty
-                                ? 'Please select a phosphorous level'
-                                : null,
-                          )),
+                        label: '',
+                        options: const [
+                          'Very low',
+                          'Low',
+                          'Medium',
+                          'High',
+                          'Very high'
+                        ],
+                        selectedOption: _selectedPhosphorous.value.isEmpty
+                            ? null
+                            : _selectedPhosphorous.value,
+                        onPressed: (option) {
+                          _selectedPhosphorous.value = option;
+                        },
+                        errorMessage: _selectedPhosphorous.value.isEmpty
+                            ? 'Please select a phosphorous level'
+                            : null,
+                      )),
                       const SizedBox(height: 20.0),
                       const Text(
                         'Potassium',
@@ -656,24 +700,24 @@ bool _validatecontrollers() {
                             fontSize: 14.0, fontWeight: FontWeight.w500),
                       ),
                       Obx(() => SelectionButton(
-                            label: '',
-                            options: const [
-                              'Very low',
-                              'Low',
-                              'Medium',
-                              'High',
-                              'Very high'
-                            ],
-                            selectedOption: _selectedPotassium.value.isEmpty
-                                ? null
-                                : _selectedPotassium.value,
-                            onPressed: (option) {
-                              _selectedPotassium.value = option;
-                            },
-                            errorMessage: _selectedPotassium.value.isEmpty
-                                ? 'Please select a potassium level'
-                                : null,
-                          )),
+                        label: '',
+                        options: const [
+                          'Very low',
+                          'Low',
+                          'Medium',
+                          'High',
+                          'Very high'
+                        ],
+                        selectedOption: _selectedPotassium.value.isEmpty
+                            ? null
+                            : _selectedPotassium.value,
+                        onPressed: (option) {
+                          _selectedPotassium.value = option;
+                        },
+                        errorMessage: _selectedPotassium.value.isEmpty
+                            ? 'Please select a potassium level'
+                            : null,
+                      )),
                       const SizedBox(height: 20.0),
                       const Text(
                         'RDF of crop (kg/ac)',
@@ -934,23 +978,23 @@ bool _validatecontrollers() {
                             fontSize: 14.0, fontWeight: FontWeight.w500),
                       ),
                       Obx(() => SelectionButton(
-                            label: '',
-                            options: const [
-                              'Broadcasting',
-                              'line',
-                              'band',
-                              'spot'
-                            ],
-                            selectedOption: _Methodsoffertilizer.value.isEmpty
-                                ? null
-                                : _Methodsoffertilizer.value,
-                            onPressed: (option) {
-                              _Methodsoffertilizer.value = option;
-                            },
-                            errorMessage: _Methodsoffertilizer.value.isEmpty
-                                ? 'Please select a method of application'
-                                : null,
-                          )),
+                        label: '',
+                        options: const [
+                          'Broadcasting',
+                          'line',
+                          'band',
+                          'spot'
+                        ],
+                        selectedOption: _Methodsoffertilizer.value.isEmpty
+                            ? null
+                            : _Methodsoffertilizer.value,
+                        onPressed: (option) {
+                          _Methodsoffertilizer.value = option;
+                        },
+                        errorMessage: _Methodsoffertilizer.value.isEmpty
+                            ? 'Please select a method of application'
+                            : null,
+                      )),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Plant Protection Cost (in Rs.)",
@@ -1254,9 +1298,6 @@ bool _validatecontrollers() {
     );
   }
 }
-
-
-
 // // import 'package:flutter/material.dart';
 // // import 'package:get/get.dart';
 // // import 'package:gkvk/shared/components/CustomTextFormField.dart';

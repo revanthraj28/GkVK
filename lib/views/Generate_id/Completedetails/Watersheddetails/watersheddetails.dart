@@ -324,7 +324,7 @@ class WatershedView extends StatelessWidget {
                               keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter district';
+                                  return 'Please provide details';
                                 }
                                 return null;
                               },
@@ -338,7 +338,7 @@ class WatershedView extends StatelessWidget {
                               keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return 'Please enter taluk';
+                                  return 'Please provide details';
                                 }
                                 return null;
                               },
@@ -353,7 +353,7 @@ class WatershedView extends StatelessWidget {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter hobli';
+                            return 'Please provide details';
                           }
                           return null;
                         },
@@ -365,7 +365,7 @@ class WatershedView extends StatelessWidget {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter sub-watershed name';
+                            return 'Please provide details';
                           }
                           return null;
                         },
@@ -377,7 +377,7 @@ class WatershedView extends StatelessWidget {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter sub-watershed code';
+                            return 'Please provide details';
                           }
                           return null;
                         },
@@ -389,7 +389,7 @@ class WatershedView extends StatelessWidget {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter village';
+                            return 'Please provide details';
                           }
                           return null;
                         },
@@ -442,14 +442,14 @@ class WatershedView extends StatelessWidget {
                               ),
                               backgroundColor: const Color(0xFFFEF8E0),
                               title: const Text(
-                                'ALERT',
+                                'Alert',
                                 style: TextStyle(
                                   color: Color(0xFFFB812C),
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               content: const Text(
-                                'All fields must be filled and a treatment option selected.',
+                                'All the details must be filled.',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
@@ -471,7 +471,7 @@ class WatershedView extends StatelessWidget {
                           },
                         );
                       }
-                      if (_districtController.text.isEmpty ||
+                      else if (_districtController.text.isEmpty ||
                           _talukController.text.isEmpty ||
                           _hobliController.text.isEmpty ||
                           _subWatershedNameController.text.isEmpty ||
@@ -493,7 +493,7 @@ class WatershedView extends StatelessWidget {
                                 ),
                               ),
                               content: const Text(
-                                'All fields must be filled.',
+                                'All the details must be filled.',
                                 style: TextStyle(
                                   color: Colors.black,
                                 ),
