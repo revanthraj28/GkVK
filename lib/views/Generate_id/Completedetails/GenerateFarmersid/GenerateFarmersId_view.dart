@@ -4,7 +4,7 @@ import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
-import '../../detailsofCrops/Cropdetails/Cropdetails.dart';
+import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
   final int waterShedId;
@@ -50,7 +50,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Cropdetails(aadharId: int.parse(_aadharController.text)),
+          builder: (context) => FarmerAreaPage(aadharId: int.parse(_aadharController.text),),
         ),
       );
     } catch (e) {
@@ -59,7 +59,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: Text('Failed to upload data'),
+            content: const Text('Failed to upload data'),
             actions: [
               TextButton(
                 child: const Text('OK'),
@@ -454,7 +454,6 @@ class GenerateFarmersIdPage extends StatelessWidget {
                     }
                   },
                 )
-
               ],
             ),
           ),

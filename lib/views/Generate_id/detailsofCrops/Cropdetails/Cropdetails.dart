@@ -1,15 +1,19 @@
 // ignore: file_names
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/cropdetails_db.dart';
-import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.dart';
+import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 
 class Cropdetails extends StatefulWidget {
   final int aadharId;
-  const Cropdetails({required this.aadharId, super.key});
+  final int hissaNumber;
+
+  const Cropdetails(
+      {required this.aadharId, required this.hissaNumber, super.key});
 
   @override
   _CropdetailsState createState() => _CropdetailsState();
@@ -18,6 +22,7 @@ class Cropdetails extends StatefulWidget {
 class _CropdetailsState extends State<Cropdetails> {
   final _formKey = GlobalKey<FormState>();
   final _cropNameController = TextEditingController();
+  final _cropNumberController = TextEditingController();
   final _areaController = TextEditingController();
   final _surveyHissaController = TextEditingController();
   final _varietyController = TextEditingController();
@@ -112,6 +117,7 @@ class _CropdetailsState extends State<Cropdetails> {
     Map<String, dynamic> data = {
       'aadharId': widget.aadharId,
       'cropName': _cropNameController.text,
+      'cropNumber': int.tryParse(_cropNumberController.text),
       'area': double.tryParse(_areaController.text),
       'surveyHissa': _surveyHissaController.text,
       'variety': _varietyController.text,
@@ -181,11 +187,13 @@ class _CropdetailsState extends State<Cropdetails> {
 
     await cropDetailsDB.create(data);
 
-    print('Data submitted successfully');
+    if (kDebugMode) {
+      print('Data submitted successfully');
+    }
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SurveyPage1(aadharId: widget.aadharId),
+        builder: (context) => FarmerAreaPage(aadharId: widget.aadharId),
       ),
     );
   }
@@ -217,206 +225,205 @@ class _CropdetailsState extends State<Cropdetails> {
     );
   }
 
-bool _validateForm() {
-  // Check if the form fields are valid
-  if (!_formKey.currentState!.validate()) {
-    return false;
-  }
-
-  // Check if dropdowns are selected
-  if (_selectedSeason.value.isEmpty ||
-      _selectedTypeOfLand.value.isEmpty ||
-      _selectedSourceOfIrrigation.value.isEmpty ||
-      _selectedNitrogen.value.isEmpty ||
-      _selectedPhosphorous.value.isEmpty ||
-      _selectedPotassium.value.isEmpty ||
-      _Methodsoffertilizer.value.isEmpty) {
-    return false;
-  }
-
-  // Check if chemical fertilizers fields are filled
-  for (var fertilizer in chemicalFertilizers) {
-    if (fertilizer['name']!.text.isEmpty ||
-        fertilizer['basal']!.text.isEmpty ||
-        fertilizer['topDress']!.text.isEmpty ||
-        fertilizer['totalQuantity']!.text.isEmpty ||
-        fertilizer['totalCost']!.text.isEmpty) {
+  bool _validateForm() {
+    // Check if the form fields are valid
+    if (!_formKey.currentState!.validate()) {
       return false;
     }
+
+    // Check if dropdowns are selected
+    if (_selectedSeason.value.isEmpty ||
+        _selectedTypeOfLand.value.isEmpty ||
+        _selectedSourceOfIrrigation.value.isEmpty ||
+        _selectedNitrogen.value.isEmpty ||
+        _selectedPhosphorous.value.isEmpty ||
+        _selectedPotassium.value.isEmpty ||
+        _Methodsoffertilizer.value.isEmpty) {
+      return false;
+    }
+
+    // Check if chemical fertilizers fields are filled
+    for (var fertilizer in chemicalFertilizers) {
+      if (fertilizer['name']!.text.isEmpty ||
+          fertilizer['basal']!.text.isEmpty ||
+          fertilizer['topDress']!.text.isEmpty ||
+          fertilizer['totalQuantity']!.text.isEmpty ||
+          fertilizer['totalCost']!.text.isEmpty) {
+        return false;
+      }
+    }
+
+    return true;
+  }
+bool _validatecontrollers() {
+  List<String> emptyFields = [];
+
+  // Check if all text controllers have non-empty values
+  if (_cropNameController.text.isEmpty) {
+    emptyFields.add('Crop Name');
+  }
+  if (_cropNumberController.text.isEmpty) {
+    emptyFields.add('Crop Name');
+  }
+  if (_areaController.text.isEmpty) {
+    emptyFields.add('Area');
+  }
+  if (_surveyHissaController.text.isEmpty) {
+    emptyFields.add('Survey Hissa');
+  }
+  if (_varietyController.text.isEmpty) {
+    emptyFields.add('Variety');
+  }
+  if (_durationController.text.isEmpty) {
+    emptyFields.add('Duration');
+  }
+  if (_costController.text.isEmpty) {
+    emptyFields.add('Cost');
+  }
+  if (_rdfNitrogenController.text.isEmpty) {
+    emptyFields.add('RDF Nitrogen');
+  }
+  if (_rdfPhosphorousController.text.isEmpty) {
+    emptyFields.add('RDF Phosphorous');
+  }
+  if (_rdfPotassiumController.text.isEmpty) {
+    emptyFields.add('RDF Potassium');
+  }
+  if (_adjustedrdfNitrogenController.text.isEmpty) {
+    emptyFields.add('Adjusted RDF Nitrogen');
+  }
+  if (_adjustedrdfPhosphorousController.text.isEmpty) {
+    emptyFields.add('Adjusted RDF Phosphorous');
+  }
+  if (_adjustedrdfPotassiumController.text.isEmpty) {
+    emptyFields.add('Adjusted RDF Potassium');
+  }
+  if (_organicManureNameController.text.isEmpty) {
+    emptyFields.add('Organic Manure Name');
+  }
+  if (_organicManureQuantityController.text.isEmpty) {
+    emptyFields.add('Organic Manure Quantity');
+  }
+  if (_organicManureCostController.text.isEmpty) {
+    emptyFields.add('Organic Manure Cost');
+  }
+  if (_bioFertilizerNameController.text.isEmpty) {
+    emptyFields.add('Bio-Fertilizer Name');
+  }
+  if (_bioFertilizerQuantityController.text.isEmpty) {
+    emptyFields.add('Bio-Fertilizer Quantity');
+  }
+  if (_bioFertilizerCostController.text.isEmpty) {
+    emptyFields.add('Bio-Fertilizer Cost');
+  }
+  if (_plantProtectionCostController.text.isEmpty) {
+    emptyFields.add('Plant Protection Cost');
+  }
+  if (_ownLabourNumberController.text.isEmpty) {
+    emptyFields.add('Own Labour Number');
+  }
+  if (_ownLabourCostController.text.isEmpty) {
+    emptyFields.add('Own Labour Cost');
+  }
+  if (_hiredLabourNumberController.text.isEmpty) {
+    emptyFields.add('Hired Labour Number');
+  }
+  if (_hiredLabourCostController.text.isEmpty) {
+    emptyFields.add('Hired Labour Cost');
+  }
+  if (_animalDrawnCostController.text.isEmpty) {
+    emptyFields.add('Animal Drawn Cost');
+  }
+  if (_animalMechanizedCostController.text.isEmpty) {
+    emptyFields.add('Animal Mechanized Cost');
+  }
+  if (_irrigationCostController.text.isEmpty) {
+    emptyFields.add('Irrigation Cost');
+  }
+  if (_otherProductionCostController.text.isEmpty) {
+    emptyFields.add('Other Production Cost');
+  }
+  if (_totalProductionCostController.text.isEmpty) {
+    emptyFields.add('Total Production Cost');
+  }
+  if (_mainProductQuantityController.text.isEmpty) {
+    emptyFields.add('Main Product Quantity');
+  }
+  if (_mainProductPriceController.text.isEmpty) {
+    emptyFields.add('Main Product Price');
+  }
+  if (_mainProductAmountController.text.isEmpty) {
+    emptyFields.add('Main Product Amount');
+  }
+  if (_byProductQuantityController.text.isEmpty) {
+    emptyFields.add('By-Product Quantity');
+  }
+  if (_byProductPriceController.text.isEmpty) {
+    emptyFields.add('By-Product Price');
+  }
+  if (_byProductAmountController.text.isEmpty) {
+    emptyFields.add('By-Product Amount');
+  }
+  if (_totalByProductAmountController1.text.isEmpty) {
+    emptyFields.add('Total By-Product Amount 1');
+  }
+  if (_totalByProductAmountController2.text.isEmpty) {
+    emptyFields.add('Total By-Product Amount 2');
   }
 
-  return true;
-}
-// bool _validatecontrollers() {
-//   List<String> emptyFields = [];
-
-//   // Check if all text controllers have non-empty values
-//   if (_cropNameController.text.isEmpty) {
-//     emptyFields.add('Crop Name');
-//   }
-//   if (_areaController.text.isEmpty) {
-//     emptyFields.add('Area');
-//   }
-//   if (_surveyHissaController.text.isEmpty) {
-//     emptyFields.add('Survey Hissa');
-//   }
-//   if (_varietyController.text.isEmpty) {
-//     emptyFields.add('Variety');
-//   }
-//   if (_durationController.text.isEmpty) {
-//     emptyFields.add('Duration');
-//   }
-//   if (_costController.text.isEmpty) {
-//     emptyFields.add('Cost');
-//   }
-//   if (_rdfNitrogenController.text.isEmpty) {
-//     emptyFields.add('RDF Nitrogen');
-//   }
-//   if (_rdfPhosphorousController.text.isEmpty) {
-//     emptyFields.add('RDF Phosphorous');
-//   }
-//   if (_rdfPotassiumController.text.isEmpty) {
-//     emptyFields.add('RDF Potassium');
-//   }
-//   if (_adjustedrdfNitrogenController.text.isEmpty) {
-//     emptyFields.add('Adjusted RDF Nitrogen');
-//   }
-//   if (_adjustedrdfPhosphorousController.text.isEmpty) {
-//     emptyFields.add('Adjusted RDF Phosphorous');
-//   }
-//   if (_adjustedrdfPotassiumController.text.isEmpty) {
-//     emptyFields.add('Adjusted RDF Potassium');
-//   }
-//   if (_organicManureNameController.text.isEmpty) {
-//     emptyFields.add('Organic Manure Name');
-//   }
-//   if (_organicManureQuantityController.text.isEmpty) {
-//     emptyFields.add('Organic Manure Quantity');
-//   }
-//   if (_organicManureCostController.text.isEmpty) {
-//     emptyFields.add('Organic Manure Cost');
-//   }
-//   if (_bioFertilizerNameController.text.isEmpty) {
-//     emptyFields.add('Bio-Fertilizer Name');
-//   }
-//   if (_bioFertilizerQuantityController.text.isEmpty) {
-//     emptyFields.add('Bio-Fertilizer Quantity');
-//   }
-//   if (_bioFertilizerCostController.text.isEmpty) {
-//     emptyFields.add('Bio-Fertilizer Cost');
-//   }
-//   if (_plantProtectionCostController.text.isEmpty) {
-//     emptyFields.add('Plant Protection Cost');
-//   }
-//   if (_ownLabourNumberController.text.isEmpty) {
-//     emptyFields.add('Own Labour Number');
-//   }
-//   if (_ownLabourCostController.text.isEmpty) {
-//     emptyFields.add('Own Labour Cost');
-//   }
-//   if (_hiredLabourNumberController.text.isEmpty) {
-//     emptyFields.add('Hired Labour Number');
-//   }
-//   if (_hiredLabourCostController.text.isEmpty) {
-//     emptyFields.add('Hired Labour Cost');
-//   }
-//   if (_animalDrawnCostController.text.isEmpty) {
-//     emptyFields.add('Animal Drawn Cost');
-//   }
-//   if (_animalMechanizedCostController.text.isEmpty) {
-//     emptyFields.add('Animal Mechanized Cost');
-//   }
-//   if (_irrigationCostController.text.isEmpty) {
-//     emptyFields.add('Irrigation Cost');
-//   }
-//   if (_otherProductionCostController.text.isEmpty) {
-//     emptyFields.add('Other Production Cost');
-//   }
-//   if (_totalProductionCostController.text.isEmpty) {
-//     emptyFields.add('Total Production Cost');
-//   }
-//   if (_mainProductQuantityController.text.isEmpty) {
-//     emptyFields.add('Main Product Quantity');
-//   }
-//   if (_mainProductPriceController.text.isEmpty) {
-//     emptyFields.add('Main Product Price');
-//   }
-//   if (_mainProductAmountController.text.isEmpty) {
-//     emptyFields.add('Main Product Amount');
-//   }
-//   if (_byProductQuantityController.text.isEmpty) {
-//     emptyFields.add('By-Product Quantity');
-//   }
-//   if (_byProductPriceController.text.isEmpty) {
-//     emptyFields.add('By-Product Price');
-//   }
-//   if (_byProductAmountController.text.isEmpty) {
-//     emptyFields.add('By-Product Amount');
-//   }
-//   if (_totalByProductAmountController1.text.isEmpty) {
-//     emptyFields.add('Total By-Product Amount 1');
-//   }
-//   if (_totalByProductAmountController2.text.isEmpty) {
-//     emptyFields.add('Total By-Product Amount 2');
-//   }
-//   if (_totalByProductAmountController3.text.isEmpty) {
-//     emptyFields.add('Total By-Product Amount 3');
-//   }
-
-//   // Check if any field is empty, if yes, print and return false
-//   if (emptyFields.isNotEmpty) {
-//     print('Empty fields: $emptyFields');
-//     return false;
-//   }
-
-//   return true;
-// }
-
-
-bool _validatecontrollers() {
-  // Check if all text controllers have non-empty values
-  if (_cropNameController.text.isEmpty ||
-      _areaController.text.isEmpty ||
-      _surveyHissaController.text.isEmpty ||
-      _varietyController.text.isEmpty ||
-      _durationController.text.isEmpty ||
-      _costController.text.isEmpty ||
-      _rdfNitrogenController.text.isEmpty ||
-      _rdfPhosphorousController.text.isEmpty ||
-      _rdfPotassiumController.text.isEmpty ||
-      _adjustedrdfNitrogenController.text.isEmpty ||
-      _adjustedrdfPhosphorousController.text.isEmpty ||
-      _adjustedrdfPotassiumController.text.isEmpty ||
-      _organicManureNameController.text.isEmpty ||
-      _organicManureQuantityController.text.isEmpty ||
-      _organicManureCostController.text.isEmpty ||
-      _bioFertilizerNameController.text.isEmpty ||
-      _bioFertilizerQuantityController.text.isEmpty ||
-      _bioFertilizerCostController.text.isEmpty ||
-      _plantProtectionCostController.text.isEmpty ||
-      _ownLabourNumberController.text.isEmpty ||
-      _ownLabourCostController.text.isEmpty ||
-      _hiredLabourNumberController.text.isEmpty ||
-      _hiredLabourCostController.text.isEmpty ||
-      _animalDrawnCostController.text.isEmpty ||
-      _animalMechanizedCostController.text.isEmpty ||
-      _irrigationCostController.text.isEmpty ||
-      _otherProductionCostController.text.isEmpty ||
-      _totalProductionCostController.text.isEmpty ||
-      _mainProductQuantityController.text.isEmpty ||
-      _mainProductPriceController.text.isEmpty ||
-      _mainProductAmountController.text.isEmpty ||
-      _byProductQuantityController.text.isEmpty ||
-      _byProductPriceController.text.isEmpty ||
-      _byProductAmountController.text.isEmpty ||
-      _totalByProductAmountController1.text.isEmpty ||
-      _totalByProductAmountController2.text.isEmpty  ){
+  // Check if any field is empty, if yes, print and return false
+  if (emptyFields.isNotEmpty) {
+    print('Empty fields: $emptyFields');
     return false;
   }
 
   return true;
 }
 
+  // bool _validatecontrollers() {
+  //   // Check if all text controllers have non-empty values
+  //   if (_cropNameController.text.isEmpty ||
+  //       _cropNumberController.text.isEmpty ||
+  //       _areaController.text.isEmpty ||
+  //       _surveyHissaController.text.isEmpty ||
+  //       _varietyController.text.isEmpty ||
+  //       _durationController.text.isEmpty ||
+  //       _costController.text.isEmpty ||
+  //       _rdfNitrogenController.text.isEmpty ||
+  //       _rdfPhosphorousController.text.isEmpty ||
+  //       _rdfPotassiumController.text.isEmpty ||
+  //       _adjustedrdfNitrogenController.text.isEmpty ||
+  //       _adjustedrdfPhosphorousController.text.isEmpty ||
+  //       _adjustedrdfPotassiumController.text.isEmpty ||
+  //       _organicManureNameController.text.isEmpty ||
+  //       _organicManureQuantityController.text.isEmpty ||
+  //       _organicManureCostController.text.isEmpty ||
+  //       _bioFertilizerNameController.text.isEmpty ||
+  //       _bioFertilizerQuantityController.text.isEmpty ||
+  //       _bioFertilizerCostController.text.isEmpty ||
+  //       _plantProtectionCostController.text.isEmpty ||
+  //       _ownLabourNumberController.text.isEmpty ||
+  //       _ownLabourCostController.text.isEmpty ||
+  //       _hiredLabourNumberController.text.isEmpty ||
+  //       _hiredLabourCostController.text.isEmpty ||
+  //       _animalDrawnCostController.text.isEmpty ||
+  //       _animalMechanizedCostController.text.isEmpty ||
+  //       _irrigationCostController.text.isEmpty ||
+  //       _otherProductionCostController.text.isEmpty ||
+  //       _totalProductionCostController.text.isEmpty ||
+  //       _mainProductQuantityController.text.isEmpty ||
+  //       _mainProductPriceController.text.isEmpty ||
+  //       _mainProductAmountController.text.isEmpty ||
+  //       _byProductQuantityController.text.isEmpty ||
+  //       _byProductPriceController.text.isEmpty ||
+  //       _byProductAmountController.text.isEmpty ||
+  //       _totalByProductAmountController1.text.isEmpty ||
+  //       _totalByProductAmountController2.text.isEmpty) {
+  //     return false;
+  //   }
+
+  //   return true;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -456,6 +463,20 @@ bool _validatecontrollers() {
                         labelText: "Crop Name",
                         controller: _cropNameController,
                         keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please enter Crop Name";
+                          }
+                          return null;
+                        },
+                      ),
+                      const SizedBox(
+                        height: 20.0,
+                      ),
+                      CustomTextFormField(
+                        labelText: "Crop Number",
+                        controller: _cropNumberController,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter Crop Name";
@@ -1163,76 +1184,79 @@ bool _validatecontrollers() {
               ),
             ),
           ),
-         bottomNavigationBar: BottomAppBar(
-  height: 75,
-  color: const Color(0xFFFEF8E0),
-  child: Column(
-    mainAxisSize: MainAxisSize.min,
-    crossAxisAlignment: CrossAxisAlignment.stretch,
-    children: [
-      CustomTextButton(
-        text: 'NEXT',
-        buttonColor: const Color(0xFFFB812C),
-        onPressed: () {
-          bool isFormValid = _validateForm();
-          bool areControllersValid = _validatecontrollers();
+          bottomNavigationBar: BottomAppBar(
+            height: 75,
+            color: const Color(0xFFFEF8E0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                CustomTextButton(
+                  text: 'NEXT',
+                  buttonColor: const Color(0xFFFB812C),
+                  onPressed: () {
+                    bool isFormValid = _validateForm();
+                    bool areControllersValid = _validatecontrollers();
 
-          print('Form valid: $isFormValid, Controllers valid: $areControllersValid');
+                    print(
+                        'Form valid: $isFormValid, Controllers valid: $areControllersValid');
 
-          if (isFormValid && areControllersValid) {
-            try {
-              _submitData(context);
-            } catch (e) {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: const Text('Error'),
-                    content: const Text(
-                      'Failed to upload data. Please check your input and try again.'),
-                    actions: [
-                      TextButton(
-                        child: const Text('OK'),
-                        onPressed: () {
-                          Navigator.of(context).pop();
+                    if (isFormValid && areControllersValid) {
+                      try {
+                        _submitData(context);
+                      } catch (e) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Error'),
+                              content: const Text(
+                                  'Failed to upload data. Please check your input and try again.'),
+                              actions: [
+                                TextButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    } else {
+                      // If any validation fails, show the alert
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Alert!'),
+                            content: const Text('Fill the fields properly'),
+                            actions: [
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
                         },
-                      ),
-                    ],
-                  );
-                },
-              );
-            }
-          } else {
-            // If any validation fails, show the alert
-            showDialog(
-              context: context,
-              builder: (BuildContext context) {
-                return AlertDialog(
-                  title: const Text('Alert!'),
-                  content: const Text('Fill the fields properly'),
-                  actions: [
-                    TextButton(
-                      child: const Text('OK'),
-                      onPressed: () {
-                        Navigator.of(context).pop();
-                      },
-                    ),
-                  ],
-                );
-              },
-            );
-          }
-        },
-      ),
-    ],
-  ),
-),
-
+                      );
+                    }
+                  },
+                ),
+              ],
+            ),
+          ),
         ),
       ),
     );
   }
 }
+
+
+
 // // import 'package:flutter/material.dart';
 // // import 'package:get/get.dart';
 // // import 'package:gkvk/shared/components/CustomTextFormField.dart';
