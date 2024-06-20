@@ -72,27 +72,27 @@ class _ProfilePageState extends State<ProfilePage> {
                               radius: 50,
                               child: user?.photoURL != null
                                   ? ClipOval(
-                                child: Image.network(
-                                  user!.photoURL!,
-                                  fit: BoxFit.cover,
-                                  width: 100,
-                                  height: 100,
-                                ),
-                              )
+                                      child: Image.network(
+                                        user!.photoURL!,
+                                        fit: BoxFit.cover,
+                                        width: 100,
+                                        height: 100,
+                                      ),
+                                    )
                                   : Icon(
-                                Icons.person,
-                                size: 50,
-                                color: Colors.grey[700],
-                              ),
+                                      Icons.person,
+                                      size: 50,
+                                      color: Colors.grey[700],
+                                    ),
                             ),
                             const SizedBox(height: 16),
-                            // Text(
-                            //   user?.displayName ?? 'Revanth',
-                            //   style: const TextStyle(
-                            //     fontSize: 24,
-                            //     fontWeight: FontWeight.bold,
-                            //   ),
-                            // ),
+                            Text(
+                              user?.displayName ?? 'Name not available',
+                              style: const TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
                             const SizedBox(height: 8),
                             Text(
                               user?.email ?? 'Email not available',
@@ -126,6 +126,7 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
+
 
 void main() {
   runApp(const MaterialApp(
