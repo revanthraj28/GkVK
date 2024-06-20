@@ -29,6 +29,11 @@ class _ProfilePageState extends State<ProfilePage> {
     await precacheImage(const AssetImage('assets/images/bg3.png'), context);
   }
 
+  String getUsernameFromEmail(String? email) {
+    if (email == null || email.isEmpty) return 'Name not available';
+    return email.split('@')[0];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -87,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             const SizedBox(height: 16),
                             Text(
-                              user?.displayName ?? 'Name not available',
+                              getUsernameFromEmail(user?.email),
                               style: const TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,
@@ -126,7 +131,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 }
-
 
 void main() {
   runApp(const MaterialApp(
