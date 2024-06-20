@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
@@ -79,7 +80,9 @@ class WatershedView extends StatelessWidget {
 
   void _navigateWithLatestWaterShedId(BuildContext context) async {
     final latestId = await _getLatestWaterShedId();
-    print('Data uploaded successfully with ID: $latestId');
+    if (kDebugMode) {
+      print('Data uploaded successfully with ID: $latestId');
+    }
     if (latestId!= null) {
       final database = await DatabaseService().database;
       final List<Map<String, dynamic>> result = await database.query(
@@ -206,7 +209,7 @@ class WatershedView extends StatelessWidget {
             ),
             backgroundColor: const Color(0xFFFEF8E0),
             title: const Text(
-              'ALERT',
+              'Alert',
               style: TextStyle(
                 color: Color(0xFFFB812C),
                 fontWeight: FontWeight.bold,
@@ -301,7 +304,7 @@ class WatershedView extends StatelessWidget {
               style: TextStyle(
                 color: Color(0xFFFB812C),
                 fontSize: 18,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.bold,
               ),
             ),
             iconTheme: const IconThemeData(color: Color(0xFFFB812C),),

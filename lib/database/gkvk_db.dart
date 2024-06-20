@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:sqflite/sqflite.dart';
 import 'package:gkvk/database/database_service.dart';
 
@@ -7,7 +8,7 @@ class WaterShedDB {
   Future<void> createTable(Database database) async {
     await database.execute('''
       CREATE TABLE IF NOT EXISTS $tableName (
-        "watershedId" INTEGER PRIMARY KEY AUTOINCREMENT,
+        "watershedId" INTEGER PRIMARY KEY,
         "district" TEXT NOT NULL,
         "taluk" TEXT NOT NULL,
         "hobli" TEXT NOT NULL,
@@ -17,6 +18,25 @@ class WaterShedDB {
         "selectedCategory" TEXT NOT NULL
       );
     ''');
+  }
+
+  Future<int> generateUniqueWatershedId(Database database) async {
+    final random = Random();
+    int newId = 0; // Initialize with a dummy value
+    bool isUnique = false;
+
+    while (!isUnique) {
+      newId = random.nextInt(90000000) + 10000000; // Generate an 8-digit number
+      final List<Map<String, dynamic>> results = await database.query(
+        tableName,
+        where: 'watershedId = ?',
+        whereArgs: [newId],
+      );
+      if (results.isEmpty) {
+        isUnique = true;
+      }
+    }
+    return newId;
   }
 
   Future<int> create({
@@ -29,7 +49,9 @@ class WaterShedDB {
     required String selectedCategory,
   }) async {
     final database = await DatabaseService().database;
+    final watershedId = await generateUniqueWatershedId(database);
     return await database.insert(tableName, {
+      'watershedId': watershedId,
       'district': district,
       'taluk': taluk,
       'hobli': hobli,
@@ -94,5 +116,9 @@ class WaterShedDB {
       whereArgs: [watershedId],
     );
   }
-}
 
+  Future<void> deleteAll() async {
+    final database = await DatabaseService().database;
+    await database.delete(tableName);
+  }
+}
