@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:get/get.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/views/login/Login.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: ForgotpasswordPage(),
+    );
+  }
+}
 
 class ForgotpasswordPage extends StatefulWidget {
   const ForgotpasswordPage({super.key});
@@ -19,29 +34,64 @@ Future<void> preloadImage(BuildContext context) async {
 class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
   final TextEditingController forgotemailController = TextEditingController();
 
-  Future<void> forgotPassword() async {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> sendPasswordResetEmail() async {
+    final email = forgotemailController.text.trim();
+    print('Email entered: $email');  // Debug statement
+
     try {
-      await FirebaseAuth.instance.sendPasswordResetEmail(
-        email: forgotemailController.text.trim(),
-      );
-      // Show success message
+      await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
+      print('Password reset email sent successfully to $email');
+
+      // Show success message and navigate to login page
       showDialog(
         context: context,
         builder: (context) => CustomAlertDialog(
           title: 'Password Reset',
           content: 'Password reset email sent successfully.',
           onPressed: () {
-            Navigator.of(context).pop();
+            Navigator.of(context).pop(); // Close the success dialog
+            Navigator.pushReplacement( // Navigate to login page
+              context,
+              MaterialPageRoute(
+                builder: (context) => const LoginPage(),
+              ),
+            );
           },
         ),
       );
     } on FirebaseAuthException catch (e) {
-      // Show error message
+      // Handle specific error messages
+      String errorMessage = 'An unexpected error occurred. Please try again later.';
+      if (e.code == 'invalid-email') {
+        errorMessage = 'Invalid email format. Please enter a valid email address.';
+      } else if (e.code == 'user-not-found') {
+        errorMessage = 'No user found for that email.';
+      }
+
+      print('Error sending password reset email: $e');
       showDialog(
         context: context,
         builder: (context) => CustomAlertDialog(
-          title: 'Password Reset Error',
-          content: e.message ?? 'An error occurred. Please try again.',
+          title: 'Error',
+          content: errorMessage,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    } catch (e) {
+      // Handle unexpected errors
+      print('Error sending password reset email: $e');
+      showDialog(
+        context: context,
+        builder: (context) => CustomAlertDialog(
+          title: 'Error',
+          content: 'An unexpected error occurred. Please try again later.',
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -130,22 +180,15 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                               text: "Send Email",
                               buttonColor: const Color(0xFFFB812C),
                               onPressed: () async {
-                                if (validateEmail(forgotemailController.text) ==
-                                    null) {
-                                  await forgotPassword();
-                                  Navigator.pop(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) => const LoginPage(),
-                                    ),
-                                  );
+                                if (validateEmail(forgotemailController.text) == null) {
+                                  // Call sendPasswordResetEmail only if email is valid
+                                  await sendPasswordResetEmail();
                                 } else {
                                   showDialog(
                                     context: context,
                                     builder: (context) => CustomAlertDialog(
                                       title: 'Invalid Email',
-                                      content:
-                                          'Please enter a valid email address.',
+                                      content: 'Please enter a valid email address.',
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
