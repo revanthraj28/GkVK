@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/Cropdetails.dart';
@@ -33,48 +34,38 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
-    return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        backgroundColor: const Color(0xFFFEF8E0),
-        title: const Text(
-          'Confirm Exit',
-          style: TextStyle(
-            color: Color(0xFFFB812C),
-            fontWeight: FontWeight.bold,
+    if (submittedHissaNumbers.isNotEmpty) {
+      return true; // Allow navigation
+    } else {
+      // Show alert that at least one Hissa Number needs to be filled
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+          backgroundColor: const Color(0xFFFEF8E0),
+          title: const Text(
+            'Alert',
+            style: TextStyle(color: Color(0xFFFB812C), fontWeight: FontWeight.bold),
           ),
-        ),
-        content: const Text(
-          'Do you want to return to the home page?',
-          style: TextStyle(
-            color: Colors.black,
+          content: const Text(
+            'Please fill at least one Hissa Number to proceed to MCQ page.',
+            style: TextStyle(color: Colors.black),
           ),
-        ),
-        actions: [
-          TextButton(
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                color: Color(0xFFFB812C),
+          actions: [
+            TextButton(
+              child: const Text(
+                'OK',
+                style: TextStyle(color: Color(0xFFFB812C)),
               ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            onPressed: () => Navigator.of(context).pop(false),
-          ),
-          TextButton(
-            child: const Text(
-              'OK',
-              style: TextStyle(
-                color: Color(0xFFFB812C),
-              ),
-            ),
-            onPressed: () => Navigator.of(context).pop(true),
-          ),
-        ],
-      ),
-    )) ?? false;
+          ],
+        ),
+      );
+      return false; // Prevent navigation
+    }
   }
 
   @override
@@ -193,13 +184,42 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                 text: "Fill MCQ",
                 buttonColor: const Color(0xFFFB812C),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => SurveyPage1(aadharId: widget.aadharId)
-                    ),
-                  );
-                  print('clicked on Fill MCQ');
+                  if (submittedHissaNumbers.isNotEmpty) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => SurveyPage1(aadharId: widget.aadharId)
+                      ),
+                    );
+                    print('Clicked on Fill MCQ');
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                        backgroundColor: const Color(0xFFFEF8E0),
+                        title: const Text(
+                          'Alert',
+                          style: TextStyle(color: Color(0xFFFB812C), fontWeight: FontWeight.bold),
+                        ),
+                        content: const Text(
+                          'Please fill at least one Hissa Number to proceed to MCQ page.',
+                          style: TextStyle(color: Colors.black),
+                        ),
+                        actions: [
+                          TextButton(
+                            child: const Text(
+                              'OK',
+                              style: TextStyle(color: Color(0xFFFB812C)),
+                            ),
+                            onPressed: () {
+                              Navigator.of(context).pop();
+                            },
+                          ),
+                        ],
+                      ),
+                    );
+                  }
                 },
               ),
             ],
