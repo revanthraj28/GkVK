@@ -1,10 +1,12 @@
+import 'package:flutter/material.dart'; // Import Material for DateTime formatting
+import 'package:intl/intl.dart'; // Import intl for date formatting
 import 'package:sqflite/sqflite.dart';
 import 'package:gkvk/database/database_service.dart';
 
 class FarmerProfileDB {
   final tableName = 'farmer_profile_table';
 
-  // Create the table with the required columns, including the watershedId column
+  // Create the table with the required columns, including the timestamp column
   Future<void> createTable(Database database) async {
     await database.execute('''
       CREATE TABLE IF NOT EXISTS $tableName (
@@ -22,6 +24,7 @@ class FarmerProfileDB {
         "salesOfProduce" TEXT NOT NULL,
         "lriReceived" TEXT NOT NULL,
         "watershedId" INTEGER NOT NULL,
+        "timestamp" DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY ("watershedId") REFERENCES "water_shed_table" ("watershedId")
       );
     ''');
@@ -74,7 +77,7 @@ class FarmerProfileDB {
     final database = await DatabaseService().database;
     final List<Map<String, dynamic>> results = await database.query(
       tableName,
-      where: 'aadharNumber = ?',
+      where: 'aadharNumber =?',
       whereArgs: [aadharNumber],
     );
     if (results.isNotEmpty) {
@@ -120,7 +123,7 @@ class FarmerProfileDB {
         'lriReceived': lriReceived,
         'watershedId': watershedId,
       },
-      where: 'aadharNumber = ?',
+      where: 'aadharNumber =?',
       whereArgs: [aadharNumber],
     );
   }
@@ -130,9 +133,14 @@ class FarmerProfileDB {
     final database = await DatabaseService().database;
     return await database.delete(
       tableName,
-      where: 'aadharNumber = ?',
+      where: 'aadharNumber =?',
       whereArgs: [aadharNumber],
     );
   }
-}
 
+  // Example method to demonstrate using intl for date formatting
+  String formatDate(DateTime dateTime) {
+    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    return formatter.format(dateTime);
+  }
+}
