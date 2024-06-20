@@ -15,7 +15,7 @@ class CustomTextFormField extends StatefulWidget {
     required this.keyboardType,
     required this.controller,
     this.validator,
-    this.enabled = true, // Default value is true
+    this.enabled = true,  // Default value is true
   });
 
   @override

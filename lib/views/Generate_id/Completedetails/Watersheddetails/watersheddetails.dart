@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-import 'package:sqflite/sqflite.dart';
+import 'package:get/get.dart' show Obx, RxString, StringExtension;
 import 'package:gkvk/database/database_service.dart';
 import 'package:gkvk/database/gkvk_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
@@ -13,8 +12,10 @@ class WatershedView extends StatelessWidget {
   final TextEditingController _districtController = TextEditingController();
   final TextEditingController _talukController = TextEditingController();
   final TextEditingController _hobliController = TextEditingController();
-  final TextEditingController _subWatershedNameController = TextEditingController();
-  final TextEditingController _subWatershedCodeController = TextEditingController();
+  final TextEditingController _subWatershedNameController =
+      TextEditingController();
+  final TextEditingController _subWatershedCodeController =
+      TextEditingController();
   final TextEditingController _villageController = TextEditingController();
 
   final RxString _selectedCategory = ''.obs;
@@ -24,7 +25,6 @@ class WatershedView extends StatelessWidget {
 
   Future<void> _uploadData(BuildContext context) async {
     final WaterShedDB db = WaterShedDB();
-    final Database database = await DatabaseService().database;
 
     try {
       int id = await db.create(
@@ -83,7 +83,7 @@ class WatershedView extends StatelessWidget {
     if (kDebugMode) {
       print('Data uploaded successfully with ID: $latestId');
     }
-    if (latestId!= null) {
+    if (latestId != null) {
       final database = await DatabaseService().database;
       final List<Map<String, dynamic>> result = await database.query(
         'water_shed_table',
@@ -112,15 +112,19 @@ class WatershedView extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text('Do you want to continue with the latest watershed details?'),
+                  const Text(
+                      'Do you want to continue with the latest watershed details?'),
                   const SizedBox(height: 20),
                   Text('District: ${watershedDetails['district']}'),
                   Text('Taluk: ${watershedDetails['taluk']}'),
                   Text('Hobli: ${watershedDetails['hobli']}'),
-                  Text('Sub-Watershed Name: ${watershedDetails['subWatershedName']}'),
-                  Text('Sub-Watershed Code: ${watershedDetails['subWatershedCode']}'),
+                  Text(
+                      'Sub-Watershed Name: ${watershedDetails['subWatershedName']}'),
+                  Text(
+                      'Sub-Watershed Code: ${watershedDetails['subWatershedCode']}'),
                   Text('Village: ${watershedDetails['village']}'),
-                  Text('Selected Category: ${watershedDetails['selectedCategory']}'),
+                  Text(
+                      'Selected Category: ${watershedDetails['selectedCategory']}'),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -137,7 +141,8 @@ class WatershedView extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => GenerateFarmersIdPage(waterShedId: latestId),
+                              builder: (context) =>
+                                  GenerateFarmersIdPage(waterShedId: latestId),
                             ),
                           );
                         },
@@ -240,50 +245,133 @@ class WatershedView extends StatelessWidget {
     }
   }
 
-
   Future<bool> _onWillPop(BuildContext context) async {
     return (await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+            backgroundColor: const Color(0xFFFEF8E0),
+            title: const Text(
+              'Confirm Exit',
+              style: TextStyle(
+                color: Color(0xFFFB812C),
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            content: const Text(
+              'Do you want to return to the home page?',
+              style: TextStyle(
+                color: Colors.black,
+              ),
+            ),
+            actions: [
+              TextButton(
+                child: const Text(
+                  'Cancel',
+                  style: TextStyle(
+                    color: Color(0xFFFB812C),
+                  ),
+                ),
+                onPressed: () => Navigator.of(context).pop(false),
+              ),
+              TextButton(
+                child: const Text(
+                  'OK',
+                  style: TextStyle(
+                    color: Color(0xFFFB812C),
+                  ),
+                ),
+                onPressed: () => Navigator.of(context).pop(true),
+              ),
+            ],
+          ),
+        )) ??
+        false;
+  }
+
+  bool _validate() {
+    if (!_formKey.currentState!.validate()) {
+      return false;
+    }
+    if (_selectedCategory.value.isEmpty) {
+      return false;
+    }
+    return true;
+  }
+
+  bool _validateLocationControllers(BuildContext context) {
+    List<String> emptyFields = [];
+
+    // Check if all location controllers have non-empty values
+    if (_districtController.text.isEmpty) {
+      emptyFields.add('District');
+    }
+    if (_talukController.text.isEmpty) {
+      emptyFields.add('Taluk');
+    }
+    if (_hobliController.text.isEmpty) {
+      emptyFields.add('Hobli');
+    }
+    if (_subWatershedNameController.text.isEmpty) {
+      emptyFields.add('Sub-Watershed Name');
+    }
+    if (_subWatershedCodeController.text.isEmpty) {
+      emptyFields.add('Sub-Watershed Code');
+    }
+    if (_villageController.text.isEmpty) {
+      emptyFields.add('Village');
+    }
+
+    // Check if any field is empty, if yes, print and return false
+    if (emptyFields.isNotEmpty) {
+      _showEmptyFieldsAlert(context, emptyFields);
+      print('Empty fields: $emptyFields');
+      return false;
+    }
+
+    return true;
+  }
+
+  void _showEmptyFieldsAlert(BuildContext context, List<String> emptyFields) {
+    showDialog(
       context: context,
-      builder: (context) => AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15.0),
-        ),
-        backgroundColor: const Color(0xFFFEF8E0),
-        title: const Text(
-          'Confirm Exit',
-          style: TextStyle(
-            color: Color(0xFFFB812C),
-            fontWeight: FontWeight.bold,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
           ),
-        ),
-        content: const Text(
-          'Do you want to return to the home page?',
-          style: TextStyle(
-            color: Colors.black,
-          ),
-        ),
-        actions: [
-          TextButton(
-            child: const Text(
-              'Cancel',
-              style: TextStyle(
-                color: Color(0xFFFB812C),
-              ),
+          backgroundColor: const Color(0xFFFEF8E0),
+          title: const Text(
+            'Alert',
+            style: TextStyle(
+              color: Color(0xFFFB812C),
+              fontWeight: FontWeight.bold,
             ),
-            onPressed: () => Navigator.of(context).pop(false),
           ),
-          TextButton(
-            child: const Text(
-              'OK',
-              style: TextStyle(
-                color: Color(0xFFFB812C),
-              ),
+          content: Text(
+            'The following fields must be filled:\n${emptyFields.join('\n')}',
+            style: const TextStyle(
+              color: Colors.black,
             ),
-            onPressed: () => Navigator.of(context).pop(true),
           ),
-        ],
-      ),
-    )) ?? false;
+          actions: [
+            TextButton(
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -307,7 +395,9 @@ class WatershedView extends StatelessWidget {
                 fontWeight: FontWeight.bold,
               ),
             ),
-            iconTheme: const IconThemeData(color: Color(0xFFFB812C),),
+            iconTheme: const IconThemeData(
+              color: Color(0xFFFB812C),
+            ),
           ),
           body: SafeArea(
             child: SingleChildScrollView(
@@ -399,16 +489,18 @@ class WatershedView extends StatelessWidget {
                       ),
                       const SizedBox(height: 10.0),
                       Obx(() => SelectionButton(
-                        label: "Treatment",
-                        options: const ['T1', 'T2', 'T3', 'T4'],
-                        selectedOption: _selectedCategory.value.isEmpty
-                            ? null
-                            : _selectedCategory.value,
-                        onPressed: (option) {
-                          _selectedCategory.value = option ?? '';
-                        },
-                        errorMessage: _selectedCategory.value.isEmpty ? 'Please select Treatment option' : null,
-                      )),
+                            label: "Treatment",
+                            options: const ['T1', 'T2', 'T3', 'T4'],
+                            selectedOption: _selectedCategory.value.isEmpty
+                                ? null
+                                : _selectedCategory.value,
+                            onPressed: (option) {
+                              _selectedCategory.value = option;
+                            },
+                            errorMessage: _selectedCategory.value.isEmpty
+                                ? 'Please select Treatment option'
+                                : null,
+                          )),
                       const SizedBox(height: 110.0),
                     ],
                   ),
@@ -434,96 +526,98 @@ class WatershedView extends StatelessWidget {
                   text: 'NEXT',
                   buttonColor: const Color(0xFFFB812C),
                   onPressed: () {
-                    if (_formKey.currentState?.validate()?? false) {
-                      if (_selectedCategory.value.isEmpty) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              backgroundColor: const Color(0xFFFEF8E0),
-                              title: const Text(
-                                'Alert',
-                                style: TextStyle(
-                                  color: Color(0xFFFB812C),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              content: const Text(
-                                'All the details must be filled.',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text(
-                                    'OK',
-                                    style: TextStyle(
-                                      color: Color(0xFFFB812C),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      }
-                      else if (_districtController.text.isEmpty ||
-                          _talukController.text.isEmpty ||
-                          _hobliController.text.isEmpty ||
-                          _subWatershedNameController.text.isEmpty ||
-                          _subWatershedCodeController.text.isEmpty ||
-                          _villageController.text.isEmpty) {
-                        showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialog(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(15.0),
-                              ),
-                              backgroundColor: const Color(0xFFFEF8E0),
-                              title: const Text(
-                                'ALERT',
-                                style: TextStyle(
-                                  color: Color(0xFFFB812C),
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              content: const Text(
-                                'All the details must be filled.',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                              actions: [
-                                TextButton(
-                                  child: const Text(
-                                    'OK',
-                                    style: TextStyle(
-                                      color: Color(0xFFFB812C),
-                                    ),
-                                  ),
-                                  onPressed: () {
-                                    Navigator.of(context).pop();
-                                  },
-                                ),
-                              ],
-                            );
-                          },
-                        );
-                      } else {
+                    bool isFormValid = _validate();
+                    bool areControllersValid = _validateLocationControllers(context);
+
+                    print(
+                        'Form valid: $isFormValid, Controllers valid: $areControllersValid');
+
+                    if (isFormValid && areControllersValid) {
+                      try {
                         _uploadData(context);
+                      } catch (e) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              backgroundColor: const Color(0xFFFEF8E0),
+                              title: const Text(
+                                'Error',
+                                style: TextStyle(
+                                  color: Color(0xFFFB812C),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              content: const Text(
+                                'Failed to upload data. Please check your input and try again.',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text(
+                                    'OK',
+                                    style: TextStyle(
+                                      color: Color(0xFFFB812C),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
                       }
+                    } else if (!areControllersValid) {
+                      // The alert for invalid controllers will already have been shown, so do nothing here
+                    } else {
+                      // If form is invalid, show a generic alert
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            backgroundColor: const Color(0xFFFEF8E0),
+                            title: const Text(
+                              'Alert',
+                              style: TextStyle(
+                                color: Color(0xFFFB812C),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            content: const Text(
+                              'All the details must be filled.',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
+                            actions: [
+                              TextButton(
+                                child: const Text(
+                                  'OK',
+                                  style: TextStyle(
+                                    color: Color(0xFFFB812C),
+                                  ),
+                                ),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     }
                   },
                 )
-
               ],
             ),
           ),

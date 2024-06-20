@@ -158,8 +158,16 @@ class _LoginPageState extends State<LoginPage>
                                         ),
                                       );
                                     } catch (e) {
-                                      // Handle login errors
-                                      print('Login failed: $e');
+                                      showDialog(
+                                    context: context,
+                                    builder: (context) => CustomAlertDialog(
+                                      title: 'Login Error',
+                                      content: 'Please enter valid email and password.',
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  );
                                     }
                                   } else {
                                     showDialog(

@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' show BorderRadius, BoxDecoration, BoxFit, BoxShadow, BuildContext, Center, CircularProgressIndicator, Color, Colors, Column, ConnectionState, Container, CrossAxisAlignment, EdgeInsets, Expanded, FontWeight, FutureBuilder, Icon, IconButton, Icons, Image, ListTile, ListView, MainAxisAlignment, MainAxisSize, MaterialApp, MediaQuery, Offset, Padding, Positioned, Scaffold, ScaffoldMessenger, SizedBox, SnackBar, Stack, State, StatefulWidget, StatelessWidget, Text, TextStyle, Widget, runApp;
 import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/database/gkvk_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
@@ -151,7 +151,7 @@ class _ListTabViewState extends State<ListTabView> {
                       return _buildEmptyListContainer();
                     } else {
                       // Calculate total height needed for the list
-                      double listHeight = farmers.length * 80.0; // Assuming each tile is 80.0 in height
+// Assuming each tile is 80.0 in height
 
                       return Container(
                         height: MediaQuery.of(context).size.height / 2,
