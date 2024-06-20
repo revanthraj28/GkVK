@@ -86,13 +86,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               ),
                             ),
                             const SizedBox(height: 16),
-                            Text(
-                              user?.displayName ?? 'Revanth',
-                              style: const TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
+                            // Text(
+                            //   user?.displayName ?? 'Revanth',
+                            //   style: const TextStyle(
+                            //     fontSize: 24,
+                            //     fontWeight: FontWeight.bold,
+                            //   ),
+                            // ),
                             const SizedBox(height: 8),
                             Text(
                               user?.email ?? 'Email not available',

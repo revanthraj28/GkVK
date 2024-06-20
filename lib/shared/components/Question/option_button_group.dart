@@ -31,10 +31,12 @@ class OptionButtonGroup extends StatelessWidget {
               ),
               elevation: 0,
             ),
-            child: Text(
-              option,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
+            child: Center(
+              child: Text(
+                option,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w400,
+                ),
               ),
             ),
           ),

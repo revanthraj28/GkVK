@@ -41,17 +41,10 @@ class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMix
 
     if (user != null) {
       // User is signed in
-      Navigator.pushReplacement(
+      Navigator.pushAndRemoveUntil(
         context,
-        PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => const HomeScreen(),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) {
-            return FadeTransition(
-              opacity: animation,
-              child: child,
-            );
-          },
-        ),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
+            (route) => false, // This makes sure all other routes are removed from the stack
       );
     } else {
       // User is not signed in

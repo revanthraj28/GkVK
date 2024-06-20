@@ -77,6 +77,46 @@ class WatershedView extends StatelessWidget {
     return null;
   }
 
+  void _showEmptyFieldsAlert(BuildContext context, List<String> emptyFields) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: const Color(0xFFFEF8E0),
+          title: const Text(
+            'Alert',
+            style: TextStyle(
+              color: Color(0xFFFB812C),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'The following fields must be filled:\n${emptyFields.join('\n')}',
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   void _navigateWithLatestWaterShedId(BuildContext context) async {
     final latestId = await _getLatestWaterShedId();
     print('Data uploaded successfully with ID: $latestId');
@@ -301,7 +341,7 @@ class WatershedView extends StatelessWidget {
               style: TextStyle(
                 color: Color(0xFFFB812C),
                 fontSize: 18,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.bold,
               ),
             ),
             iconTheme: const IconThemeData(color: Color(0xFFFB812C),),
