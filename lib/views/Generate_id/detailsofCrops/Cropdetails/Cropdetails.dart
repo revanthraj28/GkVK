@@ -2,7 +2,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
@@ -217,7 +216,7 @@ class _CropdetailsState extends State<Cropdetails> {
     if (kDebugMode) {
       print('Data submitted successfully');
     }
-    Navigator.push(
+    Navigator.pop(
       context,
       MaterialPageRoute(
         builder: (context) => FarmerAreaPage(aadharId: widget.aadharId),
@@ -882,7 +881,7 @@ class _CropdetailsState extends State<Cropdetails> {
                           children: [
                             Text(
                               'Fertilizer $index', // Displaying the index
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 14.0,
                               ),
                             ),

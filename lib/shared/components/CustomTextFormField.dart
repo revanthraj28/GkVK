@@ -9,14 +9,14 @@ class CustomTextFormField extends StatefulWidget {
   final bool enabled;
 
   const CustomTextFormField({
-    Key? key,
+    super.key,
     required this.labelText,
     this.obscureText = false,
     required this.keyboardType,
     required this.controller,
     this.validator,
     this.enabled = true, // Default value is true
-  }) : super(key: key);
+  });
 
   @override
   _CustomTextFormFieldState createState() => _CustomTextFormFieldState();
