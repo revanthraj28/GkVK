@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:gkvk/database/cropdetails_db.dart';
+import 'package:gkvk/database/farmer_profile_db.dart';
+import 'package:gkvk/database/survey_page1_db.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages3.dart';
@@ -156,9 +159,21 @@ class _SurveyPage2State extends State<SurveyPage2> {
                   color: Color(0xFFFB812C),
                 ),
               ),
-              onPressed: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
+              onPressed: () async {
+                try {
+                  final farmerProfileDB = FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
+                  await farmerProfileDB.delete(widget.aadharId);
+                  final cropdetailsDB = CropdetailsDB();
+                  await cropdetailsDB.delete(widget.aadharId);
+                  final surveyDataDB1 = SurveyDataDB1();
+                  await surveyDataDB1.delete(widget.aadharId);
+
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                } catch (error) {
+                  print("Failed to delete farmer profile: $error");
+                  // Optionally show an error message to the user
+                }
+              }
             ),
           ],
         );
@@ -183,7 +198,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
             style: TextStyle(
               color: Color(0xFFFB812C),
               fontSize: 18,
-              fontWeight: FontWeight.w500,
+              fontWeight: FontWeight.bold,
             ),
           ),
           iconTheme: const IconThemeData(color: Color(0xFFFB812C)),

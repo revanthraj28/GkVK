@@ -116,4 +116,9 @@ class WaterShedDB {
       whereArgs: [watershedId],
     );
   }
+
+  Future<void> deleteAll() async {
+    final database = await DatabaseService().database;
+    await database.delete(tableName);
+  }
 }

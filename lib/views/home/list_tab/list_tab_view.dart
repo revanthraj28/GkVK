@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
+import 'package:gkvk/database/gkvk_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/database/survey_page1_db.dart';
 import 'package:gkvk/database/survey_page2_db.dart';
@@ -41,6 +42,7 @@ class _ListTabViewState extends State<ListTabView> {
     final surveyDataDB3 = SurveyDataDB3();
     final surveyDataDB4 = SurveyDataDB4();
     final cropdetailsDB = CropdetailsDB();
+    final waterShedDB = WaterShedDB();
 
     try {
       final farmerData = await farmerProfileDB.read(aadharNumber);
@@ -51,6 +53,10 @@ class _ListTabViewState extends State<ListTabView> {
       final surveyData3 = await surveyDataDB3.read(aadharNumber);
       final surveyData4 = await surveyDataDB4.read(aadharNumber);
       final cropDetailsData = await cropdetailsDB.readByAadharId(aadharNumber);
+
+      final watershedId = farmerData['watershedId'];
+      final watershedData = await waterShedDB.read(watershedId);
+      if (watershedData == null) throw Exception('Watershed data not found');
 
       final firestore = FirebaseFirestore.instance;
       final batch = firestore.batch();
@@ -83,6 +89,9 @@ class _ListTabViewState extends State<ListTabView> {
         }
       }
 
+      final watershedRef = farmerRef.collection('watershed').doc('watershed');
+      batch.set(watershedRef, watershedData);
+
       await batch.commit();
 
       await farmerProfileDB.delete(aadharNumber);
@@ -98,6 +107,19 @@ class _ListTabViewState extends State<ListTabView> {
     } catch (e) {
       print('Failed to upload farmer data: $e');
       rethrow;
+    }
+  }
+
+  Future<void> uploadAllData() async {
+    final farmers = await _farmersFuture;
+    for (var farmer in farmers) {
+      await uploadFarmerData(farmer['aadharNumber']);
+    }
+
+    final remainingFarmers = await fetchAllFarmers();
+    if (remainingFarmers.isEmpty) {
+      final waterShedDB = WaterShedDB();
+      await waterShedDB.deleteAll();
     }
   }
 
@@ -176,10 +198,7 @@ class _ListTabViewState extends State<ListTabView> {
                               text: 'UPLOAD ALL',
                               buttonColor: const Color(0xFFFB812C),
                               onPressed: () async {
-                                final farmers = await _farmersFuture;
-                                for (var farmer in farmers) {
-                                  await uploadFarmerData(farmer['aadharNumber']);
-                                }
+                                await uploadAllData();
                               },
                             ),
                           ],

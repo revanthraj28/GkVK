@@ -209,7 +209,7 @@ class WatershedView extends StatelessWidget {
             ),
             backgroundColor: const Color(0xFFFEF8E0),
             title: const Text(
-              'ALERT',
+              'Alert',
               style: TextStyle(
                 color: Color(0xFFFB812C),
                 fontWeight: FontWeight.bold,

@@ -8,7 +8,8 @@ import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.d
 class FarmerAreaPage extends StatefulWidget {
   final int aadharId;
 
-  FarmerAreaPage({required this.aadharId, super.key});
+  FarmerAreaPage({required this.aadharId, Key? key}) : super(key: key);
+
   @override
   _FarmerAreaPageState createState() => _FarmerAreaPageState();
 }
@@ -21,51 +22,98 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
   @override
   void initState() {
     super.initState();
-    addNewForm();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Add the first form without checking any condition
+      setState(() {
+        FarmerForm.add({
+          "hissaNumber": TextEditingController(),
+        });
+      });
+      print('First form added. Total forms: ${FarmerForm.length}');
+    });
   }
 
   void addNewForm() {
-    setState(() {
-      FarmerForm.add({
-        "hissaNumber": TextEditingController(),
+    if (FarmerForm.length == submittedHissaNumbers.length) {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+            backgroundColor: const Color(0xFFFEF8E0),
+            title: const Text(
+              'Warning',
+              style: TextStyle(color: Color(0xFFFB812C), fontWeight: FontWeight.bold),
+            ),
+            content: const Text(
+              'The number of areas cannot exceed the number of submitted Hissa Numbers.',
+              style: TextStyle(color: Colors.black),
+            ),
+            actions: <Widget>[
+              TextButton(
+                child: const Text(
+                  'OK',
+                  style: TextStyle(color: Color(0xFFFB812C)),
+                ),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      setState(() {
+        FarmerForm.add({
+          "hissaNumber": TextEditingController(),
+        });
       });
-    });
-    print('New form added. Total forms: ${FarmerForm.length}');
+      print('New form added. Total forms: ${FarmerForm.length}');
+    }
   }
 
   Future<bool> _onWillPop(BuildContext context) async {
-    if (submittedHissaNumbers.isNotEmpty) {
-      return true; // Allow navigation
-    } else {
-      // Show alert that at least one Hissa Number needs to be filled
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-          backgroundColor: const Color(0xFFFEF8E0),
-          title: const Text(
-            'Alert',
-            style: TextStyle(color: Color(0xFFFB812C), fontWeight: FontWeight.bold),
-          ),
-          content: const Text(
-            'Please fill at least one Hissa Number to proceed to MCQ page.',
-            style: TextStyle(color: Colors.black),
-          ),
-          actions: [
-            TextButton(
-              child: const Text(
-                'OK',
-                style: TextStyle(color: Color(0xFFFB812C)),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
+    return (await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+        backgroundColor: const Color(0xFFFEF8E0),
+        title: const Text(
+          'Confirm Exit',
+          style: TextStyle(color: Color(0xFFFB812C), fontWeight: FontWeight.bold),
         ),
-      );
-      return false; // Prevent navigation
-    }
+        content: const Text(
+          'Do you want to return to the home page?',
+          style: TextStyle(color: Colors.black),
+        ),
+        actions: [
+          TextButton(
+            child: const Text(
+              'Cancel',
+              style: TextStyle(color: Color(0xFFFB812C)),
+            ),
+            onPressed: () => Navigator.of(context).pop(false),
+          ),
+          TextButton(
+            child: const Text(
+              'OK',
+              style: TextStyle(color: Color(0xFFFB812C)),
+            ),
+            onPressed: () async {
+              try {
+                final farmerProfileDB = FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
+                await farmerProfileDB.delete(widget.aadharId);
+                Navigator.of(context).popUntil((route) => route.isFirst);
+              } catch (error) {
+                print("Failed to delete farmer profile: $error");
+                // Optionally show an error message to the user
+              }
+            },
+          ),
+        ],
+      ),
+    )) ?? false;
   }
 
   @override
@@ -131,6 +179,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                           const SizedBox(height: 20.0),
                           CustomTextButton(
                             text: "Enter Crop Details",
+                            buttonColor: Colors.black,
                             onPressed: () {
                               if (_formKey.currentState?.validate() ?? false) {
                                 final hissaNumber = int.tryParse(formEntry['hissaNumber']?.text ?? '');
@@ -166,6 +215,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                     }).toList(),
                     CustomTextButton(
                       text: "Add area",
+                      buttonColor: Colors.black,
                       onPressed: addNewForm,
                     ),
                   ],
@@ -191,33 +241,35 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                           builder: (context) => SurveyPage1(aadharId: widget.aadharId)
                       ),
                     );
-                    print('Clicked on Fill MCQ');
+                    print('clicked on Fill MCQ');
                   } else {
                     showDialog(
                       context: context,
-                      builder: (context) => AlertDialog(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
-                        backgroundColor: const Color(0xFFFEF8E0),
-                        title: const Text(
-                          'Alert',
-                          style: TextStyle(color: Color(0xFFFB812C), fontWeight: FontWeight.bold),
-                        ),
-                        content: const Text(
-                          'Please fill at least one Hissa Number to proceed to MCQ page.',
-                          style: TextStyle(color: Colors.black),
-                        ),
-                        actions: [
-                          TextButton(
-                            child: const Text(
-                              'OK',
-                              style: TextStyle(color: Color(0xFFFB812C)),
-                            ),
-                            onPressed: () {
-                              Navigator.of(context).pop();
-                            },
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15.0)),
+                          backgroundColor: const Color(0xFFFEF8E0),
+                          title: const Text(
+                            'Warning',
+                            style: TextStyle(color: Color(0xFFFB812C), fontWeight: FontWeight.bold),
                           ),
-                        ],
-                      ),
+                          content: const Text(
+                            'At least one item should be submitted.',
+                            style: TextStyle(color: Colors.black),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              child: const Text(
+                                'OK',
+                                style: TextStyle(color: Color(0xFFFB812C)),
+                              ),
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                            ),
+                          ],
+                        );
+                      },
                     );
                   }
                 },

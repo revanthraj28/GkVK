@@ -2,6 +2,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
@@ -230,26 +231,62 @@ class _CropdetailsState extends State<Cropdetails> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Exit'),
-          content: const Text('Do you want to return to the home page?'),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: const Color(0xFFFEF8E0),
+          title: const Text(
+            'Exit',
+            style: TextStyle(
+              color: Color(0xFFFB812C),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: const Text(
+            'Do you want to return to the home page?',
+            style: TextStyle(
+              color: Colors.black,
+            ),
+          ),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel'),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('OK'),
-              onPressed: () {
-                Navigator.of(context).popUntil((route) => route.isFirst);
-              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
+              onPressed: ()  async {
+                try {
+                  final farmerProfileDB = FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
+                  await farmerProfileDB.delete(widget.aadharId);
+                  final cropdetailsDB = CropdetailsDB();
+                  await cropdetailsDB.delete(widget.aadharId);
+
+                  Navigator.of(context).popUntil((route) => route.isFirst);
+                } catch (error) {
+                  print("Failed to delete farmer profile: $error");
+                  // Optionally show an error message to the user
+                }
+              }
             ),
           ],
         );
       },
     );
   }
+
 
   void _handleTypeOfLandSelection(String option) {
     _selectedTypeOfLand.value = option;
@@ -472,7 +509,7 @@ class _CropdetailsState extends State<Cropdetails> {
               style: TextStyle(
                 color: Color(0xFFFB812C),
                 fontSize: 18,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.bold,
               ),
             ),
             iconTheme: const IconThemeData(color: Color(0xFFFB812C)),
@@ -996,6 +1033,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.w500),
                       ),
+                      const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Own Labour(number)",
                         controller: _ownLabourNumberController,
