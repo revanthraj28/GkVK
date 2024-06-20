@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
+import 'package:gkvk/views/login/Login.dart';
 
 class ForgotpasswordPage extends StatefulWidget {
   const ForgotpasswordPage({super.key});
@@ -131,12 +133,19 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
                                 if (validateEmail(forgotemailController.text) ==
                                     null) {
                                   await forgotPassword();
+                                  Navigator.pop(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginPage(),
+                                    ),
+                                  );
                                 } else {
                                   showDialog(
                                     context: context,
                                     builder: (context) => CustomAlertDialog(
                                       title: 'Invalid Email',
-                                      content: 'Please enter a valid email address.',
+                                      content:
+                                          'Please enter a valid email address.',
                                       onPressed: () {
                                         Navigator.of(context).pop();
                                       },
