@@ -28,8 +28,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
   @override
   void initState() {
     super.initState();
-    // Initialize error text with validation result
-    _errorText = widget.validator != null ? widget.validator!(widget.controller.text) : null;
+    // Remove initial validation
     // Add a listener to the controller to validate on text change
     widget.controller.addListener(_validate);
   }
