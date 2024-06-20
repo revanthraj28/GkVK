@@ -1,3 +1,4 @@
+// ignore: file_names
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -43,44 +44,44 @@ class _CropdetailsState extends State<Cropdetails> {
   final _bioFertilizerCostController = TextEditingController();
 
   final TextEditingController _plantProtectionCostController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _ownLabourNumberController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _ownLabourCostController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _hiredLabourNumberController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _hiredLabourCostController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _animalDrawnCostController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _animalMechanizedCostController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _irrigationCostController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _otherProductionCostController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _totalProductionCostController =
-  TextEditingController();
+      TextEditingController();
 
   final TextEditingController _mainProductQuantityController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _mainProductPriceController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _mainProductAmountController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _byProductQuantityController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _byProductPriceController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _byProductAmountController =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _totalByProductAmountController1 =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _totalByProductAmountController2 =
-  TextEditingController();
+      TextEditingController();
   final TextEditingController _totalByProductAmountController3 =
-  TextEditingController();
+      TextEditingController();
 
   final RxString _selectedTypeOfLand = ''.obs;
   final RxString _selectedSeason = ''.obs;
@@ -91,6 +92,7 @@ class _CropdetailsState extends State<Cropdetails> {
   final RxString _Methodsoffertilizer = ''.obs;
 
   final List<Map<String, TextEditingController>> chemicalFertilizers = [];
+  int fertilizerCount = 0;
 
   @override
   void initState() {
@@ -100,7 +102,11 @@ class _CropdetailsState extends State<Cropdetails> {
 
   void addNewFertilizer() {
     setState(() {
+      fertilizerCount++;
+      TextEditingController indexController = TextEditingController();
+      indexController.text = fertilizerCount.toString(); // Set the text value
       chemicalFertilizers.add({
+        "index": indexController, // Use TextEditingController for index
         "name": TextEditingController(),
         "basal": TextEditingController(),
         "topDress": TextEditingController(),
@@ -108,6 +114,27 @@ class _CropdetailsState extends State<Cropdetails> {
         "totalCost": TextEditingController(),
       });
     });
+  }
+
+  void calculateTotal() {
+    double total = 0.0;
+    total += double.tryParse(_costController.text) ?? 0.0;
+    total += double.tryParse(_organicManureCostController.text) ?? 0.0;
+    total += double.tryParse(_bioFertilizerCostController.text) ?? 0.0;
+    total += double.tryParse(_plantProtectionCostController.text) ?? 0.0;
+    total += double.tryParse(_ownLabourCostController.text) ?? 0.0;
+    total += double.tryParse(_hiredLabourCostController.text) ?? 0.0;
+    total += double.tryParse(_animalDrawnCostController.text) ?? 0.0;
+    total += double.tryParse(_animalMechanizedCostController.text) ?? 0.0;
+    total += double.tryParse(_irrigationCostController.text) ?? 0.0;
+    total += double.tryParse(_otherProductionCostController.text) ?? 0.0;
+
+    for (var fertilizer in chemicalFertilizers) {
+      total += double.tryParse(fertilizer['totalCost']!.text) ?? 0.0;
+    }
+
+    // Update the total production cost controller
+    _totalProductionCostController.text = total.toStringAsFixed(2);
   }
 
   Future<void> _submitData(BuildContext context) async {
@@ -136,39 +163,39 @@ class _CropdetailsState extends State<Cropdetails> {
       'adjustedrdfPotassium': _adjustedrdfPotassiumController.text,
       'organicManureName': _organicManureNameController.text,
       'organicManureQuantity':
-      double.tryParse(_organicManureQuantityController.text),
+          double.tryParse(_organicManureQuantityController.text),
       'organicManureCost': double.tryParse(_organicManureCostController.text),
       'bioFertilizerName': _bioFertilizerNameController.text,
       'bioFertilizerQuantity':
-      double.tryParse(_bioFertilizerQuantityController.text),
+          double.tryParse(_bioFertilizerQuantityController.text),
       'bioFertilizerCost': double.tryParse(_bioFertilizerCostController.text),
       'plantProtectionCost':
-      double.tryParse(_plantProtectionCostController.text),
+          double.tryParse(_plantProtectionCostController.text),
       'ownLabourNumber': int.tryParse(_ownLabourNumberController.text),
       'ownLabourCost': double.tryParse(_ownLabourCostController.text),
       'hiredLabourNumber': int.tryParse(_hiredLabourNumberController.text),
       'hiredLabourCost': double.tryParse(_hiredLabourCostController.text),
       'animalDrawnCost': double.tryParse(_animalDrawnCostController.text),
       'animalMechanizedCost':
-      double.tryParse(_animalMechanizedCostController.text),
+          double.tryParse(_animalMechanizedCostController.text),
       'irrigationCost': double.tryParse(_irrigationCostController.text),
       'otherProductionCost':
-      double.tryParse(_otherProductionCostController.text),
+          double.tryParse(_otherProductionCostController.text),
       'totalProductionCost':
-      double.tryParse(_totalProductionCostController.text),
+          double.tryParse(_totalProductionCostController.text),
       'mainProductQuantity':
-      double.tryParse(_mainProductQuantityController.text),
+          double.tryParse(_mainProductQuantityController.text),
       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
       'mainProductAmount': double.tryParse(_mainProductAmountController.text),
       'byProductQuantity': double.tryParse(_byProductQuantityController.text),
       'byProductPrice': double.tryParse(_byProductPriceController.text),
       'byProductAmount': double.tryParse(_byProductAmountController.text),
       'totalByProductAmount1':
-      double.tryParse(_totalByProductAmountController1.text),
+          double.tryParse(_totalByProductAmountController1.text),
       'totalByProductAmount2':
-      double.tryParse(_totalByProductAmountController2.text),
+          double.tryParse(_totalByProductAmountController2.text),
       'totalByProductAmount3':
-      double.tryParse(_totalByProductAmountController3.text),
+          double.tryParse(_totalByProductAmountController3.text),
       'methodsoffertilizer': _Methodsoffertilizer.value,
     };
 
@@ -189,7 +216,7 @@ class _CropdetailsState extends State<Cropdetails> {
     if (kDebugMode) {
       print('Data submitted successfully');
     }
-    Navigator.push(
+    Navigator.pop(
       context,
       MaterialPageRoute(
         builder: (context) => FarmerAreaPage(aadharId: widget.aadharId),
@@ -224,6 +251,13 @@ class _CropdetailsState extends State<Cropdetails> {
     );
   }
 
+  void _handleTypeOfLandSelection(String option) {
+    _selectedTypeOfLand.value = option;
+    if (option == 'Rain-fed') {
+      _selectedSourceOfIrrigation.value = 'None';
+    }
+  }
+
   bool _validateForm() {
     // Check if the form fields are valid
     if (!_formKey.currentState!.validate()) {
@@ -254,14 +288,12 @@ class _CropdetailsState extends State<Cropdetails> {
 
     return true;
   }
+
   bool _validatecontrollers() {
     List<String> emptyFields = [];
 
     // Check if all text controllers have non-empty values
     if (_cropNameController.text.isEmpty) {
-      emptyFields.add('Crop Name');
-    }
-    if (_cropNumberController.text.isEmpty) {
       emptyFields.add('Crop Name');
     }
     if (_areaController.text.isEmpty) {
@@ -369,12 +401,10 @@ class _CropdetailsState extends State<Cropdetails> {
     if (_totalByProductAmountController2.text.isEmpty) {
       emptyFields.add('Total By-Product Amount 2');
     }
-    // if (_totalByProductAmountController3.text.isEmpty) {
-    //   emptyFields.add('Total By-Product Amount 3');
-    // }
 
     // Check if any field is empty, if yes, print and return false
     if (emptyFields.isNotEmpty) {
+      _showEmptyFieldsAlert(context, emptyFields);
       print('Empty fields: $emptyFields');
       return false;
     }
@@ -382,50 +412,45 @@ class _CropdetailsState extends State<Cropdetails> {
     return true;
   }
 
-  // bool _validatecontrollers() {
-  //   // Check if all text controllers have non-empty values
-  //   if (_cropNameController.text.isEmpty ||
-  //       _cropNumberController.text.isEmpty ||
-  //       _areaController.text.isEmpty ||
-  //       _surveyHissaController.text.isEmpty ||
-  //       _varietyController.text.isEmpty ||
-  //       _durationController.text.isEmpty ||
-  //       _costController.text.isEmpty ||
-  //       _rdfNitrogenController.text.isEmpty ||
-  //       _rdfPhosphorousController.text.isEmpty ||
-  //       _rdfPotassiumController.text.isEmpty ||
-  //       _adjustedrdfNitrogenController.text.isEmpty ||
-  //       _adjustedrdfPhosphorousController.text.isEmpty ||
-  //       _adjustedrdfPotassiumController.text.isEmpty ||
-  //       _organicManureNameController.text.isEmpty ||
-  //       _organicManureQuantityController.text.isEmpty ||
-  //       _organicManureCostController.text.isEmpty ||
-  //       _bioFertilizerNameController.text.isEmpty ||
-  //       _bioFertilizerQuantityController.text.isEmpty ||
-  //       _bioFertilizerCostController.text.isEmpty ||
-  //       _plantProtectionCostController.text.isEmpty ||
-  //       _ownLabourNumberController.text.isEmpty ||
-  //       _ownLabourCostController.text.isEmpty ||
-  //       _hiredLabourNumberController.text.isEmpty ||
-  //       _hiredLabourCostController.text.isEmpty ||
-  //       _animalDrawnCostController.text.isEmpty ||
-  //       _animalMechanizedCostController.text.isEmpty ||
-  //       _irrigationCostController.text.isEmpty ||
-  //       _otherProductionCostController.text.isEmpty ||
-  //       _totalProductionCostController.text.isEmpty ||
-  //       _mainProductQuantityController.text.isEmpty ||
-  //       _mainProductPriceController.text.isEmpty ||
-  //       _mainProductAmountController.text.isEmpty ||
-  //       _byProductQuantityController.text.isEmpty ||
-  //       _byProductPriceController.text.isEmpty ||
-  //       _byProductAmountController.text.isEmpty ||
-  //       _totalByProductAmountController1.text.isEmpty ||
-  //       _totalByProductAmountController2.text.isEmpty) {
-  //     return false;
-  //   }
-
-  //   return true;
-  // }
+  void _showEmptyFieldsAlert(BuildContext context, List<String> emptyFields) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: const Color(0xFFFEF8E0),
+          title: const Text(
+            'Alert',
+            style: TextStyle(
+              color: Color(0xFFFB812C),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'The following fields must be filled:\n${emptyFields.join('\n')}',
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -460,6 +485,7 @@ class _CropdetailsState extends State<Cropdetails> {
                   color: const Color(0xFFFEF8E0),
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       CustomTextFormField(
                         labelText: "Crop Name",
@@ -536,53 +562,50 @@ class _CropdetailsState extends State<Cropdetails> {
                       ),
                       const SizedBox(height: 20.0),
                       Obx(() => SelectionButton(
-                        label: "Season",
-                        options: const ['Kharif', 'Rabi', 'Summer'],
-                        selectedOption: _selectedSeason.value.isEmpty
-                            ? null
-                            : _selectedSeason.value,
-                        onPressed: (option) {
-                          _selectedSeason.value = option;
-                        },
-                        errorMessage: _selectedSeason.value.isEmpty
-                            ? 'Please select a season'
-                            : null,
-                      )),
+                            label: "Season",
+                            options: const ['Kharif', 'Rabi', 'Summer'],
+                            selectedOption: _selectedSeason.value.isEmpty
+                                ? null
+                                : _selectedSeason.value,
+                            onPressed: (option) {
+                              _selectedSeason.value = option;
+                            },
+                            errorMessage: _selectedSeason.value.isEmpty
+                                ? 'Please select a season'
+                                : null,
+                          )),
                       const SizedBox(height: 20.0),
                       Obx(() => SelectionButton(
-                        label: "Type of land",
-                        options: const ['Rain-fed', 'Irrigated'],
-                        selectedOption: _selectedTypeOfLand.value.isEmpty
-                            ? null
-                            : _selectedTypeOfLand.value,
-                        onPressed: (option) {
-                          _selectedTypeOfLand.value = option;
-                        },
-                        errorMessage: _selectedTypeOfLand.value.isEmpty
-                            ? 'Please select a type of land'
-                            : null,
-                      )),
+                            label: "Type of land",
+                            options: const ['Rain-fed', 'Irrigated'],
+                            selectedOption: _selectedTypeOfLand.value.isEmpty
+                                ? null
+                                : _selectedTypeOfLand.value,
+                            onPressed: (option) {
+                              _handleTypeOfLandSelection(option);
+                            },
+                            errorMessage: _selectedTypeOfLand.value.isEmpty
+                                ? 'Please select a type of land'
+                                : null,
+                          )),
                       const SizedBox(height: 20.0),
                       Obx(() => SelectionButton(
-                        label: "Source of irrigation",
-                        options: const [
-                          'Borewell',
-                          'Tank',
-                          'Canal',
-                          'Others',
-                        ],
-                        selectedOption:
-                        _selectedSourceOfIrrigation.value.isEmpty
-                            ? null
-                            : _selectedSourceOfIrrigation.value,
-                        onPressed: (option) {
-                          _selectedSourceOfIrrigation.value = option;
-                        },
-                        errorMessage:
-                        _selectedSourceOfIrrigation.value.isEmpty
-                            ? 'Please select a source of irrigation'
-                            : null,
-                      )),
+                            label: "Source of irrigation",
+                            options: _selectedTypeOfLand.value == 'Rain-fed'
+                                ? const ['None']
+                                : const ['Borewell', 'Tank', 'Canal', 'Others'],
+                            selectedOption:
+                                _selectedSourceOfIrrigation.value.isEmpty
+                                    ? null
+                                    : _selectedSourceOfIrrigation.value,
+                            onPressed: (option) {
+                              _selectedSourceOfIrrigation.value = option;
+                            },
+                            errorMessage:
+                                _selectedSourceOfIrrigation.value.isEmpty
+                                    ? 'Please select a source of irrigation'
+                                    : null,
+                          )),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Cost of seed (including own seed)(in Rs.)",
@@ -602,80 +625,65 @@ class _CropdetailsState extends State<Cropdetails> {
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
                       const SizedBox(height: 20.0),
-                      const Text(
-                        'Nitrogen',
-                        style: TextStyle(
-                            fontSize: 14.0, fontWeight: FontWeight.w500),
-                      ),
                       Obx(() => SelectionButton(
-                        label: '',
-                        options: const [
-                          'Very low',
-                          'Low',
-                          'Medium',
-                          'High',
-                          'Very high'
-                        ],
-                        selectedOption: _selectedNitrogen.value.isEmpty
-                            ? null
-                            : _selectedNitrogen.value,
-                        onPressed: (option) {
-                          _selectedNitrogen.value = option;
-                        },
-                        errorMessage: _selectedNitrogen.value.isEmpty
-                            ? 'Please select a nitrogen level'
-                            : null,
-                      )),
+                            label: 'Nitrogen',
+                            options: const [
+                              'Very low',
+                              'Low',
+                              'Medium',
+                              'High',
+                              'Very high'
+                            ],
+                            selectedOption: _selectedNitrogen.value.isEmpty
+                                ? null
+                                : _selectedNitrogen.value,
+                            onPressed: (option) {
+                              _selectedNitrogen.value = option;
+                            },
+                            errorMessage: _selectedNitrogen.value.isEmpty
+                                ? 'Please select a nitrogen level'
+                                : null,
+                          )),
                       const SizedBox(height: 20.0),
-                      const Text(
-                        'Phosphorous',
-                        style: TextStyle(
-                            fontSize: 14.0, fontWeight: FontWeight.w500),
-                      ),
                       Obx(() => SelectionButton(
-                        label: '',
-                        options: const [
-                          'Very low',
-                          'Low',
-                          'Medium',
-                          'High',
-                          'Very high'
-                        ],
-                        selectedOption: _selectedPhosphorous.value.isEmpty
-                            ? null
-                            : _selectedPhosphorous.value,
-                        onPressed: (option) {
-                          _selectedPhosphorous.value = option;
-                        },
-                        errorMessage: _selectedPhosphorous.value.isEmpty
-                            ? 'Please select a phosphorous level'
-                            : null,
-                      )),
+                            label: 'Phosphorous',
+                            options: const [
+                              'Very low',
+                              'Low',
+                              'Medium',
+                              'High',
+                              'Very high'
+                            ],
+                            selectedOption: _selectedPhosphorous.value.isEmpty
+                                ? null
+                                : _selectedPhosphorous.value,
+                            onPressed: (option) {
+                              _selectedPhosphorous.value = option;
+                            },
+                            errorMessage: _selectedPhosphorous.value.isEmpty
+                                ? 'Please select a phosphorous level'
+                                : null,
+                          )),
                       const SizedBox(height: 20.0),
-                      const Text(
-                        'Potassium',
-                        style: TextStyle(
-                            fontSize: 14.0, fontWeight: FontWeight.w500),
-                      ),
                       Obx(() => SelectionButton(
-                        label: '',
-                        options: const [
-                          'Very low',
-                          'Low',
-                          'Medium',
-                          'High',
-                          'Very high'
-                        ],
-                        selectedOption: _selectedPotassium.value.isEmpty
-                            ? null
-                            : _selectedPotassium.value,
-                        onPressed: (option) {
-                          _selectedPotassium.value = option;
-                        },
-                        errorMessage: _selectedPotassium.value.isEmpty
-                            ? 'Please select a potassium level'
-                            : null,
-                      )),
+                            label: 'Potassium',
+                            options: const [
+                              'Very low',
+                              'Low',
+                              'Medium',
+                              'High',
+                              'Very high'
+                            ],
+                            selectedOption: _selectedPotassium.value.isEmpty
+                                ? null
+                                : _selectedPotassium.value,
+                            onPressed: (option) {
+                              _selectedPotassium.value = option;
+                            },
+                            errorMessage: _selectedPotassium.value.isEmpty
+                                ? 'Please select a potassium level'
+                                : null,
+                          )),
                       const SizedBox(height: 20.0),
                       const Text(
                         'RDF of crop (kg/ac)',
@@ -686,7 +694,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       CustomTextFormField(
                         labelText: "Nitrogen",
                         controller: _rdfNitrogenController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter Nitrogen";
@@ -698,7 +706,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       CustomTextFormField(
                         labelText: "Phosphorous",
                         controller: _rdfPhosphorousController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter Phosphorous";
@@ -710,7 +718,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       CustomTextFormField(
                         labelText: "Potassium",
                         controller: _rdfPotassiumController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter Potassium";
@@ -720,7 +728,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       ),
                       const SizedBox(height: 20.0),
                       const Text(
-                        'Adjusted RDF of crop according to LRI card (kg/ac)',
+                        'Adjusted RDF of crop (kg/ac)',
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
@@ -728,7 +736,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       CustomTextFormField(
                         labelText: "Nitrogen",
                         controller: _adjustedrdfNitrogenController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter Nitrogen";
@@ -740,7 +748,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       CustomTextFormField(
                         labelText: "Phosphorous",
                         controller: _adjustedrdfPhosphorousController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter Phosphorous";
@@ -752,7 +760,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       CustomTextFormField(
                         labelText: "Potassium",
                         controller: _adjustedrdfPotassiumController,
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter Potassium";
@@ -769,8 +777,11 @@ class _CropdetailsState extends State<Cropdetails> {
                       const SizedBox(height: 20.0),
                       const Text(
                         'Organic manures',
+                        textAlign: TextAlign.left,
                         style: TextStyle(
-                            fontSize: 14.0, fontWeight: FontWeight.w500),
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.w500,
+                            color: Color(0xFFFB812C)),
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
@@ -811,8 +822,11 @@ class _CropdetailsState extends State<Cropdetails> {
                       const SizedBox(height: 20.0),
                       const Text(
                         'Bio-fertilizers',
+                        textAlign: TextAlign.left,
                         style: TextStyle(
-                            fontSize: 14.0, fontWeight: FontWeight.bold),
+                            fontSize: 14.0,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFFB812C)),
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
@@ -854,11 +868,24 @@ class _CropdetailsState extends State<Cropdetails> {
                       const Text(
                         'Chemical fertilizers',
                         style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.bold),
+                          fontSize: 16.0,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                      ...chemicalFertilizers.map((fertilizer) {
+                      const SizedBox(height: 10.0),
+                      ...chemicalFertilizers.asMap().entries.map((entry) {
+                        int index = entry.key + 1; // Index starts from 1
+                        Map<String, TextEditingController> fertilizer =
+                            entry.value;
                         return Column(
                           children: [
+                            Text(
+                              'Fertilizer $index', // Displaying the index
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                              ),
+                            ),
+                            const SizedBox(height: 20.0),
                             CustomTextFormField(
                               labelText: "Name",
                               controller: fertilizer['name']!,
@@ -877,7 +904,7 @@ class _CropdetailsState extends State<Cropdetails> {
                               keyboardType: TextInputType.number,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
-                                  return "Please enter Basal doseName";
+                                  return "Please enter Basal dose";
                                 }
                                 return null;
                               },
@@ -922,12 +949,10 @@ class _CropdetailsState extends State<Cropdetails> {
                           ],
                         );
                       }),
-                      ElevatedButton(
+                      CustomTextButton(
+                        text: "Add new fertilizer",
+                        buttonColor: Colors.black,
                         onPressed: addNewFertilizer,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF8DB600),
-                        ),
-                        child: const Text('Add new fertilizer'),
                       ),
                       const SizedBox(height: 20.0),
                       const Text(
@@ -936,23 +961,23 @@ class _CropdetailsState extends State<Cropdetails> {
                             fontSize: 14.0, fontWeight: FontWeight.w500),
                       ),
                       Obx(() => SelectionButton(
-                        label: '',
-                        options: const [
-                          'Broadcasting',
-                          'line',
-                          'band',
-                          'spot'
-                        ],
-                        selectedOption: _Methodsoffertilizer.value.isEmpty
-                            ? null
-                            : _Methodsoffertilizer.value,
-                        onPressed: (option) {
-                          _Methodsoffertilizer.value = option;
-                        },
-                        errorMessage: _Methodsoffertilizer.value.isEmpty
-                            ? 'Please select a method of application'
-                            : null,
-                      )),
+                            label: '',
+                            options: const [
+                              'Broadcasting',
+                              'line',
+                              'band',
+                              'spot'
+                            ],
+                            selectedOption: _Methodsoffertilizer.value.isEmpty
+                                ? null
+                                : _Methodsoffertilizer.value,
+                            onPressed: (option) {
+                              _Methodsoffertilizer.value = option;
+                            },
+                            errorMessage: _Methodsoffertilizer.value.isEmpty
+                                ? 'Please select a method of application'
+                                : null,
+                          )),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Plant Protection Cost (in Rs.)",
@@ -1067,10 +1092,14 @@ class _CropdetailsState extends State<Cropdetails> {
                         },
                       ),
                       const SizedBox(height: 20.0),
+                      CustomTextButton(
+                          text: "TOTAL", buttonColor: Colors.black, onPressed: calculateTotal),
+                      const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Total cost of production",
                         controller: _totalProductionCostController,
                         keyboardType: TextInputType.number,
+                        enabled: false, // Make it non-editable
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Please enter Total cost of production";
@@ -1158,19 +1187,19 @@ class _CropdetailsState extends State<Cropdetails> {
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Total By- product amount(in Rs.)",
+                        labelText: "Total By-product amount(in Rs.)",
                         controller: _totalByProductAmountController1,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Total By- product amount";
+                            return "Please enter Total By-product amount";
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Total returns (main and by product) (Rs.)",
+                        labelText: "Total returns(Rs.)",
                         controller: _totalByProductAmountController2,
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -1211,12 +1240,31 @@ class _CropdetailsState extends State<Cropdetails> {
                           context: context,
                           builder: (BuildContext context) {
                             return AlertDialog(
-                              title: const Text('Error'),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0),
+                              ),
+                              backgroundColor: const Color(0xFFFEF8E0),
+                              title: const Text(
+                                'Error',
+                                style: TextStyle(
+                                  color: Color(0xFFFB812C),
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                               content: const Text(
-                                  'Failed to upload data. Please check your input and try again.'),
+                                'Failed to upload data. Please check your input and try again.',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                ),
+                              ),
                               actions: [
                                 TextButton(
-                                  child: const Text('OK'),
+                                  child: const Text(
+                                    'OK',
+                                    style: TextStyle(
+                                      color: Color(0xFFFB812C),
+                                    ),
+                                  ),
                                   onPressed: () {
                                     Navigator.of(context).pop();
                                   },
@@ -1226,17 +1274,39 @@ class _CropdetailsState extends State<Cropdetails> {
                           },
                         );
                       }
+                    } else if (!areControllersValid) {
+                      // The alert for invalid controllers will already have been shown, so do nothing here
                     } else {
-                      // If any validation fails, show the alert
+                      // If form is invalid, show a generic alert
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: const Text('Alert!'),
-                            content: const Text('Fill the fields properly'),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0),
+                            ),
+                            backgroundColor: const Color(0xFFFEF8E0),
+                            title: const Text(
+                              'Alert',
+                              style: TextStyle(
+                                color: Color(0xFFFB812C),
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            content: const Text(
+                              'All the details must be filled.',
+                              style: TextStyle(
+                                color: Colors.black,
+                              ),
+                            ),
                             actions: [
                               TextButton(
-                                child: const Text('OK'),
+                                child: const Text(
+                                  'OK',
+                                  style: TextStyle(
+                                    color: Color(0xFFFB812C),
+                                  ),
+                                ),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },

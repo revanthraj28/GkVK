@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:gkvk/shared/components/appbar_widget.dart';
 import 'package:gkvk/views/Generate_id/Completedetails/Watersheddetails/watersheddetails.dart';
 
 class HomeTabView extends StatelessWidget {
@@ -20,11 +19,11 @@ class HomeTabView extends StatelessWidget {
       future: _preloadResources(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Scaffold(
-            backgroundColor: const Color(0xFFFEF8E0), // Set background color
+          return const Scaffold(
+            backgroundColor: Color(0xFFFEF8E0), // Set background color
             body: Center(
               child: CircularProgressIndicator(
-                color: const Color(0xFFFB812C), // Set the color of the progress indicator
+                color: Color(0xFFFB812C), // Set the color of the progress indicator
               ),
             ),
           );

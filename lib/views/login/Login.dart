@@ -1,7 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/views/home/home_view.dart';
+import 'package:gkvk/views/login/Forgotpassword_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -10,7 +12,8 @@ class LoginPage extends StatefulWidget {
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMixin {
+class _LoginPageState extends State<LoginPage>
+    with SingleTickerProviderStateMixin {
   // text controllers
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
@@ -126,18 +129,32 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                 obscureText: true,
                                 validator: validatePassword,
                               ),
+                              Align(
+                                  alignment: Alignment.centerRight,
+                                  child: InkWell(
+                                    onTap: () => Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) =>
+                                                const ForgotpasswordPage())),
+                                    child: const Text("Forgot Password?"),
+                                  )),
                               const SizedBox(height: 20),
                               CustomTextButton(
                                 text: "Sign In",
                                 buttonColor: const Color(0xFFFB812C),
                                 onPressed: () async {
-                                  if (validateEmail(emailController.text) == null &&
-                                      validatePassword(passwordController.text) == null) {
+                                  if (validateEmail(emailController.text) ==
+                                          null &&
+                                      validatePassword(
+                                              passwordController.text) ==
+                                          null) {
                                     try {
                                       await login();
                                       Navigator.of(context).pushReplacement(
                                         MaterialPageRoute(
-                                          builder: (context) => const HomeScreen(),
+                                          builder: (context) =>
+                                              const HomeScreen(),
                                         ),
                                       );
                                     } catch (e) {
@@ -145,22 +162,16 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                                       print('Login failed: $e');
                                     }
                                   } else {
-                                    // Show error alert message
                                     showDialog(
-                                      context: context,
-                                      builder: (context) => AlertDialog(
-                                        title: const Text('Login Error'),
-                                        content: const Text('Please enter valid email and password.'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                            child: const Text('OK'),
-                                          ),
-                                        ],
-                                      ),
-                                    );
+                                    context: context,
+                                    builder: (context) => CustomAlertDialog(
+                                      title: 'Login Error',
+                                      content: 'Please enter valid email and password.',
+                                      onPressed: () {
+                                        Navigator.of(context).pop();
+                                      },
+                                    ),
+                                  );
                                   }
                                 },
                               ),
