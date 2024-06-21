@@ -43,11 +43,11 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
 
   Future<void> sendPasswordResetEmail() async {
     final email = forgotemailController.text.trim();
-    print('Email entered: $email');  // Debug statement
+    // print('Email entered: $email');  // Debug statement
 
     try {
       await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
-      print('Password reset email sent successfully to $email');
+      // print('Password reset email sent successfully to $email');
 
       // Show success message and navigate to login page
       showDialog(
@@ -75,7 +75,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
         errorMessage = 'No user found for that email.';
       }
 
-      print('Error sending password reset email: $e');
+      // print('Error sending password reset email: $e');
       showDialog(
         context: context,
         builder: (context) => CustomAlertDialog(
@@ -88,7 +88,7 @@ class _ForgotpasswordPageState extends State<ForgotpasswordPage> {
       );
     } catch (e) {
       // Handle unexpected errors
-      print('Error sending password reset email: $e');
+      // print('Error sending password reset email: $e');
       showDialog(
         context: context,
         builder: (context) => CustomAlertDialog(

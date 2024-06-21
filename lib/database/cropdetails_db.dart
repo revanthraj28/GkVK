@@ -9,9 +9,10 @@ class CropdetailsDB {
       CREATE TABLE IF NOT EXISTS $tableName (
         "aadharId" INTEGER NOT NULL,
         "cropName" TEXT NOT NULL,
-        "cropNumber" INTEGER NOT NULL,
+        "cropYear" INTEGER NOT NULL,
         "area" REAL NOT NULL,
-        "surveyHissa" INTEGER NOT NULL,
+        "Hissa" INTEGER NOT NULL,
+        "survey" INTEGER NOT NULL,
         "variety" TEXT,
         "duration" INTEGER,
         "season" TEXT,

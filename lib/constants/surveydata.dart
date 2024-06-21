@@ -86,7 +86,7 @@ List<Question> questionsPage3 = [
   Question(
     questionText: '4. If you have applied fertilizers as per LRI card, what is your opinion?',
     options: [
-      'Cannot differentiate the benefits of conventional and LRI approach',
+      'Cannot differentiate the benefits',
       'Able to save fertilizer cost',
       'Able to get more yield',
       'b and c'

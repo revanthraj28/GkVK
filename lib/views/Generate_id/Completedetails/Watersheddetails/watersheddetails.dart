@@ -36,7 +36,7 @@ class WatershedView extends StatelessWidget {
         village: _villageController.text,
         selectedCategory: _selectedCategory.value,
       );
-      print('Data uploaded successfully with ID: $id');
+      // print('Data uploaded successfully with ID: $id');
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -81,7 +81,7 @@ class WatershedView extends StatelessWidget {
   void _navigateWithLatestWaterShedId(BuildContext context) async {
     final latestId = await _getLatestWaterShedId();
     if (kDebugMode) {
-      print('Data uploaded successfully with ID: $latestId');
+      // print('Data uploaded successfully with ID: $latestId');
     }
     if (latestId != null) {
       final database = await DatabaseService().database;
@@ -326,8 +326,8 @@ class WatershedView extends StatelessWidget {
 
     // Check if any field is empty, if yes, print and return false
     if (emptyFields.isNotEmpty) {
-      _showEmptyFieldsAlert(context, emptyFields);
-      print('Empty fields: $emptyFields');
+      // _showEmptyFieldsAlert(context, emptyFields);
+      // print('Empty fields: $emptyFields');
       return false;
     }
 
@@ -529,8 +529,8 @@ class WatershedView extends StatelessWidget {
                     bool isFormValid = _validate();
                     bool areControllersValid = _validateLocationControllers(context);
 
-                    print(
-                        'Form valid: $isFormValid, Controllers valid: $areControllersValid');
+                    // print(
+                    //     'Form valid: $isFormValid, Controllers valid: $areControllersValid');
 
                     if (isFormValid && areControllersValid) {
                       try {

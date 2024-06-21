@@ -105,7 +105,7 @@ class _ListTabViewState extends State<ListTabView> {
         _farmersFuture = fetchAllFarmers();
       });
     } catch (e) {
-      print('Failed to upload farmer data: $e');
+      // print('Failed to upload farmer data: $e');
       rethrow;
     }
   }

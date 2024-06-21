@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
@@ -19,6 +18,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
   final TextEditingController _fruitsIdController = TextEditingController();
   final TextEditingController _fertilizerAddressController =
       TextEditingController();
+  final TextEditingController _farmerlandController = TextEditingController();
   final RxString _selectedGender = ''.obs;
   final RxString _selectedCategory = ''.obs;
   final RxString _selectedLandHolding = ''.obs;
@@ -41,14 +41,14 @@ class GenerateFarmersIdPage extends StatelessWidget {
         category: _selectedCategory.value,
         landHolding: _selectedLandHolding.value,
         aadharNumber: int.parse(_aadharController.text),
-        fruitsId: int.parse(_fruitsIdController.text),
+        fruitsId: _fruitsIdController.text,
+        totalland:int.parse(_farmerlandController.text),
         fertilizerSource: _selectedFertilizerSource.value,
         fertilizerAddress: _fertilizerAddressController.text,
         salesOfProduce: _selectedSalesOfProduce.value,
         lriReceived: _selectedLRIReceived.value,
         watershedId: waterShedId,
       );
-      print('Data uploaded successfully');
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -134,14 +134,14 @@ class GenerateFarmersIdPage extends StatelessWidget {
     if (!_formKey.currentState!.validate()) {
       return false;
     }
-    if(_selectedGender.value.isEmpty ||
-                          _selectedCategory.value.isEmpty ||
-                          _selectedLandHolding.value.isEmpty ||
-                          _selectedFertilizerSource.value.isEmpty ||
-                          _selectedSalesOfProduce.value.isEmpty ||
-                          _selectedLRIReceived.value.isEmpty){
-                            return false;
-                          }
+    if (_selectedGender.value.isEmpty ||
+        _selectedCategory.value.isEmpty ||
+        _selectedLandHolding.value.isEmpty ||
+        _selectedFertilizerSource.value.isEmpty ||
+        _selectedSalesOfProduce.value.isEmpty ||
+        _selectedLRIReceived.value.isEmpty) {
+      return false;
+    }
     return true;
   }
 
@@ -167,6 +167,9 @@ class GenerateFarmersIdPage extends StatelessWidget {
     if (_fruitsIdController.text.isEmpty) {
       emptyFields.add('Fruits ID');
     }
+    if (_farmerlandController.text.isEmpty) {
+      emptyFields.add('land holding');
+    }
     if (_fertilizerAddressController.text.isEmpty) {
       emptyFields.add('Fertilizer Address');
     }
@@ -174,7 +177,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
     // Check if any field is empty, if yes, show alert and return false
     if (emptyFields.isNotEmpty) {
       _showEmptyFieldsAlert(context, emptyFields);
-      print('Empty fields: $emptyFields');
+      // print('Empty fields: $emptyFields');
       return false;
     }
 
@@ -241,7 +244,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
               style: TextStyle(
                 color: Color(0xFFFB812C),
                 fontSize: 18,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.bold,
               ),
             ),
             iconTheme: const IconThemeData(color: Color(0xFFFB812C)),
@@ -390,7 +393,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             child: CustomTextFormField(
                               labelText: "Fruits ID Number",
                               controller: _fruitsIdController,
-                              keyboardType: TextInputType.number,
+                              keyboardType: TextInputType.text,
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
                                   return "Please provide details";
@@ -400,6 +403,18 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             ),
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Total land in Guntas(1 acres is 40 Guntas)",
+                        controller: _farmerlandController,
+                        keyboardType: TextInputType.number,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Please provide details";
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 10.0),
                       Obx(() => SelectionButton(
@@ -480,12 +495,13 @@ class GenerateFarmersIdPage extends StatelessWidget {
                 CustomTextButton(
                   text: 'NEXT',
                   buttonColor: const Color(0xFFFB812C),
-                    onPressed: () {
+                  onPressed: () {
                     bool isFormValid = _validateform();
-                    bool areControllersValid = _validateFarmerControllers(context);
+                    bool areControllersValid =
+                        _validateFarmerControllers(context);
 
-                    print(
-                        'Form valid: $isFormValid, Controllers valid: $areControllersValid');
+                    // print(
+                    //     'Form valid: $isFormValid, Controllers valid: $areControllersValid');
 
                     if (isFormValid && areControllersValid) {
                       try {

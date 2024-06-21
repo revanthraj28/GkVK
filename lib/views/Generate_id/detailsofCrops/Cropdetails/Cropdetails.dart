@@ -12,9 +12,10 @@ import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 class Cropdetails extends StatefulWidget {
   final int aadharId;
   final int hissaNumber;
+  final int SurveyNumber;
 
   const Cropdetails(
-      {required this.aadharId, required this.hissaNumber, super.key});
+      {required this.aadharId, required this.hissaNumber,required this.SurveyNumber, super.key});
 
   @override
   _CropdetailsState createState() => _CropdetailsState();
@@ -25,7 +26,6 @@ class _CropdetailsState extends State<Cropdetails> {
   final _cropNameController = TextEditingController();
   final _cropNumberController = TextEditingController();
   final _areaController = TextEditingController();
-  final _surveyHissaController = TextEditingController();
   final _varietyController = TextEditingController();
   final _durationController = TextEditingController();
   final _costController = TextEditingController();
@@ -142,9 +142,10 @@ class _CropdetailsState extends State<Cropdetails> {
     Map<String, dynamic> data = {
       'aadharId': widget.aadharId,
       'cropName': _cropNameController.text,
-      'cropNumber': int.tryParse(_cropNumberController.text),
+      'cropYear': int.tryParse(_cropNumberController.text),
       'area': double.tryParse(_areaController.text),
-      'surveyHissa': widget.hissaNumber,
+      'Hissa': widget.hissaNumber,
+      'survey' : widget.SurveyNumber,
       'variety': _varietyController.text,
       'duration': int.tryParse(_durationController.text),
       'season': _selectedSeason.value,
@@ -211,7 +212,7 @@ class _CropdetailsState extends State<Cropdetails> {
     await cropDetailsDB.create(data);
 
     if (kDebugMode) {
-      print('Data submitted successfully');
+      // print('Data submitted successfully');
     }
     Navigator.pop(
       context,
@@ -273,7 +274,7 @@ class _CropdetailsState extends State<Cropdetails> {
 
                     Navigator.of(context).popUntil((route) => route.isFirst);
                   } catch (error) {
-                    print("Failed to delete farmer profile: $error");
+                    // print("Failed to delete farmer profile: $error");
                     // Optionally show an error message to the user
                   }
                 }),
@@ -308,15 +309,15 @@ class _CropdetailsState extends State<Cropdetails> {
     }
 
     // Check if chemical fertilizers fields are filled
-    for (var fertilizer in chemicalFertilizers) {
-      if (fertilizer['name']!.text.isEmpty ||
-          fertilizer['basal']!.text.isEmpty ||
-          fertilizer['topDress']!.text.isEmpty ||
-          fertilizer['totalQuantity']!.text.isEmpty ||
-          fertilizer['totalCost']!.text.isEmpty) {
-        return false;
-      }
-    }
+    // for (var fertilizer in chemicalFertilizers) {
+    //   if (fertilizer['name']!.text.isEmpty ||
+    //       fertilizer['basal']!.text.isEmpty ||
+    //       fertilizer['topDress']!.text.isEmpty ||
+    //       fertilizer['totalQuantity']!.text.isEmpty ||
+    //       fertilizer['totalCost']!.text.isEmpty) {
+    //     return false;
+    //   }
+    // }
 
     return true;
   }
@@ -330,9 +331,6 @@ class _CropdetailsState extends State<Cropdetails> {
     }
     if (_areaController.text.isEmpty) {
       emptyFields.add('Area');
-    }
-    if (_surveyHissaController.text.isEmpty) {
-      emptyFields.add('Survey Hissa');
     }
     if (_varietyController.text.isEmpty) {
       emptyFields.add('Variety');
@@ -361,24 +359,24 @@ class _CropdetailsState extends State<Cropdetails> {
     if (_adjustedrdfPotassiumController.text.isEmpty) {
       emptyFields.add('Adjusted RDF Potassium');
     }
-    if (_organicManureNameController.text.isEmpty) {
-      emptyFields.add('Organic Manure Name');
-    }
-    if (_organicManureQuantityController.text.isEmpty) {
-      emptyFields.add('Organic Manure Quantity');
-    }
-    if (_organicManureCostController.text.isEmpty) {
-      emptyFields.add('Organic Manure Cost');
-    }
-    if (_bioFertilizerNameController.text.isEmpty) {
-      emptyFields.add('Bio-Fertilizer Name');
-    }
-    if (_bioFertilizerQuantityController.text.isEmpty) {
-      emptyFields.add('Bio-Fertilizer Quantity');
-    }
-    if (_bioFertilizerCostController.text.isEmpty) {
-      emptyFields.add('Bio-Fertilizer Cost');
-    }
+    // if (_organicManureNameController.text.isEmpty) {
+    //   emptyFields.add('Organic Manure Name');
+    // }
+    // if (_organicManureQuantityController.text.isEmpty) {
+    //   emptyFields.add('Organic Manure Quantity');
+    // }
+    // if (_organicManureCostController.text.isEmpty) {
+    //   emptyFields.add('Organic Manure Cost');
+    // }
+    // if (_bioFertilizerNameController.text.isEmpty) {
+    //   emptyFields.add('Bio-Fertilizer Name');
+    // }
+    // if (_bioFertilizerQuantityController.text.isEmpty) {
+    //   emptyFields.add('Bio-Fertilizer Quantity');
+    // }
+    // if (_bioFertilizerCostController.text.isEmpty) {
+    //   emptyFields.add('Bio-Fertilizer Cost');
+    // }
     if (_plantProtectionCostController.text.isEmpty) {
       emptyFields.add('Plant Protection Cost');
     }
@@ -437,7 +435,7 @@ class _CropdetailsState extends State<Cropdetails> {
     // Check if any field is empty, if yes, print and return false
     if (emptyFields.isNotEmpty) {
       _showEmptyFieldsAlert(context, emptyFields);
-      print('Empty fields: $emptyFields');
+      // print('Empty fields: $emptyFields');
       return false;
     }
 
@@ -525,7 +523,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Crop Name";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -534,36 +532,24 @@ class _CropdetailsState extends State<Cropdetails> {
                         height: 20.0,
                       ),
                       CustomTextFormField(
-                        labelText: "Crop Number",
+                        labelText: "Crop Year",
                         controller: _cropNumberController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Crop Name";
+                            return "Please provide details";
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Area in acres",
+                        labelText: "Total land in Guntas(1 acres is 40 Guntas)",
                         controller: _areaController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Area";
-                          }
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20.0),
-                      CustomTextFormField(
-                        labelText: "Survey and Hissa no.",
-                        controller: _surveyHissaController,
-                        keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter Survey and Hissa no";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -575,7 +561,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.text,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Variety of crop";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -587,7 +573,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Duration";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -645,7 +631,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Cost of seed";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -729,7 +715,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Nitrogen";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -741,7 +727,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Phosphorous";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -753,7 +739,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Potassium";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -771,7 +757,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Nitrogen";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -783,7 +769,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Phosphorous";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -795,7 +781,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Potassium";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -812,7 +798,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         textAlign: TextAlign.left,
                         style: TextStyle(
                             fontSize: 14.0,
-                            fontWeight: FontWeight.w500,
+                            fontWeight: FontWeight.bold,
                             color: Color(0xFFFB812C)),
                       ),
                       const SizedBox(height: 20.0),
@@ -820,36 +806,36 @@ class _CropdetailsState extends State<Cropdetails> {
                         labelText: "Name",
                         controller: _organicManureNameController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter Name";
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return "Please enter Name";
+                        //   }
+                        //   return null;
+                        // },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Quantity (in tonnes)",
                         controller: _organicManureQuantityController,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter Quantity";
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return "Please enter Quantity";
+                        //   }
+                        //   return null;
+                        // },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Cost (in Rs.)",
                         controller: _organicManureCostController,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter Cost";
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return "Please enter Cost";
+                        //   }
+                        //   return null;
+                        // },
                       ),
                       const SizedBox(height: 20.0),
                       const Text(
@@ -865,36 +851,36 @@ class _CropdetailsState extends State<Cropdetails> {
                         labelText: "Name",
                         controller: _bioFertilizerNameController,
                         keyboardType: TextInputType.text,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter Name";
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return "Please enter Name";
+                        //   }
+                        //   return null;
+                        // },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Quantity (in kgs)",
                         controller: _bioFertilizerQuantityController,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter Quantity";
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return "Please enter Quantity";
+                        //   }
+                        //   return null;
+                        // },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Cost (in Rs.)",
                         controller: _bioFertilizerCostController,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please enter Cost";
-                          }
-                          return null;
-                        },
+                        // validator: (value) {
+                        //   if (value == null || value.isEmpty) {
+                        //     return "Please enter Cost";
+                        //   }
+                        //   return null;
+                        // },
                       ),
                       const SizedBox(height: 20.0),
                       const Text(
@@ -922,60 +908,60 @@ class _CropdetailsState extends State<Cropdetails> {
                               labelText: "Name",
                               controller: fertilizer['name']!,
                               keyboardType: TextInputType.text,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter Name";
-                                }
-                                return null;
-                              },
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return "Please enter Name";
+                              //   }
+                              //   return null;
+                              // },
                             ),
                             const SizedBox(height: 20.0),
                             CustomTextFormField(
                               labelText: "Basal dose (in kgs)",
                               controller: fertilizer['basal']!,
                               keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter Basal dose";
-                                }
-                                return null;
-                              },
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return "Please enter Basal dose";
+                              //   }
+                              //   return null;
+                              // },
                             ),
                             const SizedBox(height: 20.0),
                             CustomTextFormField(
                               labelText: "Top dress (in kgs)",
                               controller: fertilizer['topDress']!,
                               keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter Top dress";
-                                }
-                                return null;
-                              },
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return "Please enter Top dress";
+                              //   }
+                              //   return null;
+                              // },
                             ),
                             const SizedBox(height: 20.0),
                             CustomTextFormField(
                               labelText: "Total quantity (in kgs)",
                               controller: fertilizer['totalQuantity']!,
                               keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter Total quantity";
-                                }
-                                return null;
-                              },
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return "Please enter Total quantity";
+                              //   }
+                              //   return null;
+                              // },
                             ),
                             const SizedBox(height: 20.0),
                             CustomTextFormField(
                               labelText: "Total cost (in Rs.)",
                               controller: fertilizer['totalCost']!,
                               keyboardType: TextInputType.number,
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return "Please enter Total cost";
-                                }
-                                return null;
-                              },
+                              // validator: (value) {
+                              //   if (value == null || value.isEmpty) {
+                              //     return "Please enter Total cost";
+                              //   }
+                              //   return null;
+                              // },
                             ),
                             const SizedBox(height: 20.0),
                           ],
@@ -987,13 +973,8 @@ class _CropdetailsState extends State<Cropdetails> {
                         onPressed: addNewFertilizer,
                       ),
                       const SizedBox(height: 20.0),
-                      const Text(
-                        'Method of application of fertilizers',
-                        style: TextStyle(
-                            fontSize: 14.0, fontWeight: FontWeight.w500),
-                      ),
                       Obx(() => SelectionButton(
-                            label: '',
+                            label: 'Method of application of fertilizers',
                             options: const [
                               'Broadcasting',
                               'line',
@@ -1017,7 +998,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Plant Protection Cost";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1035,7 +1016,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Own Labour";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1047,7 +1028,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Cost";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1059,7 +1040,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Hired Labour(number)";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1071,7 +1052,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Cost";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1083,7 +1064,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Cost of animal drawn work";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1095,7 +1076,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter mechanized works ";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1107,7 +1088,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Irrigation cost";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1119,7 +1100,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Other production cost";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1137,7 +1118,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         enabled: false, // Make it non-editable
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Total cost of production";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1155,7 +1136,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Quantity of main product";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1167,7 +1148,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Quantity of main product";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1179,7 +1160,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Price/unit";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1191,7 +1172,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please Total main product amount";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1203,7 +1184,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Quantity of By-product";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1215,7 +1196,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Price/unit";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1227,7 +1208,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Total By-product amount";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1239,7 +1220,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please enter Total returns";
+                            return "Please provide details";
                           }
                           return null;
                         },
@@ -1264,8 +1245,8 @@ class _CropdetailsState extends State<Cropdetails> {
                     bool isFormValid = _validateForm();
                     bool areControllersValid = _validatecontrollers();
 
-                    print(
-                        'Form valid: $isFormValid, Controllers valid: $areControllersValid');
+                    // print(
+                        // 'Form valid: $isFormValid, Controllers valid: $areControllersValid');
 
                     if (isFormValid && areControllersValid) {
                       try {

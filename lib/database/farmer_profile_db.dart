@@ -24,6 +24,7 @@ class FarmerProfileDB {
         "salesOfProduce" TEXT NOT NULL,
         "lriReceived" TEXT NOT NULL,
         "watershedId" INTEGER NOT NULL,
+        "totalland" INTEGER NOT NULL,
         "timestamp" DATETIME DEFAULT CURRENT_TIMESTAMP,
         FOREIGN KEY ("watershedId") REFERENCES "water_shed_table" ("watershedId")
       );
@@ -40,7 +41,8 @@ class FarmerProfileDB {
     required String category,
     required String landHolding,
     required int aadharNumber,
-    required int fruitsId,
+    required String fruitsId,
+    required int totalland,
     required String fertilizerSource,
     required String fertilizerAddress,
     required String salesOfProduce,
@@ -63,6 +65,8 @@ class FarmerProfileDB {
       'salesOfProduce': salesOfProduce,
       'lriReceived': lriReceived,
       'watershedId': watershedId,
+      'totalland': totalland,
+
     });
   }
 
@@ -98,6 +102,7 @@ class FarmerProfileDB {
     required String landHolding,
     required int aadharNumber,
     required int fruitsId,
+    required int totalland,
     required String fertilizerSource,
     required String fertilizerAddress,
     required String salesOfProduce,
@@ -122,6 +127,7 @@ class FarmerProfileDB {
         'salesOfProduce': salesOfProduce,
         'lriReceived': lriReceived,
         'watershedId': watershedId,
+        'totalland': totalland,
       },
       where: 'aadharNumber =?',
       whereArgs: [aadharNumber],

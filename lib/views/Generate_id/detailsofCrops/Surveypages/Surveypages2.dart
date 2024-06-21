@@ -58,7 +58,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
     if (allAnswered) {
       // Convert the selected options to a JSON string
       String jsonString = jsonEncode(selectedOptions);
-      print('Selected options JSON: $jsonString'); // Print the JSON string
+      // print('Selected options JSON: $jsonString'); // Print the JSON string
 
       // Upload the aadharId and jsonString to SurveyDataDB2
       final surveyDataDB2 = SurveyDataDB2();
@@ -170,7 +170,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
 
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 } catch (error) {
-                  print("Failed to delete farmer profile: $error");
+                  // print("Failed to delete farmer profile: $error");
                   // Optionally show an error message to the user
                 }
               }
@@ -194,7 +194,7 @@ class _SurveyPage2State extends State<SurveyPage2> {
           backgroundColor: const Color(0xFFFEF8E0),
           centerTitle: true,
           title: const Text(
-            'SURVEY PAGE 2',
+            'ACCEPTANCE LEVEL OF LRI',
             style: TextStyle(
               color: Color(0xFFFB812C),
               fontSize: 18,

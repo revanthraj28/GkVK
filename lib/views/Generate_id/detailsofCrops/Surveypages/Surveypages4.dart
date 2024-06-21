@@ -58,7 +58,7 @@ class _Surveypages4State extends State<Surveypages4> {
     if (allAnswered) {
       // Convert the selected options to a JSON string
       String jsonString = jsonEncode(selectedOptions);
-      print('Selected options JSON: $jsonString'); // Print the JSON string
+      // print('Selected options JSON: $jsonString'); // Print the JSON string
 
       // Upload the aadharId and jsonString to SurveyDataDB4
       final surveyDataDB4 = SurveyDataDB4();
@@ -174,7 +174,7 @@ class _Surveypages4State extends State<Surveypages4> {
 
                   Navigator.of(context).pushNamedAndRemoveUntil('/', (Route<dynamic> route) => false);
                 } catch (error) {
-                  print("Failed to delete farmer profile: $error");
+                  // print("Failed to delete farmer profile: $error");
                 }
               },
             ),
@@ -196,7 +196,7 @@ class _Surveypages4State extends State<Surveypages4> {
           backgroundColor: const Color(0xFFFEF8E0),
           centerTitle: true,
           title: const Text(
-            'SURVEY PAGE 4',
+            'KNOWLEDGE ON LRI',
             style: TextStyle(
               color: Color(0xFFFB812C),
               fontSize: 18,
