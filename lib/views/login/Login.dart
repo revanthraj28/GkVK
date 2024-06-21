@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/views/home/home_view.dart';
-import 'package:gkvk/views/login/Forgotpassword_page.dart';
+// import 'package:gkvk/views/login/Forgotpassword_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -129,16 +129,16 @@ class _LoginPageState extends State<LoginPage>
                                 obscureText: true,
                                 validator: validatePassword,
                               ),
-                              Align(
-                                  alignment: Alignment.centerRight,
-                                  child: InkWell(
-                                    onTap: () => Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                            builder: (context) =>
-                                                const ForgotpasswordPage())),
-                                    child: const Text("Forgot Password?"),
-                                  )),
+                              // Align(
+                              //     alignment: Alignment.centerRight,
+                              //     child: InkWell(
+                              //       onTap: () => Navigator.push(
+                              //           context,
+                              //           MaterialPageRoute(
+                              //               builder: (context) =>
+                              //                   const ForgotpasswordPage())),
+                              //       child: const Text("Forgot Password?"),
+                              //     )),
                               const SizedBox(height: 20),
                               CustomTextButton(
                                 text: "Sign In",

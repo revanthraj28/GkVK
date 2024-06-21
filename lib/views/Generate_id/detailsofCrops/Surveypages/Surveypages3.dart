@@ -57,7 +57,7 @@ class _Surveypages3 extends State<Surveypages3> {
     if (allAnswered) {
       // Convert the selected options to a JSON string
       String jsonString = jsonEncode(selectedOptions);
-      print('Selected options JSON: $jsonString'); // Print the JSON string
+      // print('Selected options JSON: $jsonString'); // Print the JSON string
 
       // Upload the aadharId and jsonString to SurveyDataDB3
       final surveyDataDB3 = SurveyDataDB3();
@@ -171,7 +171,7 @@ class _Surveypages3 extends State<Surveypages3> {
 
                   Navigator.of(context).popUntil((route) => route.isFirst);
                 } catch (error) {
-                  print("Failed to delete farmer profile: $error");
+                  // print("Failed to delete farmer profile: $error");
                   // Optionally show an error message to the user
                 }
               }

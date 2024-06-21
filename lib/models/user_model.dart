@@ -6,7 +6,7 @@ class UserModel{
   String id;
   String username;
   String age;
-
+  
   // Making mockupUserData static because it's used in a static method
   static String mokupUserData = "{\"id\":\"001\",\"username\":\"SETA\",\"age\":\"18\"}";
 
@@ -27,7 +27,6 @@ class UserModel{
       Map data = json.decode(userString.toString());
       return UserModel.fromJson(data);
     } else {
-      print("empty user");
       return UserModel();
     }
   }
