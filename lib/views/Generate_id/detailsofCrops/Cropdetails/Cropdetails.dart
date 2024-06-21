@@ -81,8 +81,6 @@ class _CropdetailsState extends State<Cropdetails> {
       TextEditingController();
   final TextEditingController _totalByProductAmountController2 =
       TextEditingController();
-  final TextEditingController _totalByProductAmountController3 =
-      TextEditingController();
 
   final RxString _selectedTypeOfLand = ''.obs;
   final RxString _selectedSeason = ''.obs;
@@ -195,8 +193,6 @@ class _CropdetailsState extends State<Cropdetails> {
           double.tryParse(_totalByProductAmountController1.text),
       'totalByProductAmount2':
           double.tryParse(_totalByProductAmountController2.text),
-      'totalByProductAmount3':
-          double.tryParse(_totalByProductAmountController3.text),
       'methodsoffertilizer': _Methodsoffertilizer.value,
     };
 
@@ -261,32 +257,31 @@ class _CropdetailsState extends State<Cropdetails> {
               },
             ),
             TextButton(
-              child: const Text(
-                'OK',
-                style: TextStyle(
-                  color: Color(0xFFFB812C),
+                child: const Text(
+                  'OK',
+                  style: TextStyle(
+                    color: Color(0xFFFB812C),
+                  ),
                 ),
-              ),
-              onPressed: ()  async {
-                try {
-                  final farmerProfileDB = FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
-                  await farmerProfileDB.delete(widget.aadharId);
-                  final cropdetailsDB = CropdetailsDB();
-                  await cropdetailsDB.delete(widget.aadharId);
+                onPressed: () async {
+                  try {
+                    final farmerProfileDB =
+                        FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
+                    await farmerProfileDB.delete(widget.aadharId);
+                    final cropdetailsDB = CropdetailsDB();
+                    await cropdetailsDB.delete(widget.aadharId);
 
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                } catch (error) {
-                  print("Failed to delete farmer profile: $error");
-                  // Optionally show an error message to the user
-                }
-              }
-            ),
+                    Navigator.of(context).popUntil((route) => route.isFirst);
+                  } catch (error) {
+                    print("Failed to delete farmer profile: $error");
+                    // Optionally show an error message to the user
+                  }
+                }),
           ],
         );
       },
     );
   }
-
 
   void _handleTypeOfLandSelection(String option) {
     _selectedTypeOfLand.value = option;
@@ -1131,7 +1126,9 @@ class _CropdetailsState extends State<Cropdetails> {
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextButton(
-                          text: "TOTAL", buttonColor: Colors.black, onPressed: calculateTotal),
+                          text: "TOTAL",
+                          buttonColor: Colors.black,
+                          onPressed: calculateTotal),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Total cost of production",

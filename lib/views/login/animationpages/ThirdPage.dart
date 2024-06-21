@@ -43,7 +43,7 @@ class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMix
       // User is signed in
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => const HomeScreen()),
             (route) => false, // This makes sure all other routes are removed from the stack
       );
     } else {

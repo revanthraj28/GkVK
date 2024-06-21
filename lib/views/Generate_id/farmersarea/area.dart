@@ -8,7 +8,7 @@ import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.d
 class FarmerAreaPage extends StatefulWidget {
   final int aadharId;
 
-  FarmerAreaPage({required this.aadharId, Key? key}) : super(key: key);
+  const FarmerAreaPage({required this.aadharId, super.key});
 
   @override
   _FarmerAreaPageState createState() => _FarmerAreaPageState();
@@ -118,7 +118,11 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
+    return GestureDetector(
+      onTap: () {
+        FocusScope.of(context).unfocus(); // Dismiss keyboard on tap outside
+      },
+    child: WillPopScope(
       onWillPop: () => _onWillPop(context),
       child: Scaffold(
         backgroundColor: const Color(0xFFFEF8E0),
@@ -155,7 +159,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                         children: [
                           Text(
                             ' Area ${index + 1}',
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFFFB812C),
@@ -186,7 +190,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                                 if (hissaNumber != null) {
                                   if (submittedHissaNumbers.contains(hissaNumber)) {
                                     ScaffoldMessenger.of(context).showSnackBar(
-                                      SnackBar(
+                                      const SnackBar(
                                         content: Text('This Hissa Number has already been submitted.'),
                                       ),
                                     );
@@ -212,7 +216,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                           const SizedBox(height: 20.0),
                         ],
                       );
-                    }).toList(),
+                    }),
                     CustomTextButton(
                       text: "Add area",
                       buttonColor: Colors.black,
@@ -278,6 +282,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
           ),
         ),
       ),
+    ),
     );
   }
 }

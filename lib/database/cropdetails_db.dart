@@ -51,7 +51,6 @@ class CropdetailsDB {
         "byProductAmount" REAL,
         "totalByProductAmount1" REAL,
         "totalByProductAmount2" REAL,
-        "totalByProductAmount3" REAL,
         "methodsoffertilizer" TEXT,
         ${List.generate(5, (i) => '''
           "chemicalFertilizerName$i" TEXT,
