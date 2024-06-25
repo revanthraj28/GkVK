@@ -11,7 +11,7 @@ import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 
 class Cropdetails extends StatefulWidget {
   final int aadharId;
-  final int hissaNumber;
+  final String hissaNumber;
   final int SurveyNumber;
 
   const Cropdetails(
@@ -78,7 +78,7 @@ class _CropdetailsState extends State<Cropdetails> {
       TextEditingController();
   final TextEditingController _byProductPriceController =
       TextEditingController();
-      final TextEditingController _totalByProductAmountController =
+  final TextEditingController _totalByProductAmountController =
       TextEditingController();
   final TextEditingController _totalByProductAmountController1 =
       TextEditingController();
@@ -187,17 +187,17 @@ class _CropdetailsState extends State<Cropdetails> {
       'totalProductionCost':
           double.tryParse(_totalProductionCostController.text),
 
-      'mainProductQuantity': double.tryParse(_mainProductQuantityController.text),
+      'mainProductQuantity':
+          double.tryParse(_mainProductQuantityController.text),
       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
-       'totalProductAmount':
+      'totalProductAmount':
           double.tryParse(_totalByProductAmountController.text),
       'byProductQuantity': double.tryParse(_byProductQuantityController.text),
       'byProductPrice': double.tryParse(_byProductPriceController.text),
       // 'byProductAmount': double.tryParse(_byProductAmountController.text),
       'totalByProductAmount':
           double.tryParse(_totalByProductAmountController1.text),
-      'totalAmount':
-          double.tryParse(_totalByProductAmountController2.text),
+      'totalAmount': double.tryParse(_totalByProductAmountController2.text),
       'methodsoffertilizer': _Methodsoffertilizer.value,
     };
 
@@ -326,29 +326,30 @@ class _CropdetailsState extends State<Cropdetails> {
     return true;
   }
 
-   void _updateTotalMainProductAmount() {
+  void _updateTotalMainProductAmount() {
     final quantity = double.tryParse(_mainProductPriceController.text) ?? 0.0;
     final price = double.tryParse(_mainProductQuantityController.text) ?? 0.0;
-    final total = quantity + price;
+    final total = quantity * price;
     _totalByProductAmountController.text = total.toStringAsFixed(2);
     _updateTotalReturns();
   }
 
   void _updateTotalByProductAmount() {
     final quantity = double.tryParse(_byProductQuantityController.text) ?? 0.0;
-    final price = double.tryParse(_byProductQuantityController.text) ?? 0.0;
-    final total = quantity + price;
+    final price = double.tryParse(_byProductPriceController.text) ?? 0.0;
+    final total = quantity * price;
     _totalByProductAmountController1.text = total.toStringAsFixed(2);
     _updateTotalReturns();
   }
 
   void _updateTotalReturns() {
-    final mainProductTotal = double.tryParse(_totalByProductAmountController.text) ?? 0.0;
-    final byProductTotal = double.tryParse(_totalByProductAmountController1.text) ?? 0.0;
+    final mainProductTotal =
+        double.tryParse(_totalByProductAmountController.text) ?? 0.0;
+    final byProductTotal =
+        double.tryParse(_totalByProductAmountController1.text) ?? 0.0;
     final totalReturns = mainProductTotal + byProductTotal;
     _totalByProductAmountController2.text = totalReturns.toStringAsFixed(2);
   }
-
 
   void _adjustRDFValues() {
     final adjustmentValues = {
@@ -391,126 +392,107 @@ class _CropdetailsState extends State<Cropdetails> {
     }
   }
 
-  bool _validatecontrollers() {
-    List<String> emptyFields = [];
+  bool _validateControllers(BuildContext context) {
+  List<String> emptyFields = [];
 
-    // Check if all text controllers have non-empty values
-    if (_cropNameController.text.isEmpty) {
-      emptyFields.add('Crop Name');
-    }
-    if (_areaController.text.isEmpty) {
-      emptyFields.add('Area');
-    }
-    if (_varietyController.text.isEmpty) {
-      emptyFields.add('Variety');
-    }
-    if (_durationController.text.isEmpty) {
-      emptyFields.add('Duration');
-    }
-    if (_costController.text.isEmpty) {
-      emptyFields.add('Cost');
-    }
-    if (_rdfNitrogenController.text.isEmpty) {
-      emptyFields.add('RDF Nitrogen');
-    }
-    if (_rdfPhosphorousController.text.isEmpty) {
-      emptyFields.add('RDF Phosphorous');
-    }
-    if (_rdfPotassiumController.text.isEmpty) {
-      emptyFields.add('RDF Potassium');
-    }
-    if (_adjustedrdfNitrogenController.text.isEmpty) {
-      emptyFields.add('Adjusted RDF Nitrogen');
-    }
-    if (_adjustedrdfPhosphorousController.text.isEmpty) {
-      emptyFields.add('Adjusted RDF Phosphorous');
-    }
-    if (_adjustedrdfPotassiumController.text.isEmpty) {
-      emptyFields.add('Adjusted RDF Potassium');
-    }
-    // if (_organicManureNameController.text.isEmpty) {
-    //   emptyFields.add('Organic Manure Name');
-    // }
-    // if (_organicManureQuantityController.text.isEmpty) {
-    //   emptyFields.add('Organic Manure Quantity');
-    // }
-    // if (_organicManureCostController.text.isEmpty) {
-    //   emptyFields.add('Organic Manure Cost');
-    // }
-    // if (_bioFertilizerNameController.text.isEmpty) {
-    //   emptyFields.add('Bio-Fertilizer Name');
-    // }
-    // if (_bioFertilizerQuantityController.text.isEmpty) {
-    //   emptyFields.add('Bio-Fertilizer Quantity');
-    // }
-    // if (_bioFertilizerCostController.text.isEmpty) {
-    //   emptyFields.add('Bio-Fertilizer Cost');
-    // }
-    if (_plantProtectionCostController.text.isEmpty) {
-      emptyFields.add('Plant Protection Cost');
-    }
-    if (_ownLabourNumberController.text.isEmpty) {
-      emptyFields.add('Own Labour Number');
-    }
-    if (_ownLabourCostController.text.isEmpty) {
-      emptyFields.add('Own Labour Cost');
-    }
-    if (_hiredLabourNumberController.text.isEmpty) {
-      emptyFields.add('Hired Labour Number');
-    }
-    if (_hiredLabourCostController.text.isEmpty) {
-      emptyFields.add('Hired Labour Cost');
-    }
-    if (_animalDrawnCostController.text.isEmpty) {
-      emptyFields.add('Animal Drawn Cost');
-    }
-    if (_animalMechanizedCostController.text.isEmpty) {
-      emptyFields.add('Animal Mechanized Cost');
-    }
-    if (_irrigationCostController.text.isEmpty) {
-      emptyFields.add('Irrigation Cost');
-    }
-    if (_otherProductionCostController.text.isEmpty) {
-      emptyFields.add('Other Production Cost');
-    }
-    if (_totalProductionCostController.text.isEmpty) {
-      emptyFields.add('Total Production Cost');
-    }
-    if (_mainProductPriceController.text.isEmpty) {
-      emptyFields.add('Main Product Price');
-    }
-    // if (_mainProductAmountController.text.isEmpty) {
-    //   emptyFields.add('Main Product Amount');
-    // }
-    if (_byProductQuantityController.text.isEmpty) {
-      emptyFields.add('By-Product Quantity');
-    }
-    if (_byProductPriceController.text.isEmpty) {
-      emptyFields.add('By-Product Price');
-    }
-    // if (_byProductAmountController.text.isEmpty) {
-    //   emptyFields.add('By-Product Amount');
-    // }
-    if (  _totalByProductAmountController
-.text.isEmpty) {
-      emptyFields.add('Total main amount');
-    }
-    if (_totalByProductAmountController1.text.isEmpty) {
-      emptyFields.add('Total By-Product Amount');
-    }
-    if (_totalByProductAmountController2.text.isEmpty) {
-      emptyFields.add('Total Amount');
-    }
-
-    // Check if any field is empty, if yes, print and return false
-    if (emptyFields.isNotEmpty) {
-      _showEmptyFieldsAlert(context, emptyFields);
-      // print('Empty fields: $emptyFields');
-      return false;
-    }
-
-    return true;
+  // Check if all text controllers have non-empty values
+  if (_cropNameController.text.isEmpty) {
+    emptyFields.add('Crop Name');
   }
+  if (_cropNumberController.text.isEmpty) {
+    emptyFields.add('Crop Year');
+  }
+  if (_cropNumberController.text.length != 4) {
+    emptyFields.add('Crop Year must be 4 digits');
+  }
+  if (_areaController.text.isEmpty) {
+    emptyFields.add('Area');
+  }
+  if (_varietyController.text.isEmpty) {
+    emptyFields.add('Variety');
+  }
+  if (_durationController.text.isEmpty) {
+    emptyFields.add('Duration');
+  }
+  if (_costController.text.isEmpty) {
+    emptyFields.add('Cost');
+  }
+  if (_rdfNitrogenController.text.isEmpty) {
+    emptyFields.add('RDF Nitrogen');
+  }
+  if (_rdfPhosphorousController.text.isEmpty) {
+    emptyFields.add('RDF Phosphorous');
+  }
+  if (_rdfPotassiumController.text.isEmpty) {
+    emptyFields.add('RDF Potassium');
+  }
+  if (_adjustedrdfNitrogenController.text.isEmpty) {
+    emptyFields.add('Adjusted RDF Nitrogen');
+  }
+  if (_adjustedrdfPhosphorousController.text.isEmpty) {
+    emptyFields.add('Adjusted RDF Phosphorous');
+  }
+  if (_adjustedrdfPotassiumController.text.isEmpty) {
+    emptyFields.add('Adjusted RDF Potassium');
+  }
+  if (_plantProtectionCostController.text.isEmpty) {
+    emptyFields.add('Plant Protection Cost');
+  }
+  if (_ownLabourNumberController.text.isEmpty) {
+    emptyFields.add('Own Labour Number');
+  }
+  if (_ownLabourCostController.text.isEmpty) {
+    emptyFields.add('Own Labour Cost');
+  }
+  if (_hiredLabourNumberController.text.isEmpty) {
+    emptyFields.add('Hired Labour Number');
+  }
+  if (_hiredLabourCostController.text.isEmpty) {
+    emptyFields.add('Hired Labour Cost');
+  }
+  if (_animalDrawnCostController.text.isEmpty) {
+    emptyFields.add('Animal Drawn Cost');
+  }
+  if (_animalMechanizedCostController.text.isEmpty) {
+    emptyFields.add('Animal Mechanized Cost');
+  }
+  if (_irrigationCostController.text.isEmpty) {
+    emptyFields.add('Irrigation Cost');
+  }
+  if (_otherProductionCostController.text.isEmpty) {
+    emptyFields.add('Other Production Cost');
+  }
+  if (_totalProductionCostController.text.isEmpty) {
+    emptyFields.add('Total Production Cost');
+  }
+  if (_mainProductPriceController.text.isEmpty) {
+    emptyFields.add('Main Product Price');
+  }
+  if (_byProductQuantityController.text.isEmpty) {
+    emptyFields.add('By-Product Quantity');
+  }
+  if (_byProductPriceController.text.isEmpty) {
+    emptyFields.add('By-Product Price');
+  }
+  if (_totalByProductAmountController.text.isEmpty) {
+    emptyFields.add('Total main amount');
+  }
+  if (_totalByProductAmountController1.text.isEmpty) {
+    emptyFields.add('Total By-Product Amount');
+  }
+  if (_totalByProductAmountController2.text.isEmpty) {
+    emptyFields.add('Total Amount');
+  }
+
+  // Check if any field is empty, if yes, show alert and return false
+  if (emptyFields.isNotEmpty) {
+    _showEmptyFieldsAlert(context, emptyFields);
+    return false;
+  }
+
+  return true;
+}
+
 
   void _showEmptyFieldsAlert(BuildContext context, List<String> emptyFields) {
     showDialog(
@@ -568,7 +550,7 @@ class _CropdetailsState extends State<Cropdetails> {
             backgroundColor: const Color(0xFFFEF8E0),
             centerTitle: true,
             title: const Text(
-              'Enter the Crop details',
+              'Crop details',
               style: TextStyle(
                 color: Color(0xFFFB812C),
                 fontSize: 18,
@@ -606,11 +588,14 @@ class _CropdetailsState extends State<Cropdetails> {
                         controller: _cropNumberController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please provide details";
-                          }
-                          return null;
-                        },
+                              if (value == null || value.isEmpty) {
+                                return "Please provide details";
+                              }
+                              if (value.length != 4) {
+                                return "4 digits only";
+                              }
+                              return null;
+                            },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
@@ -619,7 +604,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please 1 acre is 40 Guntas";
+                            return "1 acre is 40 Guntas";
                           }
                           return null;
                         },
@@ -689,10 +674,10 @@ class _CropdetailsState extends State<Cropdetails> {
                             onPressed: (option) {
                               _selectedSourceOfIrrigation.value = option;
                             },
-                            errorMessage:
-                                _selectedSourceOfIrrigation.value.isEmpty
-                                    ? 'Please select (borewell/ tank/ canal/ others)'
-                                    : null,
+                            errorMessage: _selectedSourceOfIrrigation
+                                    .value.isEmpty
+                                ? 'Please select (borewell/ tank/ canal/ others)'
+                                : null,
                           )),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
@@ -1155,7 +1140,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide (Rs.)";
+                            return "Please provide (in Rs.)";
                           }
                           return null;
                         },
@@ -1167,7 +1152,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide  (Rs.)";
+                            return "Please provide (Rs.)";
                           }
                           return null;
                         },
@@ -1301,7 +1286,7 @@ class _CropdetailsState extends State<Cropdetails> {
                   buttonColor: const Color(0xFFFB812C),
                   onPressed: () {
                     bool isFormValid = _validateForm();
-                    bool areControllersValid = _validatecontrollers();
+                    bool areControllersValid = _validateControllers(context);
 
                     // print(
                     // 'Form valid: $isFormValid, Controllers valid: $areControllersValid');
@@ -1400,3 +1385,24 @@ class _CropdetailsState extends State<Cropdetails> {
     );
   }
 }
+
+
+
+ // if (_organicManureNameController.text.isEmpty) {
+    //   emptyFields.add('Organic Manure Name');
+    // }
+    // if (_organicManureQuantityController.text.isEmpty) {
+    //   emptyFields.add('Organic Manure Quantity');
+    // }
+    // if (_organicManureCostController.text.isEmpty) {
+    //   emptyFields.add('Organic Manure Cost');
+    // }
+    // if (_bioFertilizerNameController.text.isEmpty) {
+    //   emptyFields.add('Bio-Fertilizer Name');
+    // }
+    // if (_bioFertilizerQuantityController.text.isEmpty) {
+    //   emptyFields.add('Bio-Fertilizer Quantity');
+    // }
+    // if (_bioFertilizerCostController.text.isEmpty) {
+    //   emptyFields.add('Bio-Fertilizer Cost');
+    // }

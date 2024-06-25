@@ -1,10 +1,5 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gkvk/database/cropdetails_db.dart';
-import 'package:gkvk/database/farmer_profile_db.dart';
-import 'package:gkvk/database/survey_page1_db.dart';
-import 'package:gkvk/database/survey_page2_db.dart';
-import 'package:gkvk/database/survey_page3_db.dart';
 import 'package:gkvk/database/survey_page4_db.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';

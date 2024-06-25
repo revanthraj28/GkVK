@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
@@ -17,7 +16,7 @@ class FarmerAreaPage extends StatefulWidget {
 
 class _FarmerAreaPageState extends State<FarmerAreaPage> {
   final List<Map<String, TextEditingController>> FarmerForm = [];
-  final Set<MapEntry<int, int>> submittedHissaNumbers = {};
+  final Set<MapEntry<String, int>> submittedHissaNumbers = {};
   final _formKey = GlobalKey<FormState>();
 
   @override
@@ -192,7 +191,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                           CustomTextFormField(
                             labelText: "Hissa Number",
                             controller: formEntry['hissaNumber']!,
-                            keyboardType: TextInputType.number,
+                            keyboardType: TextInputType.text,
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return "Please provide details";
@@ -210,11 +209,11 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                             onPressed: () {
                               if (_formKey.currentState?.validate() ??
                                   false) {
-                                final hissaNumber = int.tryParse(
-                                    formEntry['hissaNumber']?.text ?? '');
+                                final hissaNumber = 
+                                    formEntry['hissaNumber']?.text ?? '';
                                 final surveyNumber = int.tryParse(
                                     formEntry['SurveyNumber']?.text ?? '');
-                                if (hissaNumber != null &&
+                                if (hissaNumber.isNotEmpty &&
                                     surveyNumber != null) {
                                   final key =
                                       MapEntry(hissaNumber, surveyNumber);
@@ -238,9 +237,7 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                                         ),
                                       ),
                                     );
-
-                                    // print(
-                                        // "Enter Another Crop Detail + button tapped");
+                                      
                                   }
                                 } else {
                                   showDialog(

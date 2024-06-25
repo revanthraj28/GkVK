@@ -190,7 +190,6 @@ class GenerateFarmersIdPage extends StatelessWidget {
 
   bool _validateFarmerControllers(BuildContext context) {
     List<String> emptyFields = [];
-
     // Check if all farmer-related controllers have non-empty values
     if (_farmerNameController.text.isEmpty) {
       emptyFields.add('Farmer Name');
@@ -201,11 +200,20 @@ class GenerateFarmersIdPage extends StatelessWidget {
     if (_aadharController.text.isEmpty) {
       emptyFields.add('Aadhar');
     }
+    if(_aadharController.text.length != 12){
+      emptyFields.add('Aadhar number should be12 digits only');
+    }
     if (_schoolingController.text.isEmpty) {
       emptyFields.add('Schooling');
     }
+    if (_schoolingController.text.length >20){
+      emptyFields.add('Schooling should be Less than 20 Only');
+    }
     if (_pincodeController.text.isEmpty) {
       emptyFields.add('Pincode');
+    }
+    if (_pincodeController.text.length != 6) {
+      emptyFields.add('6 digits only');
     }
     if (_fruitsIdController.text.isEmpty) {
       emptyFields.add('Fruits ID');
