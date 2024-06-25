@@ -77,13 +77,28 @@ class CropdetailsDB {
     );
   }
 
-  Future<int> update(Map<String, dynamic> data, int aadharId) async {
+  Future<Map?> read(int aadharId, String hissaNumber, int surveyNumber) async {
+    final database = await DatabaseService().database;
+    List<Map> result = await database.query(
+      tableName,
+      where: 'aadharId = ? AND Hissa = ? AND survey = ?',
+      whereArgs: [aadharId, hissaNumber, surveyNumber],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first;
+    } else {
+      return null;
+    }
+  }
+
+  Future<int> update(Map<String, dynamic> data, String aadharId, String hissaNumber, String surveyNumber) async {
     final database = await DatabaseService().database;
     return await database.update(
       tableName,
       data,
-      where: 'aadharId = ?',
-      whereArgs: [aadharId],
+      where: 'aadharId = ? AND Hissa = ? AND survey = ?',
+      whereArgs: [aadharId, hissaNumber, surveyNumber],
     );
   }
 

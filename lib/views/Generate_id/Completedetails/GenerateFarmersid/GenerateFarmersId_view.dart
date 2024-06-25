@@ -89,7 +89,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: const Text('Failed to upload data'),
+            content: const Text('Failed to upload data\(e)'),
             actions: [
               TextButton(
                 child: const Text('OK'),
