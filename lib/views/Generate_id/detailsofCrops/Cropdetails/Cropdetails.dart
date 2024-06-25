@@ -15,7 +15,10 @@ class Cropdetails extends StatefulWidget {
   final int SurveyNumber;
 
   const Cropdetails(
-      {required this.aadharId, required this.hissaNumber,required this.SurveyNumber, super.key});
+      {required this.aadharId,
+      required this.hissaNumber,
+      required this.SurveyNumber,
+      super.key});
 
   @override
   _CropdetailsState createState() => _CropdetailsState();
@@ -69,13 +72,13 @@ class _CropdetailsState extends State<Cropdetails> {
       TextEditingController();
   final TextEditingController _mainProductPriceController =
       TextEditingController();
-  final TextEditingController _mainProductAmountController =
-      TextEditingController();
+  // final TextEditingController _mainProductAmountController =
+  //     TextEditingController();
   final TextEditingController _byProductQuantityController =
       TextEditingController();
   final TextEditingController _byProductPriceController =
       TextEditingController();
-  final TextEditingController _byProductAmountController =
+      final TextEditingController _totalByProductAmountController =
       TextEditingController();
   final TextEditingController _totalByProductAmountController1 =
       TextEditingController();
@@ -145,7 +148,7 @@ class _CropdetailsState extends State<Cropdetails> {
       'cropYear': int.tryParse(_cropNumberController.text),
       'area': double.tryParse(_areaController.text),
       'Hissa': widget.hissaNumber,
-      'survey' : widget.SurveyNumber,
+      'survey': widget.SurveyNumber,
       'variety': _varietyController.text,
       'duration': int.tryParse(_durationController.text),
       'season': _selectedSeason.value,
@@ -183,16 +186,17 @@ class _CropdetailsState extends State<Cropdetails> {
           double.tryParse(_otherProductionCostController.text),
       'totalProductionCost':
           double.tryParse(_totalProductionCostController.text),
-      'mainProductQuantity':
-          double.tryParse(_mainProductQuantityController.text),
+
+      'mainProductQuantity': double.tryParse(_mainProductQuantityController.text),
       'mainProductPrice': double.tryParse(_mainProductPriceController.text),
-      'mainProductAmount': double.tryParse(_mainProductAmountController.text),
+       'totalProductAmount':
+          double.tryParse(_totalByProductAmountController.text),
       'byProductQuantity': double.tryParse(_byProductQuantityController.text),
       'byProductPrice': double.tryParse(_byProductPriceController.text),
-      'byProductAmount': double.tryParse(_byProductAmountController.text),
-      'totalByProductAmount1':
+      // 'byProductAmount': double.tryParse(_byProductAmountController.text),
+      'totalByProductAmount':
           double.tryParse(_totalByProductAmountController1.text),
-      'totalByProductAmount2':
+      'totalAmount':
           double.tryParse(_totalByProductAmountController2.text),
       'methodsoffertilizer': _Methodsoffertilizer.value,
     };
@@ -322,6 +326,71 @@ class _CropdetailsState extends State<Cropdetails> {
     return true;
   }
 
+   void _updateTotalMainProductAmount() {
+    final quantity = double.tryParse(_mainProductPriceController.text) ?? 0.0;
+    final price = double.tryParse(_mainProductQuantityController.text) ?? 0.0;
+    final total = quantity + price;
+    _totalByProductAmountController.text = total.toStringAsFixed(2);
+    _updateTotalReturns();
+  }
+
+  void _updateTotalByProductAmount() {
+    final quantity = double.tryParse(_byProductQuantityController.text) ?? 0.0;
+    final price = double.tryParse(_byProductQuantityController.text) ?? 0.0;
+    final total = quantity + price;
+    _totalByProductAmountController1.text = total.toStringAsFixed(2);
+    _updateTotalReturns();
+  }
+
+  void _updateTotalReturns() {
+    final mainProductTotal = double.tryParse(_totalByProductAmountController.text) ?? 0.0;
+    final byProductTotal = double.tryParse(_totalByProductAmountController1.text) ?? 0.0;
+    final totalReturns = mainProductTotal + byProductTotal;
+    _totalByProductAmountController2.text = totalReturns.toStringAsFixed(2);
+  }
+
+
+  void _adjustRDFValues() {
+    final adjustmentValues = {
+      'Very low': 1.67,
+      'Low': 1.33,
+      'Medium': 1.0,
+      'High': 0.67,
+      'Very high': 0.33,
+    };
+
+    // Nitrogen adjustment
+    if (_selectedNitrogen.value.isNotEmpty &&
+        _rdfNitrogenController.text.isNotEmpty) {
+      final nitrogenAdjustment =
+          adjustmentValues[_selectedNitrogen.value] ?? 1.0;
+      final rdfNitrogen = double.tryParse(_rdfNitrogenController.text) ?? 0.0;
+      _adjustedrdfNitrogenController.text =
+          (rdfNitrogen * nitrogenAdjustment).toStringAsFixed(2);
+    }
+
+    // Phosphorous adjustment
+    if (_selectedPhosphorous.value.isNotEmpty &&
+        _rdfPhosphorousController.text.isNotEmpty) {
+      final phosphorousAdjustment =
+          adjustmentValues[_selectedPhosphorous.value] ?? 1.0;
+      final rdfPhosphorous =
+          double.tryParse(_rdfPhosphorousController.text) ?? 0.0;
+      _adjustedrdfPhosphorousController.text =
+          (rdfPhosphorous * phosphorousAdjustment).toStringAsFixed(2);
+    }
+
+    // Potassium adjustment
+    if (_selectedPotassium.value.isNotEmpty &&
+        _rdfPotassiumController.text.isNotEmpty) {
+      final potassiumAdjustment =
+          adjustmentValues[_selectedPotassium.value] ?? 1.0;
+      final rdfPotassium = double.tryParse(_rdfPotassiumController.text) ?? 0.0;
+      _adjustedrdfPotassiumController.text =
+          (rdfPotassium * potassiumAdjustment).toStringAsFixed(2);
+    }
+  }
+
   bool _validatecontrollers() {
     List<String> emptyFields = [];
 
@@ -407,29 +476,30 @@ class _CropdetailsState extends State<Cropdetails> {
     if (_totalProductionCostController.text.isEmpty) {
       emptyFields.add('Total Production Cost');
     }
-    if (_mainProductQuantityController.text.isEmpty) {
-      emptyFields.add('Main Product Quantity');
-    }
     if (_mainProductPriceController.text.isEmpty) {
       emptyFields.add('Main Product Price');
     }
-    if (_mainProductAmountController.text.isEmpty) {
-      emptyFields.add('Main Product Amount');
-    }
+    // if (_mainProductAmountController.text.isEmpty) {
+    //   emptyFields.add('Main Product Amount');
+    // }
     if (_byProductQuantityController.text.isEmpty) {
       emptyFields.add('By-Product Quantity');
     }
     if (_byProductPriceController.text.isEmpty) {
       emptyFields.add('By-Product Price');
     }
-    if (_byProductAmountController.text.isEmpty) {
-      emptyFields.add('By-Product Amount');
+    // if (_byProductAmountController.text.isEmpty) {
+    //   emptyFields.add('By-Product Amount');
+    // }
+    if (  _totalByProductAmountController
+.text.isEmpty) {
+      emptyFields.add('Total main amount');
     }
     if (_totalByProductAmountController1.text.isEmpty) {
-      emptyFields.add('Total By-Product Amount 1');
+      emptyFields.add('Total By-Product Amount');
     }
     if (_totalByProductAmountController2.text.isEmpty) {
-      emptyFields.add('Total By-Product Amount 2');
+      emptyFields.add('Total Amount');
     }
 
     // Check if any field is empty, if yes, print and return false
@@ -544,12 +614,12 @@ class _CropdetailsState extends State<Cropdetails> {
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Total land in Guntas(1 acres is 40 Guntas)",
+                        labelText: "Total cultivated land in Guntas",
                         controller: _areaController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please 1 acre is 40 Guntas";
                           }
                           return null;
                         },
@@ -568,12 +638,12 @@ class _CropdetailsState extends State<Cropdetails> {
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Duration (in days)",
+                        labelText: "Duration ",
                         controller: _durationController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide in days";
                           }
                           return null;
                         },
@@ -589,7 +659,7 @@ class _CropdetailsState extends State<Cropdetails> {
                               _selectedSeason.value = option;
                             },
                             errorMessage: _selectedSeason.value.isEmpty
-                                ? 'Please select a season'
+                                ? 'Please select (Kharif/ Rabi/ Summer)'
                                 : null,
                           )),
                       const SizedBox(height: 20.0),
@@ -603,7 +673,7 @@ class _CropdetailsState extends State<Cropdetails> {
                               _handleTypeOfLandSelection(option);
                             },
                             errorMessage: _selectedTypeOfLand.value.isEmpty
-                                ? 'Please select a type of land'
+                                ? 'Please select (Rainfed/irrigated)'
                                 : null,
                           )),
                       const SizedBox(height: 20.0),
@@ -621,7 +691,7 @@ class _CropdetailsState extends State<Cropdetails> {
                             },
                             errorMessage:
                                 _selectedSourceOfIrrigation.value.isEmpty
-                                    ? 'Please select a source of irrigation'
+                                    ? 'Please select (borewell/ tank/ canal/ others)'
                                     : null,
                           )),
                       const SizedBox(height: 20.0),
@@ -657,9 +727,10 @@ class _CropdetailsState extends State<Cropdetails> {
                                 : _selectedNitrogen.value,
                             onPressed: (option) {
                               _selectedNitrogen.value = option;
+                              _adjustRDFValues();
                             },
                             errorMessage: _selectedNitrogen.value.isEmpty
-                                ? 'Please select a nitrogen level'
+                                ? 'Please select(very low/low/medium/high/very high)'
                                 : null,
                           )),
                       const SizedBox(height: 20.0),
@@ -677,9 +748,10 @@ class _CropdetailsState extends State<Cropdetails> {
                                 : _selectedPhosphorous.value,
                             onPressed: (option) {
                               _selectedPhosphorous.value = option;
+                              _adjustRDFValues();
                             },
                             errorMessage: _selectedPhosphorous.value.isEmpty
-                                ? 'Please select a phosphorous level'
+                                ? 'Please select (very low/low/medium/high/very high)'
                                 : null,
                           )),
                       const SizedBox(height: 20.0),
@@ -697,14 +769,15 @@ class _CropdetailsState extends State<Cropdetails> {
                                 : _selectedPotassium.value,
                             onPressed: (option) {
                               _selectedPotassium.value = option;
+                              _adjustRDFValues();
                             },
                             errorMessage: _selectedPotassium.value.isEmpty
-                                ? 'Please select a potassium level'
+                                ? 'Please select(very low/low/medium/high/very high)'
                                 : null,
                           )),
                       const SizedBox(height: 20.0),
                       const Text(
-                        'RDF of crop (kg/ac)',
+                        'RDF of crop',
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
@@ -713,9 +786,12 @@ class _CropdetailsState extends State<Cropdetails> {
                         labelText: "Nitrogen",
                         controller: _rdfNitrogenController,
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          _adjustRDFValues();
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (kg/ac)";
                           }
                           return null;
                         },
@@ -725,9 +801,12 @@ class _CropdetailsState extends State<Cropdetails> {
                         labelText: "Phosphorous",
                         controller: _rdfPhosphorousController,
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          _adjustRDFValues();
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (kg/ac)";
                           }
                           return null;
                         },
@@ -737,16 +816,19 @@ class _CropdetailsState extends State<Cropdetails> {
                         labelText: "Potassium",
                         controller: _rdfPotassiumController,
                         keyboardType: TextInputType.number,
+                        onChanged: (value) {
+                          _adjustRDFValues();
+                        },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (kg/ac)";
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
                       const Text(
-                        'Adjusted RDF of crop (kg/ac)',
+                        'Adjusted RDF of crop',
                         style: TextStyle(
                             fontSize: 16.0, fontWeight: FontWeight.bold),
                       ),
@@ -755,36 +837,21 @@ class _CropdetailsState extends State<Cropdetails> {
                         labelText: "Nitrogen",
                         controller: _adjustedrdfNitrogenController,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please provide details";
-                          }
-                          return null;
-                        },
+                        enabled: false,
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Phosphorous",
                         controller: _adjustedrdfPhosphorousController,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please provide details";
-                          }
-                          return null;
-                        },
+                        enabled: false,
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Potassium",
                         controller: _adjustedrdfPotassiumController,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please provide details";
-                          }
-                          return null;
-                        },
+                        enabled: false,
                       ),
                       const SizedBox(height: 20.0),
                       const Text(
@@ -988,17 +1055,17 @@ class _CropdetailsState extends State<Cropdetails> {
                               _Methodsoffertilizer.value = option;
                             },
                             errorMessage: _Methodsoffertilizer.value.isEmpty
-                                ? 'Please select a method of application'
+                                ? 'Please select (broadcasting/ line/ band/ spot)'
                                 : null,
                           )),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Plant Protection Cost (in Rs.)",
+                        labelText: "Plant Protection Cost",
                         controller: _plantProtectionCostController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (in Rs.)";
                           }
                           return null;
                         },
@@ -1011,72 +1078,72 @@ class _CropdetailsState extends State<Cropdetails> {
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Own Labour(number)",
+                        labelText: "Own Labour",
                         controller: _ownLabourNumberController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (number)";
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Cost (in Rs.)",
+                        labelText: "Cost ",
                         controller: _ownLabourCostController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (in Rs.)";
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Hired Labour(number)",
+                        labelText: "Hired Labour",
                         controller: _hiredLabourNumberController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (number)";
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Cost (in Rs.)",
+                        labelText: "Cost ",
                         controller: _hiredLabourCostController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (in Rs.)";
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Cost of animal drawn work (Rs.)",
+                        labelText: "Cost of animal drawn work",
                         controller: _animalDrawnCostController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide  (Rs.)";
                           }
                           return null;
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Cost of mechanized works (Rs.)",
+                        labelText: "Cost of mechanized works",
                         controller: _animalMechanizedCostController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (Rs.)";
                           }
                           return null;
                         },
@@ -1088,7 +1155,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (Rs.)";
                           }
                           return null;
                         },
@@ -1100,7 +1167,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide  (Rs.)";
                           }
                           return null;
                         },
@@ -1131,7 +1198,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Quantity of main product",
+                        labelText: "Quantity of main product(in quintal)",
                         controller: _mainProductQuantityController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -1140,34 +1207,35 @@ class _CropdetailsState extends State<Cropdetails> {
                           }
                           return null;
                         },
-                      ),
-                      const SizedBox(height: 20.0),
-                      CustomTextFormField(
-                        labelText: "Quantity of main product(in quintal)",
-                        controller: _mainProductPriceController,
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please provide details";
-                          }
-                          return null;
+                        onChanged: (value) {
+                          _updateTotalMainProductAmount();
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Price/unit (in Rs.)",
-                        controller: _mainProductAmountController,
+                        labelText: "Price/unit ",
+                        controller: _mainProductPriceController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Please provide details";
+                            return "Please provide (in Rs.)";
                           }
                           return null;
+                        },
+                        onChanged: (value) {
+                          _updateTotalMainProductAmount();
                         },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
                         labelText: "Total main product amount(in quintal)",
+                        controller: _totalByProductAmountController,
+                        keyboardType: TextInputType.number,
+                        enabled: false, // Make this field non-editable
+                      ),
+                      const SizedBox(height: 20.0),
+                      CustomTextFormField(
+                        labelText: "Quantity of By-products(in tons)",
                         controller: _byProductQuantityController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -1176,10 +1244,13 @@ class _CropdetailsState extends State<Cropdetails> {
                           }
                           return null;
                         },
+                        onChanged: (value) {
+                          _updateTotalByProductAmount();
+                        },
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
-                        labelText: "Quantity of By-products(in tons)",
+                        labelText: "Price/unit (in Rs.)",
                         controller: _byProductPriceController,
                         keyboardType: TextInputType.number,
                         validator: (value) {
@@ -1188,17 +1259,8 @@ class _CropdetailsState extends State<Cropdetails> {
                           }
                           return null;
                         },
-                      ),
-                      const SizedBox(height: 20.0),
-                      CustomTextFormField(
-                        labelText: "Price/unit (in Rs.)",
-                        controller: _byProductAmountController,
-                        keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please provide details";
-                          }
-                          return null;
+                        onChanged: (value) {
+                          _updateTotalByProductAmount();
                         },
                       ),
                       const SizedBox(height: 20.0),
@@ -1206,12 +1268,7 @@ class _CropdetailsState extends State<Cropdetails> {
                         labelText: "Total By-product amount(in Rs.)",
                         controller: _totalByProductAmountController1,
                         keyboardType: TextInputType.number,
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Please provide details";
-                          }
-                          return null;
-                        },
+                        enabled: false, // Make this field non-editable
                       ),
                       const SizedBox(height: 20.0),
                       CustomTextFormField(
@@ -1224,6 +1281,7 @@ class _CropdetailsState extends State<Cropdetails> {
                           }
                           return null;
                         },
+                        enabled: false,
                       ),
                     ],
                   ),
@@ -1246,7 +1304,7 @@ class _CropdetailsState extends State<Cropdetails> {
                     bool areControllersValid = _validatecontrollers();
 
                     // print(
-                        // 'Form valid: $isFormValid, Controllers valid: $areControllersValid');
+                    // 'Form valid: $isFormValid, Controllers valid: $areControllersValid');
 
                     if (isFormValid && areControllersValid) {
                       try {

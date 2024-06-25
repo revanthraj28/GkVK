@@ -7,6 +7,7 @@ class CustomTextFormField extends StatefulWidget {
   final TextEditingController controller;
   final String? Function(String?)? validator;
   final bool enabled;
+  final void Function(String)? onChanged;
 
   const CustomTextFormField({
     super.key,
@@ -15,7 +16,8 @@ class CustomTextFormField extends StatefulWidget {
     required this.keyboardType,
     required this.controller,
     this.validator,
-    this.enabled = true,  // Default value is true
+    this.enabled = true, // Default value is true
+    this.onChanged,
   });
 
   @override
@@ -81,6 +83,7 @@ class _CustomTextFormFieldState extends State<CustomTextFormField> {
           ),
           contentPadding: const EdgeInsets.symmetric(vertical: 10, horizontal: 15),
         ),
+        onChanged: widget.onChanged, // Call the onChanged callback if it is provided
       ),
     );
   }
