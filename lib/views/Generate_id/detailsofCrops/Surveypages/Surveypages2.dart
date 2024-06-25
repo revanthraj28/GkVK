@@ -62,10 +62,23 @@ class _SurveyPage2State extends State<SurveyPage2> {
 
       // Upload the aadharId and jsonString to SurveyDataDB2
       final surveyDataDB2 = SurveyDataDB2();
-      await surveyDataDB2.create(
-        aadharId: widget.aadharId,
-        surveyData: jsonString,
-      );
+
+      // Check if the survey data already exists
+      final existingSurveyData = await surveyDataDB2.read(widget.aadharId);
+
+      if (existingSurveyData != null) {
+        // Update the existing survey data
+        await surveyDataDB2.update(
+          aadharId: widget.aadharId,
+          surveyData: jsonString,
+        );
+      } else {
+        // Create new survey data
+        await surveyDataDB2.create(
+          aadharId: widget.aadharId,
+          surveyData: jsonString,
+        );
+      }
 
       // Navigate to the next page
       Navigator.push(
@@ -111,132 +124,126 @@ class _SurveyPage2State extends State<SurveyPage2> {
               ),
             ],
           );
-
         },
       );
     }
   }
 
-  Future<void> _showExitConfirmationDialog(BuildContext context) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15.0),
-          ),
-          backgroundColor: const Color(0xFFFEF8E0),
-          title: const Text(
-            'Exit',
-            style: TextStyle(
-              color: Color(0xFFFB812C),
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          content: const Text(
-            'Do you want to return to the home page?',
-            style: TextStyle(
-              color: Colors.black,
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: const Text(
-                'Cancel',
-                style: TextStyle(
-                  color: Color(0xFFFB812C),
-                ),
-              ),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: const Text(
-                'OK',
-                style: TextStyle(
-                  color: Color(0xFFFB812C),
-                ),
-              ),
-              onPressed: () async {
-                try {
-                  final farmerProfileDB = FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
-                  await farmerProfileDB.delete(widget.aadharId);
-                  final cropdetailsDB = CropdetailsDB();
-                  await cropdetailsDB.delete(widget.aadharId);
-                  final surveyDataDB1 = SurveyDataDB1();
-                  await surveyDataDB1.delete(widget.aadharId);
 
-                  Navigator.of(context).popUntil((route) => route.isFirst);
-                } catch (error) {
-                  // print("Failed to delete farmer profile: $error");
-                  // Optionally show an error message to the user
-                }
-              }
-            ),
-          ],
-        );
-      },
-    );
-  }
+  // Future<void> _showExitConfirmationDialog(BuildContext context) async {
+  //   return showDialog<void>(
+  //     context: context,
+  //     barrierDismissible: true,
+  //     builder: (BuildContext context) {
+  //       return AlertDialog(
+  //         shape: RoundedRectangleBorder(
+  //           borderRadius: BorderRadius.circular(15.0),
+  //         ),
+  //         backgroundColor: const Color(0xFFFEF8E0),
+  //         title: const Text(
+  //           'Exit',
+  //           style: TextStyle(
+  //             color: Color(0xFFFB812C),
+  //             fontWeight: FontWeight.bold,
+  //           ),
+  //         ),
+  //         content: const Text(
+  //           'Do you want to return to the home page?',
+  //           style: TextStyle(
+  //             color: Colors.black,
+  //           ),
+  //         ),
+  //         actions: <Widget>[
+  //           TextButton(
+  //             child: const Text(
+  //               'Cancel',
+  //               style: TextStyle(
+  //                 color: Color(0xFFFB812C),
+  //               ),
+  //             ),
+  //             onPressed: () {
+  //               Navigator.of(context).pop();
+  //             },
+  //           ),
+  //           TextButton(
+  //             child: const Text(
+  //               'OK',
+  //               style: TextStyle(
+  //                 color: Color(0xFFFB812C),
+  //               ),
+  //             ),
+  //             onPressed: () async {
+  //               try {
+  //                 final farmerProfileDB = FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
+  //                 await farmerProfileDB.delete(widget.aadharId);
+  //                 final cropdetailsDB = CropdetailsDB();
+  //                 await cropdetailsDB.delete(widget.aadharId);
+  //                 final surveyDataDB1 = SurveyDataDB1();
+  //                 await surveyDataDB1.delete(widget.aadharId);
+  //
+  //                 Navigator.of(context).popUntil((route) => route.isFirst);
+  //               } catch (error) {
+  //                 // print("Failed to delete farmer profile: $error");
+  //                 // Optionally show an error message to the user
+  //               }
+  //             }
+  //           ),
+  //         ],
+  //       );
+  //     },
+  //   );
+  // }
 
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        _showExitConfirmationDialog(context);
-        return false;
-      },
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xFFFEF8E0),
-          centerTitle: true,
-          title: const Text(
-            'ACCEPTANCE LEVEL OF LRI',
-            style: TextStyle(
-              color: Color(0xFFFB812C),
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          iconTheme: const IconThemeData(color: Color(0xFFFB812C)),
-        ),
-        body: SafeArea(
-          child: Container(
-            color: const Color(0xFFFEF8E0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: questionsPage2.length + 1,
-                    itemBuilder: (context, index) {
-                      if (index == questionsPage2.length) {
-                        return const SizedBox(height: 60);
-                      }
-                      return buildQuestion(questionsPage2[index], index);
-                    },
-                  ),
-                ),
-              ],
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: const Color(0xFFFEF8E0),
+        centerTitle: true,
+        title: const Text(
+          'ACCEPTANCE LEVEL OF LRI',
+          style: TextStyle(
+            color: Color(0xFFFB812C),
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
-        bottomNavigationBar: BottomAppBar(
-          height: 75,
+        iconTheme: const IconThemeData(color: Color(0xFFFB812C)),
+      ),
+      body: SafeArea(
+        child: Container(
           color: const Color(0xFFFEF8E0),
           child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              CustomTextButton(
-                text: 'NEXT',
-                buttonColor: const Color(0xFFFB812C),
-                onPressed: _validateAndProceed,
+              Expanded(
+                child: ListView.builder(
+                  itemCount: questionsPage2.length + 1,
+                  itemBuilder: (context, index) {
+                    if (index == questionsPage2.length) {
+                      return const SizedBox(height: 60);
+                    }
+                    return buildQuestion(questionsPage2[index], index);
+                  },
+                ),
               ),
             ],
           ),
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 75,
+        color: const Color(0xFFFEF8E0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            CustomTextButton(
+              text: 'NEXT',
+              buttonColor: const Color(0xFFFB812C),
+              onPressed: _validateAndProceed,
+            ),
+          ],
         ),
       ),
     );
