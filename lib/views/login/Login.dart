@@ -94,8 +94,8 @@ class _LoginPageState extends State<LoginPage>
                             children: [
                               Image.asset(
                                 'assets/images/LRIFA.png',
-                                width: 350,
-                                height: 350,
+                                width: 100,
+                                height: 100,
                               ),
                               const SizedBox(height: 10),
                               const Text(

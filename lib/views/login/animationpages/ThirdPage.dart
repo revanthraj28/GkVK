@@ -84,8 +84,8 @@ class _ThirdPageState extends State<ThirdPage>
             children: [
               Image.asset(
                 'assets/images/LRIFA.png',
-                width: 350,
-                height: 350,
+                width: 300,
+                height: 300,
               ),
               // Text(
               //   'LRI based Fertilizer Application',
