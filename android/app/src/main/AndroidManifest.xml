@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.gkvk">
     <application
-        android:label="gkvk"
+        android:label="LRIFA"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

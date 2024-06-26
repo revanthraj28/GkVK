@@ -11,7 +11,8 @@ class ThirdPage extends StatefulWidget {
   _ThirdPageState createState() => _ThirdPageState();
 }
 
-class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMixin {
+class _ThirdPageState extends State<ThirdPage>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<double> _fadeAnimation;
 
@@ -31,7 +32,7 @@ class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMix
 
     _controller.forward();
 
-    Timer(const Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 3), () {
       _checkAuthState();
     });
   }
@@ -44,14 +45,16 @@ class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMix
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
-            (route) => false, // This makes sure all other routes are removed from the stack
+        (route) =>
+            false, // This makes sure all other routes are removed from the stack
       );
     } else {
       // User is not signed in
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
-          pageBuilder: (context, animation, secondaryAnimation) => const LoginPage(),
+          pageBuilder: (context, animation, secondaryAnimation) =>
+              const LoginPage(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) {
             return FadeTransition(
               opacity: animation,
@@ -75,25 +78,34 @@ class _ThirdPageState extends State<ThirdPage> with SingleTickerProviderStateMix
       backgroundColor: const Color(0xFFFEF8E0),
       body: FadeTransition(
         opacity: _fadeAnimation,
-        child: const Center(
+        child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(
-                Icons.agriculture,
-                size: 200,
-                color: Color(0xFF8DB600),
+              Image.asset(
+                'assets/images/LRIFA.png',
+                width: 350,
+                height: 350,
               ),
-              SizedBox(height: 20),
-              Text(
-                'AgriConnect',
-                style: TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Color(0xFFFB812C),
-                ),
-                textAlign: TextAlign.center,
-              ),
+              // Text(
+              //   'LRI based Fertilizer Application',
+              //   style: TextStyle(
+              //     fontSize: 24,
+              //     fontWeight: FontWeight.bold,
+              //     color: Color(0xFFFB812C),
+              //   ),
+              //   textAlign: TextAlign.center,
+              // ),
+              // SizedBox(height: 10),
+              // Text(
+              //   'CoEWM',
+              //   style: TextStyle(
+              //     fontSize: 24,
+              //     fontWeight: FontWeight.bold,
+              //     color: Color(0xFFFB812C),
+              //   ),
+              //   textAlign: TextAlign.center,
+              // ),
             ],
           ),
         ),

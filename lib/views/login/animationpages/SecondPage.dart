@@ -83,7 +83,7 @@ class _SecondPageState extends State<SecondPage> with SingleTickerProviderStateM
               SlideTransition(
                 position: _slideAnimationDown,
                 child: const Text(
-                  'AgriConnect',
+                  'LRI based Fertilizer Application, CoEWM',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,

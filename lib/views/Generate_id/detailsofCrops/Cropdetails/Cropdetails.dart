@@ -2,13 +2,12 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/cropdetails_db.dart';
 import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
-import 'package:gkvk/database/database_service.dart';
+
 
 class Cropdetails extends StatefulWidget {
   final int aadharId;
@@ -1039,7 +1038,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (in Rs.)";
+                          return "Please provide details (in Rs.)";
                         }
                         return null;
                       },
@@ -1057,7 +1056,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (number)";
+                          return "Please provide details (in number)";
                         }
                         return null;
                       },
@@ -1069,7 +1068,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (in Rs.)";
+                          return "Please provide details (in Rs.)";
                         }
                         return null;
                       },
@@ -1081,7 +1080,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (number)";
+                          return "Please provide details (in number)";
                         }
                         return null;
                       },
@@ -1093,7 +1092,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (in Rs.)";
+                          return "Please provide details (in Rs.)";
                         }
                         return null;
                       },
@@ -1105,7 +1104,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide  (Rs.)";
+                          return "Please provide details (Rs.)";
                         }
                         return null;
                       },
@@ -1117,31 +1116,31 @@ class _CropdetailsState extends State<Cropdetails> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (Rs.)";
+                          return "Please provide details (Rs.)";
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
-                      labelText: "Irrigation cost (in Rs.)",
+                      labelText: "Irrigation cost ",
                       controller: _irrigationCostController,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (in Rs.)";
+                          return "Please provide details(in Rs.)";
                         }
                         return null;
                       },
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
-                      labelText: "Other production cost, if any (Rs.)",
+                      labelText: "Other production cost, if any ",
                       controller: _otherProductionCostController,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (Rs.)";
+                          return "Please provide details(Rs.)";
                         }
                         return null;
                       },
@@ -1172,12 +1171,12 @@ class _CropdetailsState extends State<Cropdetails> {
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
-                      labelText: "Quantity of main product(in quintal)",
+                      labelText: "Quantity of main product",
                       controller: _mainProductQuantityController,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide details";
+                          return "Please provide details (in quintal)";
                         }
                         return null;
                       },
@@ -1192,7 +1191,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (in Rs.)";
+                          return "Please provide details (in Rs.)";
                         }
                         return null;
                       },
@@ -1209,12 +1208,12 @@ class _CropdetailsState extends State<Cropdetails> {
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
-                      labelText: "Quantity of By-products(in tons)",
+                      labelText: "Quantity of By-products",
                       controller: _byProductQuantityController,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide details";
+                          return "Please provide details (in tons)";
                         }
                         return null;
                       },
@@ -1224,12 +1223,12 @@ class _CropdetailsState extends State<Cropdetails> {
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
-                      labelText: "Price/unit (in Rs.)",
+                      labelText: "Price/unit ",
                       controller: _byProductPriceController,
                       keyboardType: TextInputType.number,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide details";
+                          return "Please provide details (in Rs.)";
                         }
                         return null;
                       },

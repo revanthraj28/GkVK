@@ -196,9 +196,9 @@ class _FarmerAreaPageState extends State<FarmerAreaPage> {
                               if (value == null || value.isEmpty) {
                                 return "Please provide details";
                               }
-                              if (int.tryParse(value) == null) {
-                                return "Please enter a valid number";
-                              }
+                              // if (value.== null) {
+                              //   return "Please enter a valid number";
+                              // }
                               return null;
                             },
                           ),

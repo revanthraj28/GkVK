@@ -62,7 +62,7 @@ class HomeTabView extends StatelessWidget {
                                   Align(
                                     alignment: Alignment.center,
                                     child: Text(
-                                      'AgriConnect',
+                                      'LRIFA',
                                       style: TextStyle(
                                         // fontFamily: 'Quando', // Use the Quando font family
                                         fontSize: 20,

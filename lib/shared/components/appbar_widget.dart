@@ -22,7 +22,7 @@ class AppbarWidget extends StatelessWidget  implements PreferredSizeWidget {
           ),
           const SizedBox(width: 20,),
           Text(
-            'AgriConnect',
+            'LRI based Fertilizer Application, CoEWM',
             style: TextStyle(
               // fontFamily: 'Quando', // Use the Quando font family
               fontSize: 20,

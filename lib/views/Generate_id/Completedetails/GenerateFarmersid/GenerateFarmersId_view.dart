@@ -89,7 +89,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: const Text('Failed to upload data\(e)'),
+            content: const Text('Failed to upload data(e)'),
             actions: [
               TextButton(
                 child: const Text('OK'),
@@ -198,22 +198,22 @@ class GenerateFarmersIdPage extends StatelessWidget {
       emptyFields.add('Father Name');
     }
     if (_aadharController.text.isEmpty) {
-      emptyFields.add('Aadhar');
+      emptyFields.add('Aadhar Number');
     }
     if(_aadharController.text.length != 12){
-      emptyFields.add('Aadhar number should be12 digits only');
+      emptyFields.add('Aadhar Number should be 12 digits only');
     }
     if (_schoolingController.text.isEmpty) {
-      emptyFields.add('Schooling');
+      emptyFields.add("Schooling Years's");
     }
     if (_schoolingController.text.length >20){
-      emptyFields.add('Schooling should be Less than 20 Only');
+      emptyFields.add('Schooling years should be Less than 20 Only');
     }
     if (_pincodeController.text.isEmpty) {
       emptyFields.add('Pincode');
     }
     if (_pincodeController.text.length != 6) {
-      emptyFields.add('6 digits only');
+      emptyFields.add('Pincode must be 6 digits only');
     }
     if (_fruitsIdController.text.isEmpty) {
       emptyFields.add('Fruits ID');
