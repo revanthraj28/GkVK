@@ -37,10 +37,10 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.6
-  firebase_core: 
+  firebase_core:
   firebase_auth:
   cloud_firestore:
-  flutter_animate: 
+  flutter_animate:
 
 dev_dependencies:
   flutter_test:
@@ -54,6 +54,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^4.0.0
+  flutter_launcher_icons:
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -85,9 +86,9 @@ flutter:
   # list giving the asset and other descriptors for the font. For
   # example:
   fonts:
-   - family: Quando
-     fonts:
-       - asset: assets/fonts/Quando-Regular.ttf
+    - family: Quando
+      fonts:
+        - asset: assets/fonts/Quando-Regular.ttf
 
   #     fonts:
   #       - asset: fonts/Schyler-Regular.ttf
@@ -101,3 +102,9 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/LRIFA1.png"
+  min_sdk_android: 21
