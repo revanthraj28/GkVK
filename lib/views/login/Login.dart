@@ -92,10 +92,10 @@ class _LoginPageState extends State<LoginPage>
                             mainAxisSize: MainAxisSize.min,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              const Icon(
-                                Icons.agriculture,
-                                size: 100,
-                                color: Color(0xFF8DB600),
+                              Image.asset(
+                                'assets/images/LRIFA.png',
+                                width: 350,
+                                height: 350,
                               ),
                               const SizedBox(height: 10),
                               const Text(
@@ -159,27 +159,29 @@ class _LoginPageState extends State<LoginPage>
                                       );
                                     } catch (e) {
                                       showDialog(
-                                    context: context,
-                                    builder: (context) => CustomAlertDialog(
-                                      title: 'Login Error',
-                                      content: 'Please enter valid email and password.',
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  );
+                                        context: context,
+                                        builder: (context) => CustomAlertDialog(
+                                          title: 'Login Error',
+                                          content:
+                                              'Please enter valid email and password.',
+                                          onPressed: () {
+                                            Navigator.of(context).pop();
+                                          },
+                                        ),
+                                      );
                                     }
                                   } else {
                                     showDialog(
-                                    context: context,
-                                    builder: (context) => CustomAlertDialog(
-                                      title: 'Login Error',
-                                      content: 'Please enter valid email and password.',
-                                      onPressed: () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    ),
-                                  );
+                                      context: context,
+                                      builder: (context) => CustomAlertDialog(
+                                        title: 'Login Error',
+                                        content:
+                                            'Please enter valid email and password.',
+                                        onPressed: () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      ),
+                                    );
                                   }
                                 },
                               ),

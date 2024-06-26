@@ -764,7 +764,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (kg/ac)";
+                          return "Please provide details (kg/ac)";
                         }
                         return null;
                       },
@@ -779,7 +779,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (kg/ac)";
+                          return "Please provide details (kg/ac)";
                         }
                         return null;
                       },
@@ -794,7 +794,7 @@ class _CropdetailsState extends State<Cropdetails> {
                       },
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Please provide (kg/ac)";
+                          return "Please provide details (kg/ac)";
                         }
                         return null;
                       },

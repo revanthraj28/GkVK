@@ -1,7 +1,7 @@
 plugins {
     id "com.android.application"
     id "kotlin-android"
-    id 'com.google.gms.google-services'
+    id 'com.google.gms.google-services' // Ensure this is needed for Firebase services
     id "dev.flutter.flutter-gradle-plugin"
 }
 
@@ -13,51 +13,53 @@ if (localPropertiesFile.exists()) {
     }
 }
 
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
-if (flutterVersionCode == null) {
-    flutterVersionCode = "1"
-}
-
-def flutterVersionName = localProperties.getProperty("flutter.versionName")
-if (flutterVersionName == null) {
-    flutterVersionName = "1.0"
-}
+def flutterVersionCode = localProperties.getProperty("flutter.versionCode", "1")
+def flutterVersionName = localProperties.getProperty("flutter.versionName", "1.0")
 
 android {
-    namespace = "com.example.gkvk"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
     compileSdkVersion 34
-
-    compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
-    }
+    buildToolsVersion "34.0.0"
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.gkvk"
-        // You can update the following values to match your application needs.
-        // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
-        minSdk = flutter.minSdkVersion
-        targetSdk = flutter.targetSdkVersion
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        applicationId "com.example.gkvk"
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 1
-        versionName "1.0"
+        versionCode flutterVersionCode.toInteger()
+        versionName flutterVersionName
+        multiDexEnabled true // Enable multidex if your app requires it
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_11
+        targetCompatibility JavaVersion.VERSION_11
     }
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
-            // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig = signingConfigs.debug
+            // Configure your signing config for release builds
+            // Note: Ensure signingConfigs.debug is replaced with your actual signing configuration
+            signingConfig signingConfigs.debug
+            minifyEnabled true // Enable code shrinking (obfuscation/minification) for release builds
+            shrinkResources true // Enable resource shrinking for release builds
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+
+    // Configuration to avoid common issues with the build process
+    configurations {
+        all*.exclude group: 'com.google.guava', module: 'listenablefuture'
+    }
+
+    // Optional configurations for additional optimization or behavior
+    dexOptions {
+        javaMaxHeapSize "4g" // Increase the maximum heap size for dex operation
+    }
+
+    lintOptions {
+        disable 'InvalidPackage' // Disable lint checking for invalid package names
     }
 }
 
 flutter {
-    source = "../.."
+    source '../..' // Path to your Flutter project directory
 }
