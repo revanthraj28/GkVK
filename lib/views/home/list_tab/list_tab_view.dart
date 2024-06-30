@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart' show BorderRadius, BoxDecoration, BoxFit, BoxShadow, BuildContext, Center, CircularProgressIndicator, Color, Colors, Column, ConnectionState, Container, CrossAxisAlignment, EdgeInsets, Expanded, FontWeight, FutureBuilder, Icon, IconButton, Icons, Image, ListTile, ListView, MainAxisAlignment, MainAxisSize, MaterialApp, MediaQuery, Offset, Padding, Positioned, Scaffold, ScaffoldMessenger, SizedBox, SnackBar, Stack, State, StatefulWidget, StatelessWidget, Text, TextStyle, Widget, runApp;
+import 'package:flutter/material.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/database/gkvk_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
@@ -8,6 +8,9 @@ import 'package:gkvk/database/survey_page3_db.dart';
 import 'package:gkvk/database/survey_page4_db.dart';
 import 'package:gkvk/database/cropdetails_db.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 void main() {
   runApp(const MaterialApp(
@@ -35,6 +38,38 @@ class _ListTabViewState extends State<ListTabView> {
     return await FarmerProfileDB().readAll();
   }
 
+  Future<void> storeImageLocally(String? imageUrl, String localPath) async {
+    if (imageUrl == null || imageUrl.isEmpty) return;
+
+    final response = await HttpClient().getUrl(Uri.parse(imageUrl));
+    final bytes = await response.close().then((res) => res.fold<List<int>>([], (b, d) => b..addAll(d)));
+    final file = File(localPath);
+    await file.writeAsBytes(bytes);
+  }
+
+  Future<String> uploadImageToFirebase(File imageFile, String aadharNumber) async {
+  try {
+    if (!imageFile.existsSync()) {
+      throw Exception('File does not exist');
+    }
+    final storageReference = FirebaseStorage.instance.ref().child('farmer_images').child('$aadharNumber.jpg');
+    final uploadTask = storageReference.putFile(imageFile);
+
+    // Listen for state changes, errors, and completion of the upload.
+    final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
+
+    // Retrieve the download URL from the snapshot after the upload completes.
+    final downloadUrl = await taskSnapshot.ref.getDownloadURL();
+    return downloadUrl;
+  } catch (e) {
+    print('Error uploading image: $e'); // Print the error for debugging.
+    throw Exception('Image upload failed: $e');
+  }
+}
+
+
+
+
   Future<void> uploadFarmerData(int aadharNumber) async {
     final farmerProfileDB = FarmerProfileDB();
     final surveyDataDB1 = SurveyDataDB1();
@@ -47,6 +82,18 @@ class _ListTabViewState extends State<ListTabView> {
     try {
       final farmerData = await farmerProfileDB.read(aadharNumber);
       if (farmerData == null) throw Exception('Farmer data not found');
+
+      final imageUrl = farmerData['imageUrl'];
+      final directory = await getApplicationDocumentsDirectory();
+      final localPath = '${directory.path}/$aadharNumber.jpg';
+      await storeImageLocally(imageUrl, localPath);
+
+      // Upload the image to Firebase Storage
+      final localImageFile = File(localPath);
+      final uploadedImageUrl = await uploadImageToFirebase(localImageFile, aadharNumber.toString());
+
+      // Update farmerData with the new image URL
+      farmerData['imageUrl'] = uploadedImageUrl;
 
       final surveyData1 = await surveyDataDB1.read(aadharNumber);
       final surveyData2 = await surveyDataDB2.read(aadharNumber);
@@ -104,9 +151,10 @@ class _ListTabViewState extends State<ListTabView> {
       setState(() {
         _farmersFuture = fetchAllFarmers();
       });
+
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Upload successful')));
     } catch (e) {
-      // print('Failed to upload farmer data: $e');
-      rethrow;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
     }
   }
 
@@ -121,6 +169,12 @@ class _ListTabViewState extends State<ListTabView> {
       final waterShedDB = WaterShedDB();
       await waterShedDB.deleteAll();
     }
+
+    setState(() {
+      _farmersFuture = fetchAllFarmers();
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('All data uploaded successfully')));
   }
 
   @override
@@ -150,9 +204,6 @@ class _ListTabViewState extends State<ListTabView> {
                     if (farmers.isEmpty) {
                       return _buildEmptyListContainer();
                     } else {
-                      // Calculate total height needed for the list
-// Assuming each tile is 80.0 in height
-
                       return Container(
                         height: MediaQuery.of(context).size.height / 2,
                         decoration: BoxDecoration(

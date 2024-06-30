@@ -5,6 +5,9 @@ import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:permission_handler/permission_handler.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
   final int waterShedId;
@@ -19,6 +22,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
   final TextEditingController _fertilizerAddressController =
       TextEditingController();
   final TextEditingController _farmerlandController = TextEditingController();
+  final Rxn<File> _selectedImage = Rxn<File>();
   final RxString _selectedGender = ''.obs;
   final RxString _selectedCategory = ''.obs;
   final RxString _selectedLandHolding = ''.obs;
@@ -33,7 +37,8 @@ class GenerateFarmersIdPage extends StatelessWidget {
     final FarmerProfileDB farmerProfileDB = FarmerProfileDB();
     try {
       // Check if the farmer profile already exists
-      final existingProfile = await farmerProfileDB.read(int.parse(_aadharController.text));
+      final existingProfile =
+          await farmerProfileDB.read(int.parse(_aadharController.text));
 
       if (existingProfile != null) {
         // Update the existing profile
@@ -53,6 +58,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
           salesOfProduce: _selectedSalesOfProduce.value,
           lriReceived: _selectedLRIReceived.value,
           watershedId: waterShedId,
+          image: _selectedImage.value?.path,
         );
       } else {
         // Create a new profile
@@ -72,6 +78,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
           salesOfProduce: _selectedSalesOfProduce.value,
           lriReceived: _selectedLRIReceived.value,
           watershedId: waterShedId,
+          image: _selectedImage.value?.path,
         );
       }
 
@@ -104,58 +111,86 @@ class GenerateFarmersIdPage extends StatelessWidget {
     }
   }
 
+  Future<void> _pickImage(BuildContext context, ImageSource source) async {
+  if (source == ImageSource.camera) {
+    await _pickImageFromCamera(context);
+  } else if (source == ImageSource.gallery) {
+    await _pickImageFromGallery(context);
+  } else {
+    throw Exception('Unknown image source: $source');
+  }
+}
 
-  // Future<void> _showExitConfirmationDialog(BuildContext context) async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: true,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(15.0),
-  //         ),
-  //         backgroundColor: const Color(0xFFFEF8E0),
-  //         title: const Text(
-  //           'Exit',
-  //           style: TextStyle(
-  //             color: Color(0xFFFB812C),
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //         content: const Text(
-  //           'Do you want to return to the home page?',
-  //           style: TextStyle(
-  //             color: Colors.black,
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text(
-  //               'Cancel',
-  //               style: TextStyle(
-  //                 color: Color(0xFFFB812C),
-  //               ),
-  //             ),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: const Text(
-  //               'OK',
-  //               style: TextStyle(
-  //                 color: Color(0xFFFB812C),
-  //               ),
-  //             ),
-  //             onPressed: () {
-  //               Navigator.of(context).popUntil((route) => route.isFirst);
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+Future<void> _pickImageFromCamera(BuildContext context) async {
+  final status = await Permission.camera.request();
+
+  if (status.isGranted) {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
+    if (pickedFile != null) {
+      _selectedImage.value = File(pickedFile.path);
+    } else {
+      _showDialog(context, 'Error', 'No image selected.');
+    }
+  } else if (status.isPermanentlyDenied) {
+    _showDialog(
+      context,
+      'Permission Required',
+      'You have permanently denied the camera permission. Please enable it in the app settings.',
+      openAppSettings,
+    );
+  } else {
+    _showDialog(
+      context,
+      'Permission Required',
+      'Please grant the camera permission to take a photo.',
+    );
+  }
+}
+
+Future<void> _pickImageFromGallery(BuildContext context) async {
+  final status = await Permission.photos.request();
+
+  if (status.isGranted) {
+    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      _selectedImage.value = File(pickedFile.path);
+    } else {
+      _showDialog(context, 'Error', 'No image selected.');
+    }
+  } else if (status.isPermanentlyDenied) {
+    _showDialog(
+      context,
+      'Permission Required',
+      'You have permanently denied the gallery permission. Please enable it in the app settings.',
+      openAppSettings,
+    );
+  } else {
+    _showDialog(
+      context,
+      'Permission Required',
+      'Please grant the gallery permission to select a photo.',
+    );
+  }
+}
+
+void _showDialog(BuildContext context, String title, String message, [VoidCallback? onPressed]) {
+  showDialog(
+    context: context,
+    builder: (context) => AlertDialog(
+      title: Text(title),
+      content: Text(message),
+      actions: [
+        TextButton(
+          onPressed: onPressed ?? () => Navigator.of(context).pop(),
+          child: Text(onPressed != null ? 'Open Settings' : 'OK'),
+        ),
+      ],
+    ),
+  );
+}
+
+
+ 
 
   void _setLandHoldingCategory(String value) {
     int guntas = int.tryParse(value) ?? 0;
@@ -200,13 +235,13 @@ class GenerateFarmersIdPage extends StatelessWidget {
     if (_aadharController.text.isEmpty) {
       emptyFields.add('Aadhar Number');
     }
-    if(_aadharController.text.length != 12){
+    if (_aadharController.text.length != 12) {
       emptyFields.add('Aadhar Number should be 12 digits only');
     }
     if (_schoolingController.text.isEmpty) {
       emptyFields.add("Schooling Years's");
     }
-    if (_schoolingController.text.length >20){
+    if (_schoolingController.text.length > 20) {
       emptyFields.add('Schooling years should be Less than 20 Only');
     }
     if (_pincodeController.text.isEmpty) {
@@ -224,7 +259,10 @@ class GenerateFarmersIdPage extends StatelessWidget {
     if (_fertilizerAddressController.text.isEmpty) {
       emptyFields.add('Fertilizer Address');
     }
-
+    if (_selectedImage.value == null) {
+      emptyFields.add('Add Image');
+      return false;
+    }
     // Check if any field is empty, if yes, show alert and return false
     if (emptyFields.isNotEmpty) {
       _showEmptyFieldsAlert(context, emptyFields);
@@ -410,24 +448,24 @@ class GenerateFarmersIdPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     Obx(() => SelectionButton(
-                      label: "Land holding",
-                      options: const [
-                        'Marginal',
-                        'Small',
-                        'Semi-Medium',
-                        'Medium',
-                        'Large'
-                      ],
-                      selectedOption: _selectedLandHolding.value.isEmpty
-                          ? null
-                          : _selectedLandHolding.value,
-                      onPressed: (option) {
-                        // Prevent manual selection by doing nothing
-                      },
-                      errorMessage: _selectedLandHolding.value.isEmpty
-                          ? 'Please select land holding'
-                          : null,
-                    )),
+                          label: "Land holding",
+                          options: const [
+                            'Marginal',
+                            'Small',
+                            'Semi-Medium',
+                            'Medium',
+                            'Large'
+                          ],
+                          selectedOption: _selectedLandHolding.value.isEmpty
+                              ? null
+                              : _selectedLandHolding.value,
+                          onPressed: (option) {
+                            // Prevent manual selection by doing nothing
+                          },
+                          errorMessage: _selectedLandHolding.value.isEmpty
+                              ? 'Please select land holding'
+                              : null,
+                        )),
                     const SizedBox(height: 20.0),
                     Row(
                       children: [
@@ -479,10 +517,9 @@ class GenerateFarmersIdPage extends StatelessWidget {
                           onPressed: (option) {
                             _selectedFertilizerSource.value = option;
                           },
-                          errorMessage:
-                              _selectedFertilizerSource.value.isEmpty
-                                  ? 'Please select source'
-                                  : null,
+                          errorMessage: _selectedFertilizerSource.value.isEmpty
+                              ? 'Please select source'
+                              : null,
                         )),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
@@ -500,10 +537,9 @@ class GenerateFarmersIdPage extends StatelessWidget {
                     Obx(() => SelectionButton(
                           label: "Place of sale of product",
                           options: const ['Mandi', 'Village', 'Other'],
-                          selectedOption:
-                              _selectedSalesOfProduce.value.isEmpty
-                                  ? null
-                                  : _selectedSalesOfProduce.value,
+                          selectedOption: _selectedSalesOfProduce.value.isEmpty
+                              ? null
+                              : _selectedSalesOfProduce.value,
                           onPressed: (option) {
                             _selectedSalesOfProduce.value = option;
                           },
@@ -525,6 +561,28 @@ class GenerateFarmersIdPage extends StatelessWidget {
                               ? 'Please select LRI option'
                               : null,
                         )),
+                    const SizedBox(height: 10.0),
+                    Obx(() => _selectedImage.value == null
+                        ? const Text('No image selected.')
+                        : Image.file(_selectedImage.value!,
+                            height: 100, width: 100)),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.camera),
+                          onPressed: () {
+                            _pickImage(context, ImageSource.camera);
+                          },
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.photo),
+                          onPressed: () {
+                            _pickImage(context, ImageSource.gallery);
+                          },
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 30.0),
                   ],
                 ),

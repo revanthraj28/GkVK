@@ -1,12 +1,11 @@
-// Import Material for DateTime formatting
-import 'package:intl/intl.dart'; // Import intl for date formatting
+import 'package:intl/intl.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:gkvk/database/database_service.dart';
 
 class FarmerProfileDB {
   final tableName = 'farmer_profile_table';
 
-  // Create the table with the required columns, including the timestamp column
+  // Create the table with the required columns, including the image column
   Future<void> createTable(Database database) async {
     await database.execute('''
       CREATE TABLE IF NOT EXISTS $tableName (
@@ -26,6 +25,7 @@ class FarmerProfileDB {
         "watershedId" INTEGER NOT NULL,
         "totalland" INTEGER NOT NULL,
         "timestamp" DATETIME DEFAULT CURRENT_TIMESTAMP,
+        "image" TEXT,
         FOREIGN KEY ("watershedId") REFERENCES "water_shed_table" ("watershedId")
       );
     ''');
@@ -48,6 +48,7 @@ class FarmerProfileDB {
     required String salesOfProduce,
     required String lriReceived,
     required int watershedId,
+    String? image, // Add image parameter here
   }) async {
     final database = await DatabaseService().database;
     return await database.insert(tableName, {
@@ -66,7 +67,7 @@ class FarmerProfileDB {
       'lriReceived': lriReceived,
       'watershedId': watershedId,
       'totalland': totalland,
-
+      'image': image, // Include image here
     });
   }
 
@@ -81,7 +82,7 @@ class FarmerProfileDB {
     final database = await DatabaseService().database;
     final List<Map<String, dynamic>> results = await database.query(
       tableName,
-      where: 'aadharNumber =?',
+      where: 'aadharNumber = ?',
       whereArgs: [aadharNumber],
     );
     if (results.isNotEmpty) {
@@ -108,6 +109,7 @@ class FarmerProfileDB {
     required String salesOfProduce,
     required String lriReceived,
     required int watershedId,
+    String? image, // Add image parameter here
   }) async {
     final database = await DatabaseService().database;
     return await database.update(
@@ -128,8 +130,9 @@ class FarmerProfileDB {
         'lriReceived': lriReceived,
         'watershedId': watershedId,
         'totalland': totalland,
+        'image': image, // Include image here
       },
-      where: 'aadharNumber =?',
+      where: 'aadharNumber = ?',
       whereArgs: [aadharNumber],
     );
   }
@@ -139,7 +142,7 @@ class FarmerProfileDB {
     final database = await DatabaseService().database;
     return await database.delete(
       tableName,
-      where: 'aadharNumber =?',
+      where: 'aadharNumber = ?',
       whereArgs: [aadharNumber],
     );
   }

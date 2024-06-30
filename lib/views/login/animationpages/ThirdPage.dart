@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:gkvk/views/home/home_view.dart';
 import 'package:gkvk/views/login/Login.dart';
 
@@ -50,6 +51,11 @@ class _ThirdPageState extends State<ThirdPage>
       );
     } else {
       // User is not signed in
+
+      // Request permissions
+      await _requestPermissions();
+
+      // Navigate to login page
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
@@ -63,6 +69,22 @@ class _ThirdPageState extends State<ThirdPage>
           },
         ),
       );
+    }
+  }
+
+  Future<void> _requestPermissions() async {
+    // Request camera permission
+    final cameraStatus = await Permission.camera.request();
+    if (!cameraStatus.isGranted) {
+      // Handle camera permission denied
+      print("Camera permission denied");
+    }
+
+    // Request photo library permission
+    final photoStatus = await Permission.photos.request();
+    if (!photoStatus.isGranted) {
+      // Handle photo library permission denied
+      print("Photo library permission denied");
     }
   }
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 // ignore: unused_import
 import 'package:gkvk/views/login/Login.dart';
@@ -10,6 +11,8 @@ import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Permission.camera.request();
+  await Permission.photos.request();
   await Firebase.initializeApp();
   await GetStorage.init();
   runApp(MyApp());
@@ -34,11 +37,3 @@ class MyApp extends StatelessWidget {
   }
 }
 
-//   Widget starter() {
-//     return Obx(() {
-//       // ignore: unused_local_variable
-//       UserModel user = userController.user;
-//       return const MainPage();
-//     });
-//   }
-// }

@@ -952,10 +952,12 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.32):
     - BoringSSL-GRPC/Interface (= 0.0.32)
   - BoringSSL-GRPC/Interface (0.0.32)
-  - cloud_firestore (5.0.1):
+  - cloud_firestore (5.0.2):
     - Firebase/CoreOnly (~> 10.27.0)
     - Firebase/Firestore (~> 10.27.0)
     - firebase_core
+    - FlutterMacOS
+  - file_selector_macos (0.0.1):
     - FlutterMacOS
   - Firebase/Auth (10.27.0):
     - Firebase/CoreOnly
@@ -965,12 +967,12 @@ PODS:
   - Firebase/Firestore (10.27.0):
     - Firebase/CoreOnly
     - FirebaseFirestore (~> 10.27.0)
-  - firebase_auth (5.1.0):
+  - firebase_auth (5.1.1):
     - Firebase/Auth (~> 10.27.0)
     - Firebase/CoreOnly (~> 10.27.0)
     - firebase_core
     - FlutterMacOS
-  - firebase_core (3.1.0):
+  - firebase_core (3.1.1):
     - Firebase/CoreOnly (~> 10.27.0)
     - FlutterMacOS
   - FirebaseAppCheckInterop (10.27.0)
@@ -1128,6 +1130,7 @@ PODS:
 
 DEPENDENCIES:
   - cloud_firestore (from `Flutter/ephemeral/.symlinks/plugins/cloud_firestore/macos`)
+  - file_selector_macos (from `Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos`)
   - firebase_auth (from `Flutter/ephemeral/.symlinks/plugins/firebase_auth/macos`)
   - firebase_core (from `Flutter/ephemeral/.symlinks/plugins/firebase_core/macos`)
   - FlutterMacOS (from `Flutter/ephemeral`)
@@ -1158,6 +1161,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   cloud_firestore:
     :path: Flutter/ephemeral/.symlinks/plugins/cloud_firestore/macos
+  file_selector_macos:
+    :path: Flutter/ephemeral/.symlinks/plugins/file_selector_macos/macos
   firebase_auth:
     :path: Flutter/ephemeral/.symlinks/plugins/firebase_auth/macos
   firebase_core:
@@ -1172,10 +1177,11 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   abseil: d121da9ef7e2ff4cab7666e76c5a3e0915ae08c3
   BoringSSL-GRPC: 1e2348957acdbcad360b80a264a90799984b2ba6
-  cloud_firestore: f38b338965a7a0dfe2ba367180f383fd67116d7b
+  cloud_firestore: 32e6b7c3f9674c8035d417d1d867e815353354f5
+  file_selector_macos: 54fdab7caa3ac3fc43c9fac4d7d8d231277f8cf2
   Firebase: 26b040b20866a55f55eb3611b9fcf3ae64816b86
-  firebase_auth: 4a2a30c21caf945540f5d0f377c071795fe718d2
-  firebase_core: 3cf30a8be4c850f7192bf9597f5939d0c3af706b
+  firebase_auth: 1271d0f367a33d6f1f755bc18a7315a01426b7d3
+  firebase_core: df33f64432203e675060e475de6ea8127eb8398a
   FirebaseAppCheckInterop: 0dd062c9926a76332ca5711dbed6f1a9ac540b54
   FirebaseAuth: 77a012b7e08042bf44d0db835ca2e86e6ca7bbd3
   FirebaseCore: a2b95ae4ce7c83ceecfbbbe3b6f1cddc7415a808

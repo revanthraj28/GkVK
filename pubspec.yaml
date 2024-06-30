@@ -41,6 +41,9 @@ dependencies:
   firebase_auth:
   cloud_firestore:
   flutter_animate:
+  image_picker:
+  permission_handler:
+  firebase_storage:
 
 dev_dependencies:
   flutter_test:
@@ -105,6 +108,6 @@ flutter:
 
 flutter_launcher_icons:
   android: "launcher_icon"
-  ios: true
-  image_path: "assets/images/LRIFA1.png"
+  ios: "AppIcon"
+  image_path: "assets/images/LRIFA1.jpg"
   min_sdk_android: 21

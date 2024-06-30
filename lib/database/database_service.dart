@@ -1,4 +1,3 @@
-// ignore: depend_on_referenced_packages
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:gkvk/database/gkvk_db.dart';
@@ -25,8 +24,6 @@ class DatabaseService {
     final path = await getDatabasesPath();
     return join(path, name);
   }
-
-  get instance => null;
 
   Future<Database> _initialize() async {
     final path = await fullPath;
