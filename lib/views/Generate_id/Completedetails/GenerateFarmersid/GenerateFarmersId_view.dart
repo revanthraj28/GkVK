@@ -1,5 +1,7 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
@@ -31,7 +33,8 @@ class GenerateFarmersIdPage extends StatelessWidget {
   final RxString _selectedLRIReceived = ''.obs;
   final _formKey = GlobalKey<FormState>();
 
-  GenerateFarmersIdPage({required this.waterShedId, super.key});
+  GenerateFarmersIdPage(
+      {required this.waterShedId, super.key, int? aadharNumber});
 
   Future<void> _uploadData(BuildContext context) async {
     final FarmerProfileDB farmerProfileDB = FarmerProfileDB();
@@ -78,7 +81,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
           salesOfProduce: _selectedSalesOfProduce.value,
           lriReceived: _selectedLRIReceived.value,
           watershedId: waterShedId,
-          image: _selectedImage.value?.path,
+          image: _selectedImage.value!.path,
         );
       }
 
@@ -96,7 +99,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
         builder: (BuildContext context) {
           return AlertDialog(
             title: const Text('Error'),
-            content: const Text('Failed to upload data(e)'),
+            content: Text('Failed to upload data: $e'),
             actions: [
               TextButton(
                 child: const Text('OK'),
@@ -112,85 +115,110 @@ class GenerateFarmersIdPage extends StatelessWidget {
   }
 
   Future<void> _pickImage(BuildContext context, ImageSource source) async {
-  if (source == ImageSource.camera) {
-    await _pickImageFromCamera(context);
-  } else if (source == ImageSource.gallery) {
-    await _pickImageFromGallery(context);
-  } else {
-    throw Exception('Unknown image source: $source');
-  }
-}
-
-Future<void> _pickImageFromCamera(BuildContext context) async {
-  final status = await Permission.camera.request();
-
-  if (status.isGranted) {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.camera);
-    if (pickedFile != null) {
-      _selectedImage.value = File(pickedFile.path);
+    if (source == ImageSource.camera) {
+      await _pickImageFromCamera(context);
+    } else if (source == ImageSource.gallery) {
+      await _pickImageFromGallery(context);
     } else {
-      _showDialog(context, 'Error', 'No image selected.');
+      throw Exception('Unknown image source: $source');
     }
-  } else if (status.isPermanentlyDenied) {
-    _showDialog(
-      context,
-      'Permission Required',
-      'You have permanently denied the camera permission. Please enable it in the app settings.',
-      openAppSettings,
-    );
-  } else {
-    _showDialog(
-      context,
-      'Permission Required',
-      'Please grant the camera permission to take a photo.',
-    );
   }
-}
 
-Future<void> _pickImageFromGallery(BuildContext context) async {
-  final status = await Permission.photos.request();
+  Future<void> _pickImageFromCamera(BuildContext context) async {
+    final status = await Permission.camera.request();
 
-  if (status.isGranted) {
-    final pickedFile = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedFile != null) {
-      _selectedImage.value = File(pickedFile.path);
-    } else {
-      _showDialog(context, 'Error', 'No image selected.');
-    }
-  } else if (status.isPermanentlyDenied) {
-    _showDialog(
-      context,
-      'Permission Required',
-      'You have permanently denied the gallery permission. Please enable it in the app settings.',
-      openAppSettings,
-    );
-  } else {
-    _showDialog(
-      context,
-      'Permission Required',
-      'Please grant the gallery permission to select a photo.',
-    );
-  }
-}
-
-void _showDialog(BuildContext context, String title, String message, [VoidCallback? onPressed]) {
-  showDialog(
-    context: context,
-    builder: (context) => AlertDialog(
-      title: Text(title),
-      content: Text(message),
-      actions: [
-        TextButton(
-          onPressed: onPressed ?? () => Navigator.of(context).pop(),
-          child: Text(onPressed != null ? 'Open Settings' : 'OK'),
+    if (status.isGranted) {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.camera);
+      if (pickedFile != null) {
+        _selectedImage.value = File(pickedFile.path);
+      } else {
+        showDialog(
+        context: context,
+        builder: (context) => CustomAlertDialog(
+          title: 'Error',
+          content: "No image selected.",
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
         ),
-      ],
-    ),
-  );
-}
+      );
+      }
+    } else if (status.isPermanentlyDenied) {
+      showDialog(
+        context: context,
+        builder: (context) => CustomAlertDialog(
+          title: 'Permission Required',
+          content: "You have permanently denied the camera permission. Please enable it in the app settings.",
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+      // _showDialog(
+      //   context,
+      //   'Permission Required',
+      //   'You have permanently denied the camera permission. Please enable it in the app settings.',
+      //   openAppSettings,
+      // );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => CustomAlertDialog(
+          title: 'Permission Required',
+          content: "Please grant the camera permission to take a photo.",
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    }
+  }
 
+  Future<void> _pickImageFromGallery(BuildContext context) async {
+    final status = await Permission.storage.request();
 
- 
+    if (status.isGranted) {
+      final pickedFile =
+          await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedFile != null) {
+        _selectedImage.value = File(pickedFile.path);
+      } else {
+         showDialog(
+        context: context,
+        builder: (context) => CustomAlertDialog(
+          title: 'Error',
+          content: "No image selected.",
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+      }
+    } else if (status.isPermanentlyDenied) {
+      showDialog(
+        context: context,
+        builder: (context) => CustomAlertDialog(
+          title: 'Permission Required',
+          content: "You have permanently denied the storage permission. Please enable it in the app settings.",
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) => CustomAlertDialog(
+          title: 'Permission Required',
+          content: "Please grant the storage permission to select a photo.",
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      );
+    }
+  }
 
   void _setLandHoldingCategory(String value) {
     int guntas = int.tryParse(value) ?? 0;
@@ -261,10 +289,9 @@ void _showDialog(BuildContext context, String title, String message, [VoidCallba
     }
     if (_selectedImage.value == null) {
       emptyFields.add('Add Image');
-      return false;
     }
     // Check if any field is empty, if yes, show alert and return false
-    if (emptyFields.isNotEmpty) {
+    if (emptyFields.isNotEmpty ) {
       _showEmptyFieldsAlert(context, emptyFields);
       // print('Empty fields: $emptyFields');
       return false;
@@ -575,12 +602,12 @@ void _showDialog(BuildContext context, String title, String message, [VoidCallba
                             _pickImage(context, ImageSource.camera);
                           },
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.photo),
-                          onPressed: () {
-                            _pickImage(context, ImageSource.gallery);
-                          },
-                        ),
+                        // IconButton(
+                        //   icon: const Icon(Icons.photo),
+                        //   onPressed: () {
+                        //     _pickImage(context, ImageSource.gallery);
+                        //   },
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 30.0),

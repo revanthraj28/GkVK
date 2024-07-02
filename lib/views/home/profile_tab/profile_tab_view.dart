@@ -1,8 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:gkvk/views/login/animationpages/FirstPage.dart';
+// import 'package:gkvk/views/login/animationpages/FirstPage.dart';
 import 'package:gkvk/controllers/tab_index_controller.dart';
 import 'package:get/get.dart';
+import 'package:gkvk/views/login/animationpages/ThirdPage.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -20,7 +21,7 @@ class _ProfilePageState extends State<ProfilePage> {
     navController.selectedBodyIndex = 0; // Reset tab index to 0
     Navigator.of(context).pushReplacement(
       MaterialPageRoute(
-        builder: (context) => const FirstPage(),
+        builder: (context) => const ThirdPage(),
       ),
     );
   }

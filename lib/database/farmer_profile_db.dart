@@ -48,7 +48,7 @@ class FarmerProfileDB {
     required String salesOfProduce,
     required String lriReceived,
     required int watershedId,
-    String? image, // Add image parameter here
+    required String image, // Add image parameter here
   }) async {
     final database = await DatabaseService().database;
     return await database.insert(tableName, {
@@ -109,7 +109,7 @@ class FarmerProfileDB {
     required String salesOfProduce,
     required String lriReceived,
     required int watershedId,
-    String? image, // Add image parameter here
+    required String? image, // Add image parameter here
   }) async {
     final database = await DatabaseService().database;
     return await database.update(

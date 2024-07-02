@@ -1,4 +1,47 @@
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart'
+    show
+        BorderRadius,
+        BoxDecoration,
+        BoxFit,
+        BoxShadow,
+        BuildContext,
+        Center,
+        CircularProgressIndicator,
+        Color,
+        Colors,
+        Column,
+        ConnectionState,
+        Container,
+        CrossAxisAlignment,
+        EdgeInsets,
+        Expanded,
+        FontWeight,
+        FutureBuilder,
+        Icon,
+        IconButton,
+        Icons,
+        Image,
+        ListTile,
+        ListView,
+        MainAxisAlignment,
+        MainAxisSize,
+        MaterialApp,
+        MediaQuery,
+        Offset,
+        Padding,
+        Positioned,
+        Scaffold,
+        ScaffoldMessenger,
+        SizedBox,
+        SnackBar,
+        Stack,
+        State,
+        StatefulWidget,
+        StatelessWidget,
+        Text,
+        TextStyle,
+        Widget,
+        runApp;
 import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/database/gkvk_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
@@ -8,9 +51,13 @@ import 'package:gkvk/database/survey_page3_db.dart';
 import 'package:gkvk/database/survey_page4_db.dart';
 import 'package:gkvk/database/cropdetails_db.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
-import 'package:path_provider/path_provider.dart';
 import 'dart:io';
+import 'dart:async'; // Required for File operations
+import 'package:firebase_storage/firebase_storage.dart'; // Required for Firebase Storage
+import 'package:flutter/animation.dart' show AlwaysStoppedAnimation;
+import 'package:flutter/material.dart';
+
+
 
 void main() {
   runApp(const MaterialApp(
@@ -27,6 +74,7 @@ class ListTabView extends StatefulWidget {
 
 class _ListTabViewState extends State<ListTabView> {
   late Future<List<Map<String, dynamic>>> _farmersFuture;
+  bool _isUploading = false; // Loading flag
 
   @override
   void initState() {
@@ -34,41 +82,11 @@ class _ListTabViewState extends State<ListTabView> {
     _farmersFuture = fetchAllFarmers();
   }
 
+
+
   Future<List<Map<String, dynamic>>> fetchAllFarmers() async {
     return await FarmerProfileDB().readAll();
   }
-
-  Future<void> storeImageLocally(String? imageUrl, String localPath) async {
-    if (imageUrl == null || imageUrl.isEmpty) return;
-
-    final response = await HttpClient().getUrl(Uri.parse(imageUrl));
-    final bytes = await response.close().then((res) => res.fold<List<int>>([], (b, d) => b..addAll(d)));
-    final file = File(localPath);
-    await file.writeAsBytes(bytes);
-  }
-
-  Future<String> uploadImageToFirebase(File imageFile, String aadharNumber) async {
-  try {
-    if (!imageFile.existsSync()) {
-      throw Exception('File does not exist');
-    }
-    final storageReference = FirebaseStorage.instance.ref().child('farmer_images').child('$aadharNumber.jpg');
-    final uploadTask = storageReference.putFile(imageFile);
-
-    // Listen for state changes, errors, and completion of the upload.
-    final TaskSnapshot taskSnapshot = await uploadTask.whenComplete(() => null);
-
-    // Retrieve the download URL from the snapshot after the upload completes.
-    final downloadUrl = await taskSnapshot.ref.getDownloadURL();
-    return downloadUrl;
-  } catch (e) {
-    print('Error uploading image: $e'); // Print the error for debugging.
-    throw Exception('Image upload failed: $e');
-  }
-}
-
-
-
 
   Future<void> uploadFarmerData(int aadharNumber) async {
     final farmerProfileDB = FarmerProfileDB();
@@ -83,17 +101,10 @@ class _ListTabViewState extends State<ListTabView> {
       final farmerData = await farmerProfileDB.read(aadharNumber);
       if (farmerData == null) throw Exception('Farmer data not found');
 
-      final imageUrl = farmerData['imageUrl'];
-      final directory = await getApplicationDocumentsDirectory();
-      final localPath = '${directory.path}/$aadharNumber.jpg';
-      await storeImageLocally(imageUrl, localPath);
+      // Create a mutable copy of farmerData
+      final mutableFarmerData = Map<String, dynamic>.from(farmerData);
 
-      // Upload the image to Firebase Storage
-      final localImageFile = File(localPath);
-      final uploadedImageUrl = await uploadImageToFirebase(localImageFile, aadharNumber.toString());
-
-      // Update farmerData with the new image URL
-      farmerData['imageUrl'] = uploadedImageUrl;
+      print('Farmer Data: $mutableFarmerData');
 
       final surveyData1 = await surveyDataDB1.read(aadharNumber);
       final surveyData2 = await surveyDataDB2.read(aadharNumber);
@@ -110,7 +121,27 @@ class _ListTabViewState extends State<ListTabView> {
 
       final farmerRef = firestore.collection('farmers').doc(aadharNumber.toString());
 
-      batch.set(farmerRef, farmerData);
+      // Upload image to Firebase Storage
+      final imagePath = farmerData['image'];
+      if (imagePath != null && imagePath.isNotEmpty) {
+        final file = File(imagePath);
+        if (file.existsSync()) {
+          final storageRef = FirebaseStorage.instance.ref().child('farmer_images/$aadharNumber.jpg');
+          final uploadTask = storageRef.putFile(file);
+          final snapshot = await uploadTask.whenComplete(() => null);
+          final downloadUrl = await snapshot.ref.getDownloadURL();
+          print('Image URL: $downloadUrl');
+
+          // Update mutableFarmerData with imageUrl
+          mutableFarmerData['imageUrl'] = downloadUrl;
+        } else {
+          print('Error: Image file does not exist at path: $imagePath');
+        }
+      }
+
+      print('Updated Farmer Data: $mutableFarmerData');
+
+      batch.set(farmerRef, mutableFarmerData);
 
       if (surveyData1 != null) {
         final survey1Ref = farmerRef.collection('surveyData1').doc('survey1');
@@ -151,14 +182,17 @@ class _ListTabViewState extends State<ListTabView> {
       setState(() {
         _farmersFuture = fetchAllFarmers();
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Upload successful')));
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
+      print('Error: $e');
+      rethrow;
     }
   }
 
   Future<void> uploadAllData() async {
+    setState(() {
+      _isUploading = true; // Start loading
+    });
+
     final farmers = await _farmersFuture;
     for (var farmer in farmers) {
       await uploadFarmerData(farmer['aadharNumber']);
@@ -171,10 +205,8 @@ class _ListTabViewState extends State<ListTabView> {
     }
 
     setState(() {
-      _farmersFuture = fetchAllFarmers();
+      _isUploading = false; // Stop loading
     });
-
-    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('All data uploaded successfully')));
   }
 
   @override
@@ -204,56 +236,80 @@ class _ListTabViewState extends State<ListTabView> {
                     if (farmers.isEmpty) {
                       return _buildEmptyListContainer();
                     } else {
-                      return Container(
-                        height: MediaQuery.of(context).size.height / 2,
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFFEF8E0),
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withOpacity(0.2),
-                              spreadRadius: 2,
-                              blurRadius: 5,
-                              offset: const Offset(0, 3),
+                      return Stack(
+                        children: [
+                          Container(
+                            height: MediaQuery.of(context).size.height / 2,
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFFEF8E0),
+                              borderRadius: BorderRadius.circular(10),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withOpacity(0.2),
+                                  spreadRadius: 2,
+                                  blurRadius: 5,
+                                  offset: const Offset(0, 3),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                        padding: const EdgeInsets.all(20.0),
-                        child: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
-                          children: [
-                            Expanded(
-                              child: ListView.builder(
-                                itemCount: farmers.length,
-                                itemBuilder: (context, index) {
-                                  final farmer = farmers[index];
-                                  return Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 4.0),
-                                    child: Container(
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        borderRadius: BorderRadius.circular(5.0),
-                                      ),
-                                      child: UploadStatusTile(
-                                        aadharNumber: farmer['aadharNumber'],
-                                        uploadFunction: uploadFarmerData,
-                                      ),
-                                    ),
-                                  );
-                                },
+                            padding: const EdgeInsets.all(20.0),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                Expanded(
+                                  child: ListView.builder(
+                                    itemCount: farmers.length,
+                                    itemBuilder: (context, index) {
+                                      final farmer = farmers[index];
+                                      return Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            vertical: 4.0),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                            color: Colors.white,
+                                            borderRadius:
+                                                BorderRadius.circular(8),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                color: Colors.black
+                                                    .withOpacity(0.1),
+                                                spreadRadius: 2,
+                                                blurRadius: 5,
+                                                offset: const Offset(0, 2),
+                                              ),
+                                            ],
+                                          ),
+                                          child: UploadStatusTile(
+                                            aadharNumber: farmer['aadharNumber'],
+                                            uploadFunction: uploadFarmerData,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                CustomTextButton(
+                                  text: 'Upload All',
+                                  buttonColor: const Color(0xFFFB812C),
+                                  onPressed: () async {
+                                    await uploadAllData();
+                                  },
+                                ),
+                              ],
+                            ),
+                          ),
+                          if (_isUploading)
+                            Positioned.fill(
+                              child: Container(
+                                color: Colors.black54,
+                                child: const Center(
+                                  child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation<Color>(const Color(0xFFFB812C)),),
+                                ),
                               ),
                             ),
-                            const SizedBox(height: 20),
-                            CustomTextButton(
-                              text: 'UPLOAD ALL',
-                              buttonColor: const Color(0xFFFB812C),
-                              onPressed: () async {
-                                await uploadAllData();
-                              },
-                            ),
-                          ],
-                        ),
+                        ],
                       );
                     }
                   }
@@ -306,33 +362,59 @@ class _ListTabViewState extends State<ListTabView> {
   }
 }
 
-class UploadStatusTile extends StatelessWidget {
+class UploadStatusTile extends StatefulWidget {
   final int aadharNumber;
-  final Function(int) uploadFunction;
+  final Future<void> Function(int) uploadFunction;
 
   const UploadStatusTile({
-    super.key,
+    Key? key,
     required this.aadharNumber,
     required this.uploadFunction,
-  });
+  }) : super(key: key);
+
+  @override
+  _UploadStatusTileState createState() => _UploadStatusTileState();
+}
+
+class _UploadStatusTileState extends State<UploadStatusTile> {
+  bool _isLoading = false;
+
+  void _startUpload() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      await widget.uploadFunction(widget.aadharNumber);
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Upload successful')));
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text('Upload failed: $e')));
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
-      title: Text('Farmer Id: $aadharNumber'),
+      title: Text('Farmer Id: ${widget.aadharNumber}'),
       subtitle: const Text('Upload pending'),
-      trailing: IconButton(
-        icon: const Icon(Icons.cloud_upload, color: Color(0xFFFB812C)),
-        onPressed: () async {
-          try {
-            await uploadFunction(aadharNumber);
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Upload successful')));
-          } catch (e) {
-            ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Upload failed: $e')));
-          }
-        },
-      ),
+      trailing: _isLoading
+          ? const Center(
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFB812C)),
+              ),
+            )
+          : IconButton(
+              icon: const Icon(Icons.cloud_upload, color: Color(0xFFFB812C)),
+              onPressed: _startUpload,
+            ),
     );
   }
 }
+

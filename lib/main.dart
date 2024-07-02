@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 
 // ignore: unused_import
 import 'package:gkvk/views/login/Login.dart';
@@ -14,7 +15,9 @@ Future<void> main() async {
   await Permission.camera.request();
   await Permission.photos.request();
   await Firebase.initializeApp();
+   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
   await GetStorage.init();
+  
   runApp(MyApp());
 }
 
