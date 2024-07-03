@@ -1,63 +1,17 @@
-import 'package:flutter/material.dart'
-    show
-        BorderRadius,
-        BoxDecoration,
-        BoxFit,
-        BoxShadow,
-        BuildContext,
-        Center,
-        CircularProgressIndicator,
-        Color,
-        Colors,
-        Column,
-        ConnectionState,
-        Container,
-        CrossAxisAlignment,
-        EdgeInsets,
-        Expanded,
-        FontWeight,
-        FutureBuilder,
-        Icon,
-        IconButton,
-        Icons,
-        Image,
-        ListTile,
-        ListView,
-        MainAxisAlignment,
-        MainAxisSize,
-        MaterialApp,
-        MediaQuery,
-        Offset,
-        Padding,
-        Positioned,
-        Scaffold,
-        ScaffoldMessenger,
-        SizedBox,
-        SnackBar,
-        Stack,
-        State,
-        StatefulWidget,
-        StatelessWidget,
-        Text,
-        TextStyle,
-        Widget,
-        runApp;
+import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
-import 'package:gkvk/database/gkvk_db.dart';
-import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/database/survey_page1_db.dart';
 import 'package:gkvk/database/survey_page2_db.dart';
 import 'package:gkvk/database/survey_page3_db.dart';
 import 'package:gkvk/database/survey_page4_db.dart';
 import 'package:gkvk/database/cropdetails_db.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:io';
-import 'dart:async'; // Required for File operations
-import 'package:firebase_storage/firebase_storage.dart'; // Required for Firebase Storage
-import 'package:flutter/animation.dart' show AlwaysStoppedAnimation;
-import 'package:flutter/material.dart';
-
-
+// import 'package:gkvk/database/watershed_db.dart';
+import 'package:gkvk/database/gkvk_db.dart';
+import 'package:gkvk/shared/components/CustomTextButton.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -82,111 +36,121 @@ class _ListTabViewState extends State<ListTabView> {
     _farmersFuture = fetchAllFarmers();
   }
 
-
-
   Future<List<Map<String, dynamic>>> fetchAllFarmers() async {
     return await FarmerProfileDB().readAll();
   }
 
-  Future<void> uploadFarmerData(int aadharNumber) async {
-    final farmerProfileDB = FarmerProfileDB();
-    final surveyDataDB1 = SurveyDataDB1();
-    final surveyDataDB2 = SurveyDataDB2();
-    final surveyDataDB3 = SurveyDataDB3();
-    final surveyDataDB4 = SurveyDataDB4();
-    final cropdetailsDB = CropdetailsDB();
-    final waterShedDB = WaterShedDB();
+ Future<void> uploadFarmerData(int aadharNumber) async {
+  final farmerProfileDB = FarmerProfileDB();
+  final surveyDataDB1 = SurveyDataDB1();
+  final surveyDataDB2 = SurveyDataDB2();
+  final surveyDataDB3 = SurveyDataDB3();
+  final surveyDataDB4 = SurveyDataDB4();
+  final cropdetailsDB = CropdetailsDB();
+  final waterShedDB = WaterShedDB();
 
-    try {
-      final farmerData = await farmerProfileDB.read(aadharNumber);
-      if (farmerData == null) throw Exception('Farmer data not found');
+  try {
+    final farmerData = await farmerProfileDB.read(aadharNumber);
+    if (farmerData == null) throw Exception('Farmer data not found');
 
-      // Create a mutable copy of farmerData
-      final mutableFarmerData = Map<String, dynamic>.from(farmerData);
+    // Create a mutable copy of farmerData
+    final mutableFarmerData = Map<String, dynamic>.from(farmerData);
 
-      print('Farmer Data: $mutableFarmerData');
+    print('Farmer Data: $mutableFarmerData');
 
-      final surveyData1 = await surveyDataDB1.read(aadharNumber);
-      final surveyData2 = await surveyDataDB2.read(aadharNumber);
-      final surveyData3 = await surveyDataDB3.read(aadharNumber);
-      final surveyData4 = await surveyDataDB4.read(aadharNumber);
-      final cropDetailsData = await cropdetailsDB.readByAadharId(aadharNumber);
+    final surveyData1 = await surveyDataDB1.read(aadharNumber);
+    final surveyData2 = await surveyDataDB2.read(aadharNumber);
+    final surveyData3 = await surveyDataDB3.read(aadharNumber);
+    final surveyData4 = await surveyDataDB4.read(aadharNumber);
+    final cropDetailsData = await cropdetailsDB.readByAadharId(aadharNumber);
 
-      final watershedId = farmerData['watershedId'];
-      final watershedData = await waterShedDB.read(watershedId);
-      if (watershedData == null) throw Exception('Watershed data not found');
+    final watershedId = farmerData['watershedId'];
+    final watershedData = await waterShedDB.read(watershedId);
+    if (watershedData == null) throw Exception('Watershed data not found');
 
-      final firestore = FirebaseFirestore.instance;
-      final batch = firestore.batch();
+    final firestore = FirebaseFirestore.instance;
+    final batch = firestore.batch();
 
-      final farmerRef = firestore.collection('farmers').doc(aadharNumber.toString());
+    final farmerRef = firestore.collection('farmers').doc(aadharNumber.toString());
 
-      // Upload image to Firebase Storage
-      final imagePath = farmerData['image'];
-      if (imagePath != null && imagePath.isNotEmpty) {
-        final file = File(imagePath);
-        if (file.existsSync()) {
-          final storageRef = FirebaseStorage.instance.ref().child('farmer_images/$aadharNumber.jpg');
-          final uploadTask = storageRef.putFile(file);
-          final snapshot = await uploadTask.whenComplete(() => null);
-          final downloadUrl = await snapshot.ref.getDownloadURL();
-          print('Image URL: $downloadUrl');
+    // Upload image to Firebase Storage
+    final imagePath = farmerData['image'];
+    if (imagePath != null && imagePath.isNotEmpty) {
+      final file = File(imagePath);
+      if (file.existsSync()) {
+        final storageRef = FirebaseStorage.instance.ref().child('farmer_images/$aadharNumber.jpg');
+        final uploadTask = storageRef.putFile(file);
+        final snapshot = await uploadTask.whenComplete(() => null);
+        final downloadUrl = await snapshot.ref.getDownloadURL();
+        print('Image URL: $downloadUrl');
 
-          // Update mutableFarmerData with imageUrl
-          mutableFarmerData['imageUrl'] = downloadUrl;
-        } else {
-          print('Error: Image file does not exist at path: $imagePath');
-        }
+        // Update mutableFarmerData with imageUrl
+        mutableFarmerData['imageUrl'] = downloadUrl;
+      } else {
+        print('Error: Image file does not exist at path: $imagePath');
       }
-
-      print('Updated Farmer Data: $mutableFarmerData');
-
-      batch.set(farmerRef, mutableFarmerData);
-
-      if (surveyData1 != null) {
-        final survey1Ref = farmerRef.collection('surveyData1').doc('survey1');
-        batch.set(survey1Ref, surveyData1);
-      }
-      if (surveyData2 != null) {
-        final survey2Ref = farmerRef.collection('surveyData2').doc('survey2');
-        batch.set(survey2Ref, surveyData2);
-      }
-      if (surveyData3 != null) {
-        final survey3Ref = farmerRef.collection('surveyData3').doc('survey3');
-        batch.set(survey3Ref, surveyData3);
-      }
-      if (surveyData4 != null) {
-        final survey4Ref = farmerRef.collection('surveyData4').doc('survey4');
-        batch.set(survey4Ref, surveyData4);
-      }
-      if (cropDetailsData.isNotEmpty) {
-        final cropDetailsRef = farmerRef.collection('cropDetails');
-        for (var crop in cropDetailsData) {
-          final cropRef = cropDetailsRef.doc();
-          batch.set(cropRef, crop);
-        }
-      }
-
-      final watershedRef = farmerRef.collection('watershed').doc('watershed');
-      batch.set(watershedRef, watershedData);
-
-      await batch.commit();
-
-      await farmerProfileDB.delete(aadharNumber);
-      if (surveyData1 != null) await surveyDataDB1.delete(aadharNumber);
-      if (surveyData2 != null) await surveyDataDB2.delete(aadharNumber);
-      if (surveyData3 != null) await surveyDataDB3.delete(aadharNumber);
-      if (surveyData4 != null) await surveyDataDB4.delete(aadharNumber);
-      if (cropDetailsData.isNotEmpty) await cropdetailsDB.delete(aadharNumber);
-
-      setState(() {
-        _farmersFuture = fetchAllFarmers();
-      });
-    } catch (e) {
-      print('Error: $e');
-      rethrow;
     }
+
+    print('Updated Farmer Data: $mutableFarmerData');
+
+    batch.set(farmerRef, mutableFarmerData);
+
+    if (surveyData1 != null) {
+      final survey1Ref = farmerRef.collection('surveyData1').doc('survey1');
+      batch.set(survey1Ref, surveyData1);
+    }
+    if (surveyData2 != null) {
+      final survey2Ref = farmerRef.collection('surveyData2').doc('survey2');
+      batch.set(survey2Ref, surveyData2);
+    }
+    if (surveyData3 != null) {
+      final survey3Ref = farmerRef.collection('surveyData3').doc('survey3');
+      batch.set(survey3Ref, surveyData3);
+    }
+    if (surveyData4 != null) {
+      final survey4Ref = farmerRef.collection('surveyData4').doc('survey4');
+      batch.set(survey4Ref, surveyData4);
+    }
+    if (cropDetailsData.isNotEmpty) {
+      final cropDetailsRef = farmerRef.collection('cropDetails');
+      for (var crop in cropDetailsData) {
+        final cropRef = cropDetailsRef.doc();
+        batch.set(cropRef, crop);
+      }
+    }
+
+    final watershedRef = farmerRef.collection('watershed').doc('watershed');
+    batch.set(watershedRef, watershedData);
+
+    // Update farmerCount for the current user
+    // Update farmerCount for the current user
+final currentUser = FirebaseAuth.instance.currentUser;
+if (currentUser != null) {
+  final userRef = firestore.collection('users').doc(currentUser.uid);
+  batch.update(userRef, {
+    'farmerCount': FieldValue.increment(1),
+    'aadharNumber': aadharNumber.toString(), // Add Aadhar card number here
+  });
+}
+
+    await batch.commit();
+
+    await farmerProfileDB.delete(aadharNumber);
+    if (surveyData1 != null) await surveyDataDB1.delete(aadharNumber);
+    if (surveyData2 != null) await surveyDataDB2.delete(aadharNumber);
+    if (surveyData3 != null) await surveyDataDB3.delete(aadharNumber);
+    if (surveyData4 != null) await surveyDataDB4.delete(aadharNumber);
+    if (cropDetailsData.isNotEmpty) await cropdetailsDB.delete(aadharNumber);
+
+    setState(() {
+      _farmersFuture = fetchAllFarmers();
+    });
+  } catch (e) {
+    print('Error: $e');
+    rethrow;
   }
+}
+
 
   Future<void> uploadAllData() async {
     setState(() {
@@ -305,7 +269,7 @@ class _ListTabViewState extends State<ListTabView> {
                               child: Container(
                                 color: Colors.black54,
                                 child: const Center(
-                                  child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation<Color>(const Color(0xFFFB812C)),),
+                                  child: CircularProgressIndicator( valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFB812C)),),
                                 ),
                               ),
                             ),
@@ -367,10 +331,10 @@ class UploadStatusTile extends StatefulWidget {
   final Future<void> Function(int) uploadFunction;
 
   const UploadStatusTile({
-    Key? key,
+    super.key,
     required this.aadharNumber,
     required this.uploadFunction,
-  }) : super(key: key);
+  });
 
   @override
   _UploadStatusTileState createState() => _UploadStatusTileState();
@@ -404,17 +368,12 @@ class _UploadStatusTileState extends State<UploadStatusTile> {
       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
       title: Text('Farmer Id: ${widget.aadharNumber}'),
       subtitle: const Text('Upload pending'),
-      trailing: _isLoading
-          ? const Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFB812C)),
-              ),
-            )
-          : IconButton(
-              icon: const Icon(Icons.cloud_upload, color: Color(0xFFFB812C)),
-              onPressed: _startUpload,
-            ),
+          // ? const Center(
+          //     child: CircularProgressIndicator(
+          //       valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFB812C)),
+          //     ),
+          //   )
+          
     );
   }
 }
-

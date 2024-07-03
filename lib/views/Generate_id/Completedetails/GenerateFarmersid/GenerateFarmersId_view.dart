@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomAlertDialog.dart';
@@ -24,6 +23,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
   final TextEditingController _fertilizerAddressController =
       TextEditingController();
   final TextEditingController _farmerlandController = TextEditingController();
+  final TextEditingController phonenumbercontroller = TextEditingController();
   final Rxn<File> _selectedImage = Rxn<File>();
   final RxString _selectedGender = ''.obs;
   final RxString _selectedCategory = ''.obs;
@@ -54,6 +54,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
           category: _selectedCategory.value,
           landHolding: _selectedLandHolding.value,
           aadharNumber: int.parse(_aadharController.text),
+          phonenumber: int.parse(phonenumbercontroller.text),
           fruitsId: _fruitsIdController.text,
           totalland: int.parse(_farmerlandController.text),
           fertilizerSource: _selectedFertilizerSource.value,
@@ -74,6 +75,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
           category: _selectedCategory.value,
           landHolding: _selectedLandHolding.value,
           aadharNumber: int.parse(_aadharController.text),
+          phonenumber: int.parse(phonenumbercontroller.text),
           fruitsId: _fruitsIdController.text,
           totalland: int.parse(_farmerlandController.text),
           fertilizerSource: _selectedFertilizerSource.value,
@@ -265,6 +267,9 @@ class GenerateFarmersIdPage extends StatelessWidget {
     }
     if (_aadharController.text.length != 12) {
       emptyFields.add('Aadhar Number should be 12 digits only');
+    }
+    if (phonenumbercontroller.text.length != 12) {
+      emptyFields.add('phone Number should be 10 digits only');
     }
     if (_schoolingController.text.isEmpty) {
       emptyFields.add("Schooling Years's");
@@ -527,6 +532,21 @@ class GenerateFarmersIdPage extends StatelessWidget {
                           ),
                         ),
                       ],
+                    ),
+                    const SizedBox(height: 20.0),
+                    CustomTextFormField(
+                      labelText: "Farmers PhoneNumber",
+                      controller: phonenumbercontroller,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return "Please provide details";
+                              }
+                              if (value.length != 10) {
+                                return "6 digits only";
+                              }
+                              return null;
+                            },
                     ),
                     const SizedBox(height: 10.0),
                     Obx(() => SelectionButton(
