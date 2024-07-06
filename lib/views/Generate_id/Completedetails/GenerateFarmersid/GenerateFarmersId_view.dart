@@ -136,22 +136,23 @@ class GenerateFarmersIdPage extends StatelessWidget {
         _selectedImage.value = File(pickedFile.path);
       } else {
         showDialog(
-        context: context,
-        builder: (context) => CustomAlertDialog(
-          title: 'Error',
-          content: "No image selected.",
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      );
+          context: context,
+          builder: (context) => CustomAlertDialog(
+            title: 'Error',
+            content: "No image selected.",
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        );
       }
     } else if (status.isPermanentlyDenied) {
       showDialog(
         context: context,
         builder: (context) => CustomAlertDialog(
           title: 'Permission Required',
-          content: "You have permanently denied the camera permission. Please enable it in the app settings.",
+          content:
+              "You have permanently denied the camera permission. Please enable it in the app settings.",
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -186,23 +187,24 @@ class GenerateFarmersIdPage extends StatelessWidget {
       if (pickedFile != null) {
         _selectedImage.value = File(pickedFile.path);
       } else {
-         showDialog(
-        context: context,
-        builder: (context) => CustomAlertDialog(
-          title: 'Error',
-          content: "No image selected.",
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-        ),
-      );
+        showDialog(
+          context: context,
+          builder: (context) => CustomAlertDialog(
+            title: 'Error',
+            content: "No image selected.",
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        );
       }
     } else if (status.isPermanentlyDenied) {
       showDialog(
         context: context,
         builder: (context) => CustomAlertDialog(
           title: 'Permission Required',
-          content: "You have permanently denied the storage permission. Please enable it in the app settings.",
+          content:
+              "You have permanently denied the storage permission. Please enable it in the app settings.",
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -268,6 +270,9 @@ class GenerateFarmersIdPage extends StatelessWidget {
     if (_aadharController.text.length != 12) {
       emptyFields.add('Aadhar Number should be 12 digits only');
     }
+     if (phonenumbercontroller.text.isEmpty) {
+      emptyFields.add('Phone Number');
+    }
     if (phonenumbercontroller.text.length != 12) {
       emptyFields.add('phone Number should be 10 digits only');
     }
@@ -296,7 +301,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
       emptyFields.add('Add Image');
     }
     // Check if any field is empty, if yes, show alert and return false
-    if (emptyFields.isNotEmpty ) {
+    if (emptyFields.isNotEmpty) {
       _showEmptyFieldsAlert(context, emptyFields);
       // print('Empty fields: $emptyFields');
       return false;
@@ -535,18 +540,18 @@ class GenerateFarmersIdPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
-                      labelText: "Farmers PhoneNumber",
+                      labelText: "Phone Number",
                       controller: phonenumbercontroller,
                       keyboardType: TextInputType.number,
                       validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please provide details";
-                              }
-                              if (value.length != 10) {
-                                return "6 digits only";
-                              }
-                              return null;
-                            },
+                        if (value == null || value.isEmpty) {
+                          return "Please provide details";
+                        }
+                        if (value.length != 10) {
+                          return "10 digits only";
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 10.0),
                     Obx(() => SelectionButton(
@@ -651,10 +656,6 @@ class GenerateFarmersIdPage extends StatelessWidget {
                   bool isFormValid = _validateform();
                   bool areControllersValid =
                       _validateFarmerControllers(context);
-
-                  // print(
-                  //     'Form valid: $isFormValid, Controllers valid: $areControllersValid');
-
                   if (isFormValid && areControllersValid) {
                     try {
                       _uploadData(context);
