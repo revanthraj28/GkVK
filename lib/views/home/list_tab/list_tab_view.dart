@@ -244,10 +244,10 @@ if (currentUser != null) {
                                               ),
                                             ],
                                           ),
-                                          child: UploadStatusTile(
-                                            aadharNumber: farmer['aadharNumber'],
-                                            uploadFunction: uploadFarmerData,
-                                          ),
+                                          // child: UploadStatusTile(
+                                          //   aadharNumber: farmer['aadharNumber'],
+                                          //   uploadFunction: uploadFarmerData,
+                                          // ),
                                         ),
                                       );
                                     },
