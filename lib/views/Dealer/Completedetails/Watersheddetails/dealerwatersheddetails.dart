@@ -456,7 +456,7 @@ class DealerWatershedView extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please provide details';
+                          return 'Please provide Sub-Watershed details';
                         }
                         return null;
                       },
@@ -468,7 +468,7 @@ class DealerWatershedView extends StatelessWidget {
                       keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please provide details';
+                          return 'Please provide Sub-Watershed details';
                         }
                         return null;
                       },
