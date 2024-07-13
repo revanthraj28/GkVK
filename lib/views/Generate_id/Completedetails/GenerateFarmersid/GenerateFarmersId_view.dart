@@ -20,8 +20,8 @@ class GenerateFarmersIdPage extends StatelessWidget {
   final TextEditingController _schoolingController = TextEditingController();
   final TextEditingController _aadharController = TextEditingController();
   final TextEditingController _fruitsIdController = TextEditingController();
-  final TextEditingController _fertilizerAddressController =
-      TextEditingController();
+  final TextEditingController _phoneNumber = TextEditingController();
+  final TextEditingController _fertilizerAddressController = TextEditingController();
   final TextEditingController _farmerlandController = TextEditingController();
   final TextEditingController phonenumbercontroller = TextEditingController();
   final Rxn<File> _selectedImage = Rxn<File>();
@@ -543,6 +543,21 @@ class GenerateFarmersIdPage extends StatelessWidget {
                       labelText: "Phone Number",
                       controller: phonenumbercontroller,
                       keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please provide details";
+                        }
+                        if (value.length != 10) {
+                          return "10 digits only";
+                        }
+                        return null;
+                      },
+                    ),
+
+                    CustomTextFormField(
+                      labelText: "Phone Number",
+                      controller: _phoneNumber,
+                      keyboardType: TextInputType.text,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Please provide details";

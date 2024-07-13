@@ -17,7 +17,6 @@ class WatershedView extends StatelessWidget {
   final TextEditingController _subWatershedCodeController =
       TextEditingController();
   final TextEditingController _villageController = TextEditingController();
-
   final RxString _selectedCategory = ''.obs;
   final _formKey = GlobalKey<FormState>();
 
