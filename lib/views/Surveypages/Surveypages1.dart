@@ -2,10 +2,11 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
-import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages2.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/database/survey_page1_db.dart';
 import 'package:gkvk/shared/components/Question/question_container.dart';
+
+import 'Surveypages2.dart';
 
 class SurveyPage1 extends StatefulWidget {
   final int aadharId;

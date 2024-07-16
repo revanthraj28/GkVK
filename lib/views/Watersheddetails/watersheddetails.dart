@@ -8,7 +8,12 @@ import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/views/Generate_id/Completedetails/GenerateFarmersid/GenerateFarmersId_view.dart';
 
+import '../Category2/GenereateID2.dart';
+
 class WatershedView extends StatelessWidget {
+  final int Category;
+
+
   final TextEditingController _districtController = TextEditingController();
   final TextEditingController _talukController = TextEditingController();
   final TextEditingController _hobliController = TextEditingController();
@@ -20,7 +25,7 @@ class WatershedView extends StatelessWidget {
   final RxString _selectedCategory = ''.obs;
   final _formKey = GlobalKey<FormState>();
 
-  WatershedView({super.key});
+  WatershedView({required this.Category,super.key});
 
   Future<void> _uploadData(BuildContext context) async {
     final WaterShedDB db = WaterShedDB();
@@ -36,12 +41,22 @@ class WatershedView extends StatelessWidget {
         selectedCategory: _selectedCategory.value,
       );
 
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => GenerateFarmersIdPage(waterShedId: id),
-        ),
-      );
+      if (Category == 1) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GenerateFarmersIdPage(waterShedId: id),
+          ),
+        );
+      } else if (Category == 2) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => GenerateDealersIdPage(waterShedId: id),
+          ),
+        );
+        // Handle other cases or navigate elsewhere if needed
+      }
     } catch (e) {
       showDialog(
         context: context,
@@ -137,13 +152,22 @@ class WatershedView extends StatelessWidget {
                         ),
                         onPressed: () {
                           Navigator.of(context).pop();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) =>
-                                  GenerateFarmersIdPage(waterShedId: latestId),
-                            ),
-                          );
+                          if (Category == 1) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GenerateFarmersIdPage(waterShedId: latestId),
+                              ),
+                            );
+                          } else if (Category == 2) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => GenerateDealersIdPage(waterShedId: latestId),
+                              ),
+                            );
+                            // Handle other cases or navigate elsewhere if needed
+                          }
                         },
                       ),
                       TextButton(

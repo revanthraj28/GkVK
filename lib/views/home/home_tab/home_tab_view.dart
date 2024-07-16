@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import 'package:gkvk/views/Generate_id/Completedetails/Watersheddetails/watersheddetails.dart';
+import '../../Watersheddetails/watersheddetails.dart';
 
 class HomeTabView extends StatelessWidget {
   const HomeTabView({super.key});
@@ -93,7 +93,7 @@ class HomeTabView extends StatelessWidget {
                                   Expanded(child: _buildMenuBox('Create', 'Farmer Profile', Icons.person_add, Colors.black, () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => WatershedView()),
+                                      MaterialPageRoute(builder: (context) => WatershedView(Category: 1,)),
                                     );
                                   })),
                                   const SizedBox(width: 10),
@@ -106,8 +106,11 @@ class HomeTabView extends StatelessWidget {
                               Row(
                                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Expanded(child: _buildMenuBox('Add', 'Farmer Land', Icons.landscape, Colors.black, () {
-                                    // Handle Add Farmer Land tap
+                                  Expanded(child: _buildMenuBox('Create', 'Dealer Profile', Icons.person_add, Colors.black, () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) => WatershedView(Category: 2,)),
+                                    );
                                   })),
                                   const SizedBox(width: 10),
                                   Expanded(child: _buildMenuBox('Enter', 'Crop Details', Icons.grain, Colors.black, () {

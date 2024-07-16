@@ -3,7 +3,8 @@ import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/views/Generate_id/detailsofCrops/Cropdetails/Cropdetails.dart';
-import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages1.dart';
+
+import '../../Surveypages/Surveypages1.dart';
 
 class FarmerAreaPage extends StatefulWidget {
   final int aadharId;

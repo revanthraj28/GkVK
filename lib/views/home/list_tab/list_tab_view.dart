@@ -326,54 +326,54 @@ if (currentUser != null) {
   }
 }
 
-class UploadStatusTile extends StatefulWidget {
-  final int aadharNumber;
-  final Future<void> Function(int) uploadFunction;
-
-  const UploadStatusTile({
-    super.key,
-    required this.aadharNumber,
-    required this.uploadFunction,
-  });
-
-  @override
-  _UploadStatusTileState createState() => _UploadStatusTileState();
-}
-
-class _UploadStatusTileState extends State<UploadStatusTile> {
-  bool _isLoading = false;
-
-  void _startUpload() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    try {
-      await widget.uploadFunction(widget.aadharNumber);
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Upload successful')));
-    } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Upload failed: $e')));
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
-      title: Text('Farmer Id: ${widget.aadharNumber}'),
-      subtitle: const Text('Upload pending'),
-          // ? const Center(
-          //     child: CircularProgressIndicator(
-          //       valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFB812C)),
-          //     ),
-          //   )
-          
-    );
-  }
-}
+// class UploadStatusTile extends StatefulWidget {
+//   final int aadharNumber;
+//   final Future<void> Function(int) uploadFunction;
+//
+//   const UploadStatusTile({
+//     super.key,
+//     required this.aadharNumber,
+//     required this.uploadFunction,
+//   });
+//
+//   @override
+//   _UploadStatusTileState createState() => _UploadStatusTileState();
+// }
+//
+// class _UploadStatusTileState extends State<UploadStatusTile> {
+//   bool _isLoading = false;
+//
+//   void _startUpload() async {
+//     setState(() {
+//       _isLoading = true;
+//     });
+//
+//     try {
+//       await widget.uploadFunction(widget.aadharNumber);
+//       ScaffoldMessenger.of(context).showSnackBar(
+//           const SnackBar(content: Text('Upload successful')));
+//     } catch (e) {
+//       ScaffoldMessenger.of(context)
+//           .showSnackBar(SnackBar(content: Text('Upload failed: $e')));
+//     } finally {
+//       setState(() {
+//         _isLoading = false;
+//       });
+//     }
+//   }
+//
+//   @override
+//   Widget build(BuildContext context) {
+//     return ListTile(
+//       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
+//       title: Text('Farmer Id: ${widget.aadharNumber}'),
+//       subtitle: const Text('Upload pending'),
+//           // ? const Center(
+//           //     child: CircularProgressIndicator(
+//           //       valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFB812C)),
+//           //     ),
+//           //   )
+//
+//     );
+//   }
+// }
