@@ -6,7 +6,6 @@ import 'package:firebase_crashlytics/firebase_crashlytics.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 // Import your views and controllers
-import 'package:gkvk/views/login/Login.dart';
 import 'package:gkvk/views/login/main_login/main_page.dart';
 import 'controllers/user_controller.dart';
 
