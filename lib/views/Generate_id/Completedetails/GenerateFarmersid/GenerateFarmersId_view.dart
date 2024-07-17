@@ -177,6 +177,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
       );
     }
   }
+  
 
   Future<void> _pickImageFromGallery(BuildContext context) async {
     final status = await Permission.storage.request();
@@ -270,11 +271,11 @@ class GenerateFarmersIdPage extends StatelessWidget {
     if (_aadharController.text.length != 12) {
       emptyFields.add('Aadhar Number should be 12 digits only');
     }
-     if (phonenumbercontroller.text.isEmpty) {
+    if (phonenumbercontroller.text.isEmpty) {
       emptyFields.add('Phone Number');
     }
-    if (phonenumbercontroller.text.length != 12) {
-      emptyFields.add('phone Number should be 10 digits only');
+    if (phonenumbercontroller.text.length != 10) {
+      emptyFields.add('Phone Number should be 10 digits only');
     }
     if (_schoolingController.text.isEmpty) {
       emptyFields.add("Schooling Years's");
@@ -627,12 +628,12 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             _pickImage(context, ImageSource.camera);
                           },
                         ),
-                        // IconButton(
-                        //   icon: const Icon(Icons.photo),
-                        //   onPressed: () {
-                        //     _pickImage(context, ImageSource.gallery);
-                        //   },
-                        // ),
+                        IconButton(
+                          icon: const Icon(Icons.photo),
+                          onPressed: () {
+                            _pickImage(context, ImageSource.gallery);
+                          },
+                        ),
                       ],
                     ),
                     const SizedBox(height: 30.0),

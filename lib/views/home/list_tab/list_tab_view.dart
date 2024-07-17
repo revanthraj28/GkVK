@@ -244,10 +244,10 @@ if (currentUser != null) {
                                               ),
                                             ],
                                           ),
-                                          // child: UploadStatusTile(
-                                          //   aadharNumber: farmer['aadharNumber'],
-                                          //   uploadFunction: uploadFarmerData,
-                                          // ),
+                                          child: UploadStatusTile(
+                                          aadharNumber: farmer['aadharNumber'],
+                                          uploadFunction: uploadFarmerData,
+                                           ),
                                         ),
                                       );
                                     },
@@ -368,12 +368,6 @@ class _UploadStatusTileState extends State<UploadStatusTile> {
       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
       title: Text('Farmer Id: ${widget.aadharNumber}'),
       subtitle: const Text('Upload pending'),
-          // ? const Center(
-          //     child: CircularProgressIndicator(
-          //       valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFFB812C)),
-          //     ),
-          //   )
-          
     );
   }
 }
