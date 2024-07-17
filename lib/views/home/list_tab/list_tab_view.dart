@@ -53,7 +53,7 @@ class _ListTabViewState extends State<ListTabView> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          toolbarHeight: 30,
+          toolbarHeight: 1,
           backgroundColor: const Color(0xFFFEF8E0),
           bottom: const TabBar(
             tabs: [
@@ -303,6 +303,7 @@ class _FarmersTabState extends State<FarmersTab> {
                                         child: UploadStatusTile(
                                           aadharNumber: farmer['aadharNumber'],
                                           uploadFunction: uploadFarmerData,
+                                          isFarmersTab: true,
                                         ),
                                       ),
                                     );
@@ -523,8 +524,6 @@ class _DealersTabState extends State<DealersTab> {
       final waterShedDB = WaterShedDB();
       await waterShedDB.deleteAll();
     }
-
-
       setState(() {
         _isUploading = false;
       });
@@ -601,6 +600,7 @@ class _DealersTabState extends State<DealersTab> {
                                         child: UploadStatusTile(
                                           aadharNumber: Dealer['aadharNumber'],
                                           uploadFunction: uploadDealerData,
+                                          isFarmersTab: false,
                                         ),
                                       ),
                                     );
@@ -685,11 +685,12 @@ class _DealersTabState extends State<DealersTab> {
 class UploadStatusTile extends StatefulWidget {
   final int aadharNumber;
   final Future<void> Function(int) uploadFunction;
-
+  final bool isFarmersTab;
   const UploadStatusTile({
     super.key,
     required this.aadharNumber,
     required this.uploadFunction,
+    required this.isFarmersTab,
   });
 
   @override
@@ -721,13 +722,21 @@ class _UploadStatusTileState extends State<UploadStatusTile> {
 
   @override
   Widget build(BuildContext context) {
+    String tileTitle;
+    if (widget.isFarmersTab) {
+      tileTitle = 'Farmers Id: ${widget.aadharNumber}';
+    } else {
+      tileTitle = 'Dealers Id: ${widget.aadharNumber}';
+    }
+
     return ListTile(
       contentPadding: const EdgeInsets.symmetric(vertical: 0, horizontal: 8.0),
-      title: Text('Id: ${widget.aadharNumber}'),
+      title: Text(tileTitle),
       subtitle: const Text('Upload pending'),
     );
   }
 }
+
 
 
 
