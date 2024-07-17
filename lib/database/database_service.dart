@@ -8,6 +8,8 @@ import 'package:gkvk/database/survey_page2_db.dart';
 import 'package:gkvk/database/survey_page3_db.dart';
 import 'package:gkvk/database/survey_page4_db.dart';
 
+import 'dealer_db.dart';
+
 class DatabaseService {
   Database? _database;
 
@@ -44,5 +46,6 @@ class DatabaseService {
     await SurveyDataDB2().createTable(database);
     await SurveyDataDB3().createTable(database);
     await SurveyDataDB4().createTable(database);
+    await DealerDb().createTable(database);
   }
 }

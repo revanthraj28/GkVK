@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
-import 'package:gkvk/views/Generate_id/detailsofCrops/Surveypages/Surveypages4.dart';
 import 'package:gkvk/database/survey_page3_db.dart'; // Import the database class
-import 'package:gkvk/shared/components/Question/question_container.dart';  // Import your new component
+import 'package:gkvk/shared/components/Question/question_container.dart';
+
+import 'Surveypages4.dart';  // Import your new component
 
 class Surveypages3 extends StatefulWidget {
   final int aadharId;
