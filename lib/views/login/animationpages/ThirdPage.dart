@@ -46,8 +46,7 @@ class _ThirdPageState extends State<ThirdPage>
       Navigator.pushAndRemoveUntil(
         context,
         MaterialPageRoute(builder: (context) => const HomeScreen()),
-        (route) =>
-            false, // This makes sure all other routes are removed from the stack
+        (route) => false, // This makes sure all other routes are removed from the stack
       );
     } else {
       // User is not signed in
@@ -74,17 +73,55 @@ class _ThirdPageState extends State<ThirdPage>
 
   Future<void> _requestPermissions() async {
     // Request camera permission
-    final cameraStatus = await Permission.camera.request();
-    if (!cameraStatus.isGranted) {
+    // if (await Permission.storage.request().isDenied) {
+    //   // Handle camera permission denied
+    //   showDialog(
+    //     context: context,
+    //     builder: (context) => AlertDialog(
+    //       title: const Text('Permission Required'),
+    //       content: const Text('permission is required for this app to function correctly.'),
+    //       actions: [
+    //         TextButton(
+    //           onPressed: () => Navigator.of(context).pop(),
+    //           child: const Text('OK'),
+    //         ),
+    //       ],
+    //     ),
+    //   );
+    // }
+     if (await Permission.camera.request().isDenied) {
       // Handle camera permission denied
-      print("Camera permission denied");
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Permission Required'),
+          content: const Text('Camera permission is required for this app to function correctly.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
 
     // Request photo library permission
-    final photoStatus = await Permission.photos.request();
-    if (!photoStatus.isGranted) {
+    if (await Permission.photos.request().isDenied) {
       // Handle photo library permission denied
-      print("Photo library permission denied");
+      showDialog(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: const Text('Permission Required'),
+          content: const Text('Photo library permission is required for this app to function correctly.'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        ),
+      );
     }
   }
 
@@ -109,25 +146,6 @@ class _ThirdPageState extends State<ThirdPage>
                 width: 300,
                 height: 300,
               ),
-              // Text(
-              //   'LRI based Fertilizer Application',
-              //   style: TextStyle(
-              //     fontSize: 24,
-              //     fontWeight: FontWeight.bold,
-              //     color: Color(0xFFFB812C),
-              //   ),
-              //   textAlign: TextAlign.center,
-              // ),
-              // SizedBox(height: 10),
-              // Text(
-              //   'CoEWM',
-              //   style: TextStyle(
-              //     fontSize: 24,
-              //     fontWeight: FontWeight.bold,
-              //     color: Color(0xFFFB812C),
-              //   ),
-              //   textAlign: TextAlign.center,
-              // ),
             ],
           ),
         ),

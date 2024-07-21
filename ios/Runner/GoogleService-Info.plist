@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyC3XmFsfydi7esDf2wpGgJCDwATsgJjJ2g</string>
+	<key>GCM_SENDER_ID</key>
+	<string>732318741320</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.gkvk</string>
+	<key>PROJECT_ID</key>
+	<string>gkvk-cdd6c</string>
+	<key>STORAGE_BUCKET</key>
+	<string>gkvk-cdd6c.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:732318741320:ios:7559ed8e9986e1009fb97d</string>
+	<key>DATABASE_URL</key>
+	<string>https://gkvk-cdd6c-default-rtdb.firebaseio.com</string>
+</dict>
+</plist>

@@ -6,8 +6,9 @@ import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
 import 'package:gkvk/database/farmer_profile_db.dart';
 import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
-import 'package:image_picker/image_picker.dart';
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+
 import 'package:permission_handler/permission_handler.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {
@@ -627,12 +628,12 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             _pickImage(context, ImageSource.camera);
                           },
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.photo),
-                          onPressed: () {
-                            _pickImage(context, ImageSource.gallery);
-                          },
-                        ),
+                        // IconButton(
+                        //   icon: const Icon(Icons.photo),
+                        //   onPressed: () {
+                        //     _pickImage(context, ImageSource.gallery);
+                        //   },
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 30.0),

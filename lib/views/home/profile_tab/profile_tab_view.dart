@@ -1,8 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/controllers/tab_index_controller.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gkvk/views/login/animationpages/ThirdPage.dart';
 // Import HomeBodyWidget
 
@@ -36,11 +36,16 @@ class _ProfilePageState extends State<ProfilePage> {
     return email.split('@')[0];
   }
 
-  Future<int> getFarmerCount() async {
-    if (user == null) return 0;
-    final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
-    return doc.exists ? doc['farmerCount'] ?? 0 : 0;
-  }
+  // Future<int> getFarmerCount() async {
+  //   if (user == null) return 0;
+  //   final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+  //   return doc.exists ? doc['farmerCount'] ?? 0 : 0  ;
+  // }
+  //  Future<int> getdealerCount() async {
+  //   if (user == null) return 0;
+  //   final doc = await FirebaseFirestore.instance.collection('users').doc(user!.uid).get();
+  //   return doc.exists ? doc['dealerCount'] ?? 0 : 0  ;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -116,25 +121,44 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: Colors.grey[700],
                               ),
                             ),
-                            const SizedBox(height: 32),
-                            FutureBuilder<int>(
-                              future: getFarmerCount(),
-                              builder: (context, snapshot) {
-                                if (snapshot.connectionState == ConnectionState.waiting) {
-                                  return const CircularProgressIndicator();
-                                } else if (snapshot.hasError) {
-                                  return Text('Error: ${snapshot.error}');
-                                } else {
-                                  return Text(
-                                    'Farmers Uploaded: ${snapshot.data}',
-                                    style: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  );
-                                }
-                              },
-                            ),
+                            // const SizedBox(height: 32),
+                            // FutureBuilder<int>(
+                            //   future: getFarmerCount(),
+                            //   builder: (context, snapshot) {
+                            //     if (snapshot.connectionState == ConnectionState.waiting) {
+                            //       return const CircularProgressIndicator();
+                            //     } else if (snapshot.hasError) {
+                            //       return Text('Error: ${snapshot.error}');
+                            //     } else {
+                            //       return Text(
+                            //         'Farmers Uploaded: ${snapshot.data}',
+                            //         style: const TextStyle(
+                            //           fontSize: 18,
+                            //           fontWeight: FontWeight.bold,
+                            //         ),
+                            //       );
+                            //     }
+                            //   },
+                            // ),
+                            //   const SizedBox(height: 32),
+                            // FutureBuilder<int>(
+                            //   future: getdealerCount(),
+                            //   builder: (context, snapshot) {
+                            //     if (snapshot.connectionState == ConnectionState.waiting) {
+                            //       return const CircularProgressIndicator();
+                            //     } else if (snapshot.hasError) {
+                            //       return Text('Error: ${snapshot.error}');
+                            //     } else {
+                            //       return Text(
+                            //         'Dealer Uploaded: ${snapshot.data}',
+                            //         style: const TextStyle(
+                            //           fontSize: 18,
+                            //           fontWeight: FontWeight.bold,
+                            //         ),
+                            //       );
+                            //     }
+                            //   },
+                            // ),
                             const SizedBox(height: 32),
                             MaterialButton(
                               onPressed: _signOutAndNavigateToLogin,

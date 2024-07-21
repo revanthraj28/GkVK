@@ -8,29 +8,23 @@ import 'package:firebase_core/firebase_core.dart';
 // Import your views and controllers
 import 'package:gkvk/views/login/main_login/main_page.dart';
 import 'controllers/user_controller.dart';
-import 'package:firebase_app_check/firebase_app_check.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
+  await Firebase.initializeApp();
+  await GetStorage.init();
   // Request necessary permissions
   await Permission.camera.request();
   await Permission.photos.request();
-  await Permission.storage.request(); // Request storage permission for gallery access
+  await Permission.storage
+      .request(); // Request storage permission for gallery access
 
   // Initialize Firebase
-  await Firebase.initializeApp();
-
-  await FirebaseAppCheck.instance.activate( 
-    androidProvider: AndroidProvider.playIntegrity,
-    // appleProvider: AppleProvider.deviceCheck,
-  );
 
   // Setup Crashlytics error handling
   FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
 
   // Initialize GetStorage
-  await GetStorage.init();
 
   runApp(MyApp());
 }

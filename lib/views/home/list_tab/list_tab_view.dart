@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -13,6 +12,8 @@ import 'package:gkvk/database/cropdetails_db.dart';
 import 'package:gkvk/database/gkvk_db.dart';
 import 'package:gkvk/database/dealer_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+
 
 void main() {
   runApp(const MaterialApp(
@@ -182,15 +183,15 @@ class _FarmersTabState extends State<FarmersTab> {
 
       // Update farmerCount for the current user
       // Update farmerCount for the current user
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        final userRef = firestore.collection('users').doc(currentUser.uid);
-        batch.update(userRef, {
-          'farmerCount': FieldValue.increment(1),
-          'aadharNumber':
-              aadharNumber.toString(), // Add Aadhar card number here
-        });
-      }
+      // final currentUser = FirebaseAuth.instance.currentUser;
+      // if (currentUser != null) {
+      //   final userRef = firestore.collection('users').doc(currentUser.uid);
+      //   batch.update(userRef, {
+      //     'farmerCount': FieldValue.increment(1),
+      //     'aadharNumber':
+      //         aadharNumber.toString(), // Add Aadhar card number here
+      //   });
+      // }
 
       await batch.commit();
 
@@ -478,15 +479,15 @@ class _DealersTabState extends State<DealersTab> {
       batch.set(watershedRef, watershedData);
 
       // Update dealerCount for the current user
-      final currentUser = FirebaseAuth.instance.currentUser;
-      if (currentUser != null) {
-        final userRef = firestore.collection('users').doc(currentUser.uid);
-        batch.update(userRef, {
-          'dealerCount': FieldValue.increment(1),
-          'aadharNumber':
-              aadharNumber.toString(), // Add Aadhar card number here
-        });
-      }
+      // final currentUser = FirebaseAuth.instance.currentUser;
+      // if (currentUser != null) {
+      //   final userRef = firestore.collection('users').doc(currentUser.uid);
+      //   batch.update(userRef, {
+      //     'dealerCount': FieldValue.increment(1),
+      //     'aadharNumber':
+      //         aadharNumber.toString(), // Add Aadhar card number here
+      //   });
+      // }
 
       await batch.commit();
 
@@ -499,8 +500,8 @@ class _DealersTabState extends State<DealersTab> {
       setState(() {
         _dealersFuture = fetchAllDealers();
       });
-    } catch (e) {
-      print('Error: $e');
+    } catch (e,s) {
+      print('Error: $e stacktrace : $s');
       rethrow;
     }
   }
@@ -736,7 +737,6 @@ class _UploadStatusTileState extends State<UploadStatusTile> {
     );
   }
 }
-
 
 
 

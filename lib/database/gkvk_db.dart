@@ -22,11 +22,11 @@ class WaterShedDB {
 
   Future<int> generateUniqueWatershedId(Database database) async {
     final random = Random();
-    int newId = 0; // Initialize with a dummy value
+    int newId = 0;
     bool isUnique = false;
 
     while (!isUnique) {
-      newId = random.nextInt(90000000) + 10000000; // Generate an 8-digit number
+      newId = random.nextInt(90000000) + 10000000;
       final List<Map<String, dynamic>> results = await database.query(
         tableName,
         where: 'watershedId = ?',
