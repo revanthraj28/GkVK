@@ -21,7 +21,8 @@ class GenerateFarmersIdPage extends StatelessWidget {
   final TextEditingController _schoolingController = TextEditingController();
   final TextEditingController _aadharController = TextEditingController();
   final TextEditingController _fruitsIdController = TextEditingController();
-  final TextEditingController _fertilizerAddressController = TextEditingController();
+  final TextEditingController _fertilizerAddressController =
+      TextEditingController();
   final TextEditingController _farmerlandController = TextEditingController();
   final TextEditingController phonenumbercontroller = TextEditingController();
   final Rxn<File> _selectedImage = Rxn<File>();
@@ -177,7 +178,6 @@ class GenerateFarmersIdPage extends StatelessWidget {
       );
     }
   }
-  
 
   Future<void> _pickImageFromGallery(BuildContext context) async {
     final status = await Permission.storage.request();
@@ -628,12 +628,12 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             _pickImage(context, ImageSource.camera);
                           },
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.photo),
-                          onPressed: () {
-                            _pickImage(context, ImageSource.gallery);
-                          },
-                        ),
+                        // IconButton(
+                        //   icon: const Icon(Icons.photo),
+                        //   onPressed: () {
+                        //     _pickImage(context, ImageSource.gallery);
+                        //   },
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 30.0),

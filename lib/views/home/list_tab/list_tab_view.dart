@@ -224,15 +224,30 @@ class _FarmersTabState extends State<FarmersTab> {
     });
   }
   
+  Future<void> addFarmerToUserCollection(String userEmail, int aadharNumber) async {
+    final firestore = FirebaseFirestore.instance;
+    final userRef = firestore.collection('users').doc(userEmail);
+
+    final farmerRef = userRef.collection('farmers').doc(aadharNumber.toString());
+
+    await farmerRef.set({
+      'aadharNumber': aadharNumber,
+    });
+  }
+
   Future<void> uploadAllData() async {
     setState(() {
       _isUploading = true; // Start loading
     });
 
     final farmers = await _farmersFuture;
+    final user = FirebaseAuth.instance.currentUser;
+
+    if (user == null) return;
+
     for (var farmer in farmers) {
       await uploadFarmerData(farmer['aadharNumber']);
-      await incrementUserCounter('farmerCount');
+      await addFarmerToUserCollection(user.email!, farmer['aadharNumber']);
     }
 
     final remainingFarmers = await fetchAllFarmers();
@@ -514,42 +529,32 @@ class _DealersTabState extends State<DealersTab> {
       rethrow;
     }
   }
+  Future<void> addDealersToUserCollection(String userEmail, int aadharNumber) async {
+    final firestore = FirebaseFirestore.instance;
+    final userRef = firestore.collection('users').doc(userEmail);
 
+    final dealerRef = userRef.collection('dealers').doc(aadharNumber.toString());
+
+    await dealerRef.set({
+      'aadharNumber': aadharNumber,
+    });
+  }
   Future<List<Map<String, dynamic>>> fetchAllDealers() async {
     return await DealerDb().readAll();
   }
-  Future<void> incrementUserCounter(String counterField) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user == null) return;
-
-    final firestore = FirebaseFirestore.instance;
-    final userRef = firestore.collection('userCounts').doc(user.uid);
-
-    await firestore.runTransaction((transaction) async {
-      final snapshot = await transaction.get(userRef);
-
-      if (snapshot.exists) {
-        transaction.update(userRef, {
-          counterField: FieldValue.increment(1),
-        });
-      } else {
-        transaction.set(userRef, {
-          counterField: 1,
-          'email': user.email,
-        });
-      }
-    });
-  }
+  
   Future<void> uploadAllData() async {
     setState(() {
       _isUploading = true;
     });
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
     final dealers = await _dealersFuture;
     for (final dealer in dealers) {
       final aadharNumber = dealer['aadharNumber'];
       await uploadDealerData(aadharNumber);
-       await incrementUserCounter('dealerCount');
+      await addDealersToUserCollection(user.email!, dealer['aadharNumber']);
     }
     final remainingFarmers = await fetchAllDealers();
     if (remainingFarmers.isEmpty) {
