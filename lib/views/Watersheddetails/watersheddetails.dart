@@ -18,9 +18,9 @@ class WatershedView extends StatelessWidget {
   final TextEditingController _talukController = TextEditingController();
   final TextEditingController _hobliController = TextEditingController();
   final TextEditingController _subWatershedNameController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _subWatershedCodeController =
-      TextEditingController();
+  TextEditingController();
   final TextEditingController _villageController = TextEditingController();
   final RxString _selectedCategory = ''.obs;
   final _formKey = GlobalKey<FormState>();
@@ -28,6 +28,12 @@ class WatershedView extends StatelessWidget {
   WatershedView({required this.Category,super.key});
 
   Future<void> _uploadData(BuildContext context) async {
+    // Conditionally set _selectedCategory and _villageController.text to null if Category == 2
+    if (Category == 2) {
+      _selectedCategory.value = "";
+      _villageController.text = "";
+    }
+
     final WaterShedDB db = WaterShedDB();
 
     try {
@@ -77,6 +83,7 @@ class WatershedView extends StatelessWidget {
       );
     }
   }
+
 
   Future<int?> _getLatestWaterShedId() async {
     final database = await DatabaseService().database;
@@ -132,13 +139,10 @@ class WatershedView extends StatelessWidget {
                   Text('District: ${watershedDetails['district']}'),
                   Text('Taluk: ${watershedDetails['taluk']}'),
                   Text('Hobli: ${watershedDetails['hobli']}'),
-                  Text(
-                      'Sub-Watershed Name: ${watershedDetails['subWatershedName']}'),
-                  Text(
-                      'Sub-Watershed Code: ${watershedDetails['subWatershedCode']}'),
-                  Text('Village: ${watershedDetails['village']}'),
-                  Text(
-                      'Selected Category: ${watershedDetails['selectedCategory']}'),
+                  Text('Sub-Watershed Name: ${watershedDetails['subWatershedName']}'),
+                  Text('Sub-Watershed Code: ${watershedDetails['subWatershedCode']}'),
+                  if (Category != 2) Text('Village: ${watershedDetails['village']}'),
+                  if (Category != 2) Text('Selected Category: ${watershedDetails['selectedCategory']}'),
                   const SizedBox(height: 20),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.end,
@@ -270,51 +274,54 @@ class WatershedView extends StatelessWidget {
 
   Future<bool> _onWillPop(BuildContext context) async {
     return (await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            backgroundColor: const Color(0xFFFEF8E0),
-            title: const Text(
-              'Confirm Exit',
+      context: context,
+      builder: (context) => AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(15.0),
+        ),
+        backgroundColor: const Color(0xFFFEF8E0),
+        title: const Text(
+          'Confirm Exit',
+          style: TextStyle(
+            color: Color(0xFFFB812C),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        content: const Text(
+          'Do you want to return to the home page?',
+          style: TextStyle(
+            color: Colors.black,
+          ),
+        ),
+        actions: [
+          TextButton(
+            child: const Text(
+              'Cancel',
               style: TextStyle(
                 color: Color(0xFFFB812C),
-                fontWeight: FontWeight.bold,
               ),
             ),
-            content: const Text(
-              'Do you want to return to the home page?',
-              style: TextStyle(
-                color: Colors.black,
-              ),
-            ),
-            actions: [
-              TextButton(
-                child: const Text(
-                  'Cancel',
-                  style: TextStyle(
-                    color: Color(0xFFFB812C),
-                  ),
-                ),
-                onPressed: () => Navigator.of(context).pop(false),
-              ),
-              TextButton(
-                child: const Text(
-                  'OK',
-                  style: TextStyle(
-                    color: Color(0xFFFB812C),
-                  ),
-                ),
-                onPressed: () => Navigator.of(context).pop(true),
-              ),
-            ],
+            onPressed: () => Navigator.of(context).pop(false),
           ),
-        )) ??
+          TextButton(
+            child: const Text(
+              'OK',
+              style: TextStyle(
+                color: Color(0xFFFB812C),
+              ),
+            ),
+            onPressed: () => Navigator.of(context).pop(true),
+          ),
+        ],
+      ),
+    )) ??
         false;
   }
 
   bool _validate() {
+    if(Category == 2) {
+      return true;
+    }
     if (!_formKey.currentState!.validate()) {
       return false;
     }
@@ -327,7 +334,12 @@ class WatershedView extends StatelessWidget {
   bool _validateLocationControllers(BuildContext context) {
     List<String> emptyFields = [];
 
-    // Check if all location controllers have non-empty values
+    // Only validate Village if Category is not 2
+    if (Category != 2 && _villageController.text.isEmpty) {
+      emptyFields.add('Village');
+    }
+
+    // Add other validations here as before
     if (_districtController.text.isEmpty) {
       emptyFields.add('District');
     }
@@ -343,59 +355,65 @@ class WatershedView extends StatelessWidget {
     if (_subWatershedCodeController.text.isEmpty) {
       emptyFields.add('Sub-Watershed Code');
     }
-    if (_villageController.text.isEmpty) {
-      emptyFields.add('Village');
-    }
 
-    // Check if any field is empty, if yes, print and return false
+    // Check if any field is empty, if yes, show an alert and return false
     if (emptyFields.isNotEmpty) {
-      // _showEmptyFieldsAlert(context, emptyFields);
-      // print('Empty fields: $emptyFields');
+      _showEmptyFieldsAlert(context, emptyFields);
+      print('Empty fields: $emptyFields');
       return false;
     }
 
     return true;
   }
 
-  // void _showEmptyFieldsAlert(BuildContext context, List<String> emptyFields) {
-  //   showDialog(
-  //     context: context,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(15.0),
-  //         ),
-  //         backgroundColor: const Color(0xFFFEF8E0),
-  //         title: const Text(
-  //           'Alert',
-  //           style: TextStyle(
-  //             color: Color(0xFFFB812C),
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //         content: Text(
-  //           'The following fields must be filled:\n${emptyFields.join('\n')}',
-  //           style: const TextStyle(
-  //             color: Colors.black,
-  //           ),
-  //         ),
-  //         actions: [
-  //           TextButton(
-  //             child: const Text(
-  //               'OK',
-  //               style: TextStyle(
-  //                 color: Color(0xFFFB812C),
-  //               ),
-  //             ),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
+  void _showEmptyFieldsAlert(BuildContext context, List<String> emptyFields) {
+    // Filter out "Village" field if Category is 2
+    List<String> filteredEmptyFields = [];
+    for (var field in emptyFields) {
+      if (field.contains("Village") && Category == 2) {
+        continue; // Skip adding "Village" to the filtered list if Category is 2
+      }
+      filteredEmptyFields.add(field);
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(15.0),
+          ),
+          backgroundColor: const Color(0xFFFEF8E0),
+          title: const Text(
+            'Alert',
+            style: TextStyle(
+              color: Color(0xFFFB812C),
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          content: Text(
+            'The following fields must be filled:\n${filteredEmptyFields.join('\n')}',
+            style: const TextStyle(
+              color: Colors.black,
+            ),
+          ),
+          actions: [
+            TextButton(
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Color(0xFFFB812C),
+                ),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -497,31 +515,33 @@ class WatershedView extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20.0),
-                    CustomTextFormField(
-                      labelText: "Village",
-                      controller: _villageController,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please provide details';
-                        }
-                        return null;
-                      },
-                    ),
+                    if (Category != 2)
+                      CustomTextFormField(
+                        labelText: "Village",
+                        controller: _villageController,
+                        keyboardType: TextInputType.text,
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please provide details';
+                          }
+                          return null;
+                        },
+                      ),
                     const SizedBox(height: 10.0),
-                    Obx(() => SelectionButton(
-                          label: "Treatment",
-                          options: const ['T1', 'T2', 'T3', 'T4'],
-                          selectedOption: _selectedCategory.value.isEmpty
-                              ? null
-                              : _selectedCategory.value,
-                          onPressed: (option) {
-                            _selectedCategory.value = option;
-                          },
-                          errorMessage: _selectedCategory.value.isEmpty
-                              ? 'Please select Treatment option'
-                              : null,
-                        )),
+                    if (Category != 2)
+                      Obx(() => SelectionButton(
+                        label: "Treatment",
+                        options: const ['T1', 'T2', 'T3', 'T4'],
+                        selectedOption: _selectedCategory.value.isEmpty
+                            ? null
+                            : _selectedCategory.value,
+                        onPressed: (option) {
+                          _selectedCategory.value = option;
+                        },
+                        errorMessage: _selectedCategory.value.isEmpty
+                            ? 'Please select Treatment option'
+                            : null,
+                      )),
                     const SizedBox(height: 110.0),
                   ],
                 ),

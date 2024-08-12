@@ -14,8 +14,8 @@ class WaterShedDB {
         "hobli" TEXT NOT NULL,
         "subWatershedName" TEXT NOT NULL,
         "subWatershedCode" TEXT NOT NULL,
-        "village" TEXT NOT NULL,
-        "selectedCategory" TEXT NOT NULL
+        "village" TEXT ,
+        "selectedCategory" TEXT 
       );
     ''');
   }

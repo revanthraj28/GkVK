@@ -1,3 +1,6 @@
+import 'package:gkvk/database/surveypage1forfer_db.dart';
+import 'package:gkvk/database/surveypage3forfer_db.dart';
+import 'package:gkvk/database/surveypage2forfer_db.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 import 'package:gkvk/database/gkvk_db.dart';
@@ -47,5 +50,8 @@ class DatabaseService {
     await SurveyDataDB3().createTable(database);
     await SurveyDataDB4().createTable(database);
     await DealerDb().createTable(database);
+    await SurveyDataDBforfer().createTable(database);
+    await SurveyDataDBforfer2().createTable(database);
+    await SurveyDataDBforfer3().createTable(database);
   }
 }

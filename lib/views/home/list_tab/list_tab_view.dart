@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
@@ -11,9 +12,10 @@ import 'package:gkvk/database/cropdetails_db.dart';
 // import 'package:gkvk/database/watershed_db.dart';
 import 'package:gkvk/database/gkvk_db.dart';
 import 'package:gkvk/database/dealer_db.dart';
+import 'package:gkvk/database/surveypage1forfer_db.dart';
+import 'package:gkvk/database/surveypage2forfer_db.dart';
+import 'package:gkvk/database/surveypage3forfer_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
 
 void main() {
   runApp(const MaterialApp(
@@ -31,7 +33,7 @@ class ListTabView extends StatefulWidget {
 class _ListTabViewState extends State<ListTabView> {
   late Future<List<Map<String, dynamic>>> _farmersFuture;
   late Future<List<Map<String, dynamic>>> _dealersFuture;
-  bool _isUploading = false; // Loading flag
+  final bool _isUploading = false; // Loading flag
 
   @override
   void initState() {
@@ -181,18 +183,6 @@ class _FarmersTabState extends State<FarmersTab> {
       final watershedRef = farmerRef.collection('watershed').doc('watershed');
       batch.set(watershedRef, watershedData);
 
-      // Update farmerCount for the current user
-      // Update farmerCount for the current user
-      // final currentUser = FirebaseAuth.instance.currentUser;
-      // if (currentUser != null) {
-      //   final userRef = firestore.collection('users').doc(currentUser.uid);
-      //   batch.update(userRef, {
-      //     'farmerCount': FieldValue.increment(1),
-      //     'aadharNumber':
-      //         aadharNumber.toString(), // Add Aadhar card number here
-      //   });
-      // }
-
       await batch.commit();
 
       await farmerProfileDB.delete(aadharNumber);
@@ -211,6 +201,29 @@ class _FarmersTabState extends State<FarmersTab> {
     }
   }
 
+  Future<void> incrementUserCounter(String counterField) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
+
+    final firestore = FirebaseFirestore.instance;
+    final userRef = firestore.collection('userCounts').doc(user.uid);
+
+    await firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+
+      if (snapshot.exists) {
+        transaction.update(userRef, {
+          counterField: FieldValue.increment(1),
+        });
+      } else {
+        transaction.set(userRef, {
+          counterField: 1,
+          'email': user.email,
+        });
+      }
+    });
+  }
+  
   Future<void> uploadAllData() async {
     setState(() {
       _isUploading = true; // Start loading
@@ -219,6 +232,7 @@ class _FarmersTabState extends State<FarmersTab> {
     final farmers = await _farmersFuture;
     for (var farmer in farmers) {
       await uploadFarmerData(farmer['aadharNumber']);
+      await incrementUserCounter('farmerCount');
     }
 
     final remainingFarmers = await fetchAllFarmers();
@@ -402,15 +416,16 @@ class _DealersTabState extends State<DealersTab> {
     super.initState();
     _dealersFuture = fetchAllDealers();
   }
-   Future<void> uploadDealerData(int aadharNumber) async {
+
+  Future<void> uploadDealerData(int aadharNumber) async {
     final dealerDB = DealerDb();
-    final surveyDataDB1 = SurveyDataDB1();
-    final surveyDataDB2 = SurveyDataDB2();
-    final surveyDataDB3 = SurveyDataDB3();
-    final surveyDataDB4 = SurveyDataDB4();
+    final surveyDataDBforfer = SurveyDataDBforfer();
+    final surveyDataDBforfer2 = SurveyDataDBforfer2();
+    final surveyDataDBforfer3 = SurveyDataDBforfer3();
     final waterShedDB = WaterShedDB();
 
     try {
+      // Fetch dealer data
       final dealerData = await dealerDB.read(aadharNumber);
       if (dealerData == null) throw Exception('Dealer data not found');
 
@@ -419,15 +434,17 @@ class _DealersTabState extends State<DealersTab> {
 
       print('Dealer Data: $mutableDealerData');
 
-      final surveyData1 = await surveyDataDB1.read(aadharNumber);
-      final surveyData2 = await surveyDataDB2.read(aadharNumber);
-      final surveyData3 = await surveyDataDB3.read(aadharNumber);
-      final surveyData4 = await surveyDataDB4.read(aadharNumber);
+      // Fetch survey data
+      final surveyDataDBforfer01 = await surveyDataDBforfer.read(aadharNumber);
+      final surveyDataDBforfer02 = await surveyDataDBforfer2.read(aadharNumber);
+      final surveyDataDBforfer03 = await surveyDataDBforfer3.read(aadharNumber);
 
+      // Fetch watershed data
       final watershedId = dealerData['watershedId'];
       final watershedData = await waterShedDB.read(watershedId);
       if (watershedData == null) throw Exception('Watershed data not found');
 
+      // Initialize Firebase batch operation
       final firestore = FirebaseFirestore.instance;
       final batch = firestore.batch();
 
@@ -456,51 +473,43 @@ class _DealersTabState extends State<DealersTab> {
 
       print('Updated Dealer Data: $mutableDealerData');
 
+      // Add dealer data to batch
       batch.set(dealerRef, mutableDealerData);
 
-      if (surveyData1 != null) {
-        final survey1Ref = dealerRef.collection('surveyData1').doc('survey1');
-        batch.set(survey1Ref, surveyData1);
-      }
-      if (surveyData2 != null) {
-        final survey2Ref = dealerRef.collection('surveyData2').doc('survey2');
-        batch.set(survey2Ref, surveyData2);
-      }
-      if (surveyData3 != null) {
-        final survey3Ref = dealerRef.collection('surveyData3').doc('survey3');
-        batch.set(survey3Ref, surveyData3);
-      }
-      if (surveyData4 != null) {
-        final survey4Ref = dealerRef.collection('surveyData4').doc('survey4');
-        batch.set(survey4Ref, surveyData4);
+      // Add survey data to batch if available
+      if (surveyDataDBforfer01 != null) {
+        final surveyRef = dealerRef.collection('surveyData').doc('surveyDataDBforfer01');
+        batch.set(surveyRef, surveyDataDBforfer01);
       }
 
+      if (surveyDataDBforfer02 != null) {
+        final survey2Ref = dealerRef.collection('surveyData').doc('surveyDataDBforfer02');
+        batch.set(survey2Ref, surveyDataDBforfer02);
+      }
+
+      if (surveyDataDBforfer03 != null) {
+        final survey3Ref = dealerRef.collection('surveyData').doc('surveyDataDBforfer03');
+        batch.set(survey3Ref, surveyDataDBforfer03);
+      }
+
+      // Add watershed data to batch
       final watershedRef = dealerRef.collection('watershed').doc('watershed');
       batch.set(watershedRef, watershedData);
 
-      // Update dealerCount for the current user
-      // final currentUser = FirebaseAuth.instance.currentUser;
-      // if (currentUser != null) {
-      //   final userRef = firestore.collection('users').doc(currentUser.uid);
-      //   batch.update(userRef, {
-      //     'dealerCount': FieldValue.increment(1),
-      //     'aadharNumber':
-      //         aadharNumber.toString(), // Add Aadhar card number here
-      //   });
-      // }
-
+      // Commit the batch operation
       await batch.commit();
 
+      // Delete local data if upload is successful
       await dealerDB.delete(aadharNumber);
-      if (surveyData1 != null) await surveyDataDB1.delete(aadharNumber);
-      if (surveyData2 != null) await surveyDataDB2.delete(aadharNumber);
-      if (surveyData3 != null) await surveyDataDB3.delete(aadharNumber);
-      if (surveyData4 != null) await surveyDataDB4.delete(aadharNumber);
+      if (surveyDataDBforfer01 != null) await surveyDataDBforfer.delete(aadharNumber);
+      if (surveyDataDBforfer02 != null) await surveyDataDBforfer2.delete(aadharNumber);
+      if (surveyDataDBforfer03 != null) await surveyDataDBforfer3.delete(aadharNumber);
 
+      // Update UI after successful upload
       setState(() {
         _dealersFuture = fetchAllDealers();
       });
-    } catch (e,s) {
+    } catch (e, s) {
       print('Error: $e stacktrace : $s');
       rethrow;
     }
@@ -509,26 +518,49 @@ class _DealersTabState extends State<DealersTab> {
   Future<List<Map<String, dynamic>>> fetchAllDealers() async {
     return await DealerDb().readAll();
   }
+  Future<void> incrementUserCounter(String counterField) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
+    final firestore = FirebaseFirestore.instance;
+    final userRef = firestore.collection('userCounts').doc(user.uid);
+
+    await firestore.runTransaction((transaction) async {
+      final snapshot = await transaction.get(userRef);
+
+      if (snapshot.exists) {
+        transaction.update(userRef, {
+          counterField: FieldValue.increment(1),
+        });
+      } else {
+        transaction.set(userRef, {
+          counterField: 1,
+          'email': user.email,
+        });
+      }
+    });
+  }
   Future<void> uploadAllData() async {
     setState(() {
       _isUploading = true;
     });
 
-      final dealers = await _dealersFuture;
-      for (final dealer in dealers) {
-        final aadharNumber = dealer['aadharNumber'];
-        await uploadDealerData(aadharNumber);
-      }
-      final remainingFarmers = await fetchAllDealers();
+    final dealers = await _dealersFuture;
+    for (final dealer in dealers) {
+      final aadharNumber = dealer['aadharNumber'];
+      await uploadDealerData(aadharNumber);
+       await incrementUserCounter('dealerCount');
+    }
+    final remainingFarmers = await fetchAllDealers();
     if (remainingFarmers.isEmpty) {
       final waterShedDB = WaterShedDB();
       await waterShedDB.deleteAll();
     }
-      setState(() {
-        _isUploading = false;
-      });
-    }
+    setState(() {
+      _isUploading = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -719,7 +751,6 @@ class _UploadStatusTileState extends State<UploadStatusTile> {
       });
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -737,6 +768,3 @@ class _UploadStatusTileState extends State<UploadStatusTile> {
     );
   }
 }
-
-
-

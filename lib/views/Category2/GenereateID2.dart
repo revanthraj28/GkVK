@@ -4,38 +4,38 @@ import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
+import 'package:gkvk/views/Surveypages/surveypage1forfer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
 import '../../database/dealer_db.dart';
-import '../Surveypages/Surveypages1.dart';
 
-class GenerateDealersIdPage extends StatelessWidget {
+class GenerateDealersIdPage extends StatefulWidget {
   final int waterShedId;
-// Add form key for validation
 
+  const GenerateDealersIdPage({super.key, required this.waterShedId});
+
+  @override
+  _GenerateDealersIdPageState createState() => _GenerateDealersIdPageState();
+}
+
+// Add form key for validation
+class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _fatherNameController = TextEditingController();
-  final TextEditingController _pincodeController = TextEditingController();
   final TextEditingController _aadharController = TextEditingController();
   final TextEditingController phonenumbercontroller = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _rskController = TextEditingController();
-  final TextEditingController _fertilizerdealerController = TextEditingController();
-  final TextEditingController _fertilizerdealerplaceController = TextEditingController();
+  final TextEditingController _placeController = TextEditingController();
 
   final Rxn<File> _selectedImage = Rxn<File>();
   final RxString _selectedGender = ''.obs;
+  final RxString _Category = ''.obs;
   final RxString _selectedEducation = ''.obs;
   final RxString _selectedPIACadre = ''.obs;
-  final RxString _selectedDurationWithReward = ''.obs;
-  final RxString _rskstaffcadre = ''.obs;
   final RxString _selectedDurationExperience = ''.obs;
   final _formKey = GlobalKey<FormState>();
-
-  GenerateDealersIdPage(
-      {required this.waterShedId, super.key, int? aadharNumber});
 
   Future<void> _pickImage(BuildContext context, ImageSource source) async {
     if (source == ImageSource.camera) {
@@ -52,7 +52,7 @@ class GenerateDealersIdPage extends StatelessWidget {
 
     if (status.isGranted) {
       final pickedFile =
-      await ImagePicker().pickImage(source: ImageSource.camera);
+          await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
         _selectedImage.value = File(pickedFile.path);
       } else {
@@ -73,7 +73,7 @@ class GenerateDealersIdPage extends StatelessWidget {
         builder: (context) => CustomAlertDialog(
           title: 'Permission Required',
           content:
-          "You have permanently denied the camera permission. Please enable it in the app settings.",
+              "You have permanently denied the camera permission. Please enable it in the app settings.",
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -104,7 +104,7 @@ class GenerateDealersIdPage extends StatelessWidget {
 
     if (status.isGranted) {
       final pickedFile =
-      await ImagePicker().pickImage(source: ImageSource.gallery);
+          await ImagePicker().pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         _selectedImage.value = File(pickedFile.path);
       } else {
@@ -125,7 +125,7 @@ class GenerateDealersIdPage extends StatelessWidget {
         builder: (context) => CustomAlertDialog(
           title: 'Permission Required',
           content:
-          "You have permanently denied the storage permission. Please enable it in the app settings.",
+              "You have permanently denied the storage permission. Please enable it in the app settings.",
           onPressed: () {
             Navigator.of(context).pop();
           },
@@ -155,49 +155,41 @@ class GenerateDealersIdPage extends StatelessWidget {
 
       // Check if the dealer profile already exists
       final existingProfile =
-      await dealerDb.read(int.parse(_aadharController.text));
+          await dealerDb.read(int.parse(_aadharController.text));
 
       if (existingProfile != null) {
         // Update the existing profile
         await dealerDb.update(
-          pincode: _pincodeController.text,
-          dealerName: _nameController.text,
+          Name: _nameController.text,
           fatherName: _fatherNameController.text,
           gender: _selectedGender.value,
           educationStatus: _selectedEducation.value,
           PIACadre: _selectedPIACadre.value,
-          durationReward: _selectedDurationWithReward.value,
-          rskStaffCadre: _rskstaffcadre.value,
-          RSKname: _rskController.text,
-          FertilizerDealer: _fertilizerdealerController.text,
-          DurationSales: _selectedDurationExperience.value,
-          DealerPlace: _fertilizerdealerplaceController.text,
+          email: _emailController.text, // Include email field
+          Duration: _selectedDurationExperience.value,
+          Place: _placeController.text,
           aadharNumber: int.parse(_aadharController.text),
           phonenumber: int.parse(phonenumbercontroller.text),
-          watershedId: waterShedId,
+          watershedId: widget.waterShedId,
           image: _selectedImage.value?.path ?? '',
-          email: _emailController.text,
+          Category: _Category.value,
         );
       } else {
         // Create a new profile
         await dealerDb.create(
-          dealerName: _nameController.text,
+          Name: _nameController.text,
           fatherName: _fatherNameController.text,
           gender: _selectedGender.value,
           educationStatus: _selectedEducation.value,
           PIACadre: _selectedPIACadre.value,
-          durationReward: _selectedDurationWithReward.value,
-          rskStaffCadre: _rskstaffcadre.value,
-          RSKname: _rskController.text,
           email: _emailController.text, // Include email field
-          FertilizerDealer: _fertilizerdealerController.text,
-          DurationSales: _selectedDurationExperience.value,
-          DealerPlace: _fertilizerdealerplaceController.text,
-          pincode: _pincodeController.text, // Include pincode field
+          Duration: _selectedDurationExperience.value,
+          Place: _placeController.text,
           aadharNumber: int.parse(_aadharController.text),
           phonenumber: int.parse(phonenumbercontroller.text),
-          watershedId: waterShedId,
+          watershedId: widget.waterShedId,
           image: _selectedImage.value?.path ?? '',
+          Category: _Category.value,
         );
       }
 
@@ -206,7 +198,7 @@ class GenerateDealersIdPage extends StatelessWidget {
         context,
         MaterialPageRoute(
             builder: (context) =>
-                SurveyPage1(aadharId: int.parse(_aadharController.text))),
+                surveypage1forfer(aadharId: int.parse(_aadharController.text))),
       );
     } catch (e) {
       // Show error dialog if upload fails
@@ -230,16 +222,13 @@ class GenerateDealersIdPage extends StatelessWidget {
     }
   }
 
-
   bool _validateform() {
     if (!_formKey.currentState!.validate()) {
       return false;
     }
     if (_selectedGender.value.isEmpty ||
         _selectedEducation.value.isEmpty ||
-        _selectedPIACadre.value.isEmpty ||
-        _selectedDurationWithReward.value.isEmpty ||
-        _rskstaffcadre.value.isEmpty ||
+        _Category.value.isEmpty ||
         _selectedDurationExperience.value.isEmpty) {
       return false;
     }
@@ -270,27 +259,13 @@ class GenerateDealersIdPage extends StatelessWidget {
     if (_emailController.text.isEmpty) {
       emptyFields.add('Email');
     } else {
-      String pattern =
-          r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
+      String pattern = r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$';
       RegExp regex = RegExp(pattern);
       if (!regex.hasMatch(_emailController.text)) {
         emptyFields.add('Enter a valid email address');
       }
     }
-
-    if (_pincodeController.text.isEmpty) {
-      emptyFields.add('Pincode');
-    }
-    if (_pincodeController.text.length != 6) {
-      emptyFields.add('Pincode must be 6 digits only');
-    }
-    if (_rskController.text.isEmpty) {
-      emptyFields.add('RSK Name');
-    }
-    if (_fertilizerdealerController.text.isEmpty) {
-      emptyFields.add('Fertilizer Dealer');
-    }
-    if (_fertilizerdealerplaceController.text.isEmpty) {
+    if (_placeController.text.isEmpty) {
       emptyFields.add('Fertilizer Dealer\'s Place');
     }
     if (_selectedImage.value == null) {
@@ -357,7 +332,7 @@ class GenerateDealersIdPage extends StatelessWidget {
           backgroundColor: const Color(0xFFFEF8E0),
           centerTitle: true,
           title: const Text(
-            'DEALER DETAILS',
+            'FILL DETAILS',
             style: TextStyle(
               color: Color(0xFFFB812C),
               fontSize: 18,
@@ -375,6 +350,58 @@ class GenerateDealersIdPage extends StatelessWidget {
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
                   children: [
+                    Obx(() => SelectionButton(
+                          label: "Category",
+                          options: const ['PIA', 'Fertilizer Dealer'],
+                          selectedOption:
+                              _Category.value.isEmpty ? null : _Category.value,
+                          onPressed: (option) {
+                            _Category.value = option;
+                          },
+                          errorMessage: _Category.value.isEmpty
+                              ? 'Please select category'
+                              : null,
+                        )), // Conditionally render this block if Category is PIA
+                    Obx(() {
+                      if (_Category.value == 'Fertilizer Dealer') {
+                        return const SizedBox
+                            .shrink(); // Return an empty widget if the condition is met
+                      } else {
+                        return SelectionButton(
+                          label: "PIA Cadre",
+                          options: _Category.value == 'Fertilizer Dealer'
+                              ? const ['Not Required']
+                              : const [
+                                  'ADA',
+                                  'AO',
+                                  'AAO',
+                                  'AHO',
+                                  'RFO',
+                                  'DPC',
+                                  'WA',
+                                  'LRI-EM',
+                                  'TL-FNGO',
+                                  'FNGO-TC',
+                                  'WM'
+                                ],
+                          selectedOption: _Category.value == 'Fertilizer Dealer'
+                              ? ''
+                              : (_selectedPIACadre.value.isEmpty
+                                  ? null
+                                  : _selectedPIACadre.value),
+                          onPressed: (option) {
+                            _selectedPIACadre.value = option;
+                          },
+                          errorMessage:
+                              _Category.value != 'Fertilizer Dealer' &&
+                                      _selectedPIACadre.value.isEmpty
+                                  ? 'Please select a PIA cadre'
+                                  : null,
+                        );
+                      }
+                    }),
+
+                    const SizedBox(height: 10.0),
                     CustomTextFormField(
                       labelText: "Name",
                       controller: _nameController,
@@ -388,18 +415,18 @@ class GenerateDealersIdPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     Obx(() => SelectionButton(
-                      label: "Gender",
-                      options: const ['Male', 'Female', 'Other'],
-                      selectedOption: _selectedGender.value.isEmpty
-                          ? null
-                          : _selectedGender.value,
-                      onPressed: (option) {
-                        _selectedGender.value = option;
-                      },
-                      errorMessage: _selectedGender.value.isEmpty
-                          ? 'Please select gender'
-                          : null,
-                    )),
+                          label: "Gender",
+                          options: const ['Male', 'Female', 'Other'],
+                          selectedOption: _selectedGender.value.isEmpty
+                              ? null
+                              : _selectedGender.value,
+                          onPressed: (option) {
+                            _selectedGender.value = option;
+                          },
+                          errorMessage: _selectedGender.value.isEmpty
+                              ? 'Please select gender'
+                              : null,
+                        )),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
                       labelText: "Father's/Husband Name",
@@ -413,42 +440,19 @@ class GenerateDealersIdPage extends StatelessWidget {
                       },
                     ),
                     const SizedBox(height: 20.0),
-                    Row(
-                      children: [
-                        Expanded(
-                          child: CustomTextFormField(
-                            labelText: "Pincode",
-                            controller: _pincodeController,
-                            keyboardType: TextInputType.number,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please provide details";
-                              }
-                              if (value.length != 6) {
-                                return "6 digits only";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                        const SizedBox(width: 10.0),
-                        Expanded(
-                          child: CustomTextFormField(
-                            labelText: "Phone Number",
-                            controller: phonenumbercontroller,
-                            keyboardType: TextInputType.number,
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return "Please provide details";
-                              }
-                              if (value.length != 10) {
-                                return "10 digits only";
-                              }
-                              return null;
-                            },
-                          ),
-                        ),
-                      ],
+                    CustomTextFormField(
+                      labelText: "Phone Number",
+                      controller: phonenumbercontroller,
+                      keyboardType: TextInputType.number,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Please provide details";
+                        }
+                        if (value.length != 10) {
+                          return "10 digits only";
+                        }
+                        return null;
+                      },
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
@@ -485,128 +489,74 @@ class GenerateDealersIdPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 10.0),
                     Obx(() => SelectionButton(
-                      label: "Educational Status",
-                      options: const ['SSLC', 'Intermediate', 'Diploma', 'Degree', 'Post Graduate', 'Doctorate'],
-                      selectedOption: _selectedEducation.value.isEmpty
-                          ? null
-                          : _selectedEducation.value,
-                      onPressed: (option) {
-                        _selectedEducation.value = option;
-                      },
-                      errorMessage: _selectedEducation.value.isEmpty
-                          ? 'Please select an educational status'
-                          : null,
-                    )),
+                          label: "Educational Status",
+                          options: const [
+                            'SSLC',
+                            'Intermediate',
+                            'Diploma',
+                            'Degree',
+                            'Post Graduate',
+                            'Doctorate'
+                          ],
+                          selectedOption: _selectedEducation.value.isEmpty
+                              ? null
+                              : _selectedEducation.value,
+                          onPressed: (option) {
+                            _selectedEducation.value = option;
+                          },
+                          errorMessage: _selectedEducation.value.isEmpty
+                              ? 'Please select an educational status'
+                              : null,
+                        )),
                     const SizedBox(height: 10.0),
                     Obx(() => SelectionButton(
-                      label: "PIA Cadre",
-                      options: const ['ADA', 'AO', 'AAO', 'AHO', 'RFO', 'DPC', 'WA', 'LRI-EM', 'TL-FNGO', 'FNGO-TC', 'WM'],
-                      selectedOption: _selectedPIACadre.value.isEmpty
-                          ? null
-                          : _selectedPIACadre.value,
-                      onPressed: (option) {
-                        _selectedPIACadre.value = option;
-                      },
-                      errorMessage: _selectedPIACadre.value.isEmpty
-                          ? 'Please select a PIA cadre'
-                          : null,
-                    )),
-                    const SizedBox(height: 10.0),
-                    Obx(() => SelectionButton(
-                      label: "Duration with REWARD",
-                      options: const [
-                        '< 6 Months',
-                        '1 Year',
-                        '1.5 Years',
-                        '2 Years',
-                        'Above 2 Years'
-                      ],
-                      selectedOption: _selectedDurationWithReward.value.isEmpty
-                          ? null
-                          : _selectedDurationWithReward.value,
-                      onPressed: (option) {
-                        _selectedDurationWithReward.value = option;
-                      },
-                      errorMessage: _selectedDurationWithReward.value.isEmpty
-                          ? 'Please specify the duration with REWARD'
-                          : null,
-                    )),
-                    const SizedBox(height: 10.0),
-                    Obx(() => SelectionButton(
-                      label: "RSK staff cadre",
-                      options: const [
-                        'AO',
-                        'AAO',
-                      ],
-                      selectedOption: _rskstaffcadre.value.isEmpty
-                          ? null
-                          : _rskstaffcadre.value,
-                      onPressed: (option) {
-                        _rskstaffcadre.value = option;
-                      },
-                      errorMessage: _rskstaffcadre.value.isEmpty
-                          ? 'Please specify the RSK staff cadre'
-                          : null,
-                    )),
+                          label: _Category.value == 'Fertilizer Dealer'
+                              ? "Duration of Fertilizer sales"
+                              : "Duration with REWARD",
+                          options: _Category.value == 'Fertilizer Dealer'
+                              ? const [
+                                  '< 2 Years',
+                                  '2-5 Years',
+                                  'above 5 Years',
+                                ]
+                              : const [
+                                  '< 6 Months',
+                                  '1 Year',
+                                  '1.5 Years',
+                                  '2 Years',
+                                  'Above 2 Years'
+                                ],
+                          selectedOption:
+                              _selectedDurationExperience.value.isEmpty
+                                  ? null
+                                  : _selectedDurationExperience.value,
+                          onPressed: (option) {
+                            _selectedDurationExperience.value = option;
+                          },
+                          errorMessage:
+                              _selectedDurationExperience.value.isEmpty
+                                  ? 'Please specify the duration'
+                                  : null,
+                        )),
                     const SizedBox(height: 20.0),
-                    CustomTextFormField(
-                      labelText: "RSK Name",
-                      controller: _rskController,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please provide details";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 20.0),
-                    CustomTextFormField(
-                      labelText: "Fertilizer dealer",
-                      controller: _fertilizerdealerController,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please provide details";
-                        }
-                        return null;
-                      },
-                    ),
-                    const SizedBox(height: 10.0),
-                    Obx(() => SelectionButton(
-                      label: "Duration of Fertilizer sales",
-                      options: const [
-                        '< 2 Years',
-                        '2-5 Years',
-                        'above 5 Years',
-                      ],
-                      selectedOption: _selectedDurationExperience.value.isEmpty
-                          ? null
-                          : _selectedDurationExperience.value,
-                      onPressed: (option) {
-                        _selectedDurationExperience.value = option;
-                      },
-                      errorMessage: _selectedDurationExperience.value.isEmpty
-                          ? 'Please specify the duration'
-                          : null,
-                    )),
-                    const SizedBox(height: 20.0),
-                    CustomTextFormField(
-                      labelText: "Fertilizer dealer's place",
-                      controller: _fertilizerdealerplaceController,
-                      keyboardType: TextInputType.text,
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return "Please provide details";
-                        }
-                        return null;
-                      },
-                    ),
+                    Obx(() => CustomTextFormField(
+                          labelText: _Category.value == 'Fertilizer Dealer'
+                              ? "Fertilizer dealer's place"
+                              : "PIA place",
+                          controller: _placeController,
+                          keyboardType: TextInputType.text,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return "Please provide details";
+                            }
+                            return null;
+                          },
+                        )),
                     const SizedBox(height: 20.0),
                     Obx(() => _selectedImage.value == null
                         ? const Text('No image selected.')
                         : Image.file(_selectedImage.value!,
-                        height: 100, width: 100)),
+                            height: 100, width: 100)),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -644,7 +594,7 @@ class GenerateDealersIdPage extends StatelessWidget {
                 onPressed: () {
                   bool isFormValid = _validateform();
                   bool areControllersValid =
-                  _validateFarmerControllers(context);
+                      _validateFarmerControllers(context);
                   if (isFormValid && areControllersValid) {
                     try {
                       _uploadData(context);
