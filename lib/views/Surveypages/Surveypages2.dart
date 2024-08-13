@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
-import 'package:gkvk/database/survey_page2_db.dart';
+import 'package:gkvk/database/farmerDB/survey_page2_db.dart';
 import 'package:gkvk/shared/components/Question/question_container.dart';
 
 import 'Surveypages3.dart';

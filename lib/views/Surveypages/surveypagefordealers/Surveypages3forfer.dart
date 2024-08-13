@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gkvk/database/surveypage3forfer_db.dart';
+import 'package:gkvk/database/DealerDB/surveypage3forfer_db.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';

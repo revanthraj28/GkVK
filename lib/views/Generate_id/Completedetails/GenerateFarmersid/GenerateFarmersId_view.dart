@@ -4,7 +4,7 @@ import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
-import 'package:gkvk/database/farmer_profile_db.dart';
+import 'package:gkvk/database/farmerDB/farmer_profile_db.dart';
 import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';

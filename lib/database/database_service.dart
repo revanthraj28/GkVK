@@ -1,17 +1,17 @@
-import 'package:gkvk/database/surveypage1forfer_db.dart';
-import 'package:gkvk/database/surveypage3forfer_db.dart';
-import 'package:gkvk/database/surveypage2forfer_db.dart';
+import 'package:gkvk/database/DealerDB/surveypage1forfer_db.dart';
+import 'package:gkvk/database/DealerDB/surveypage3forfer_db.dart';
+import 'package:gkvk/database/DealerDB/surveypage2forfer_db.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
-import 'package:gkvk/database/gkvk_db.dart';
-import 'package:gkvk/database/farmer_profile_db.dart';
-import 'package:gkvk/database/cropdetails_db.dart';
-import 'package:gkvk/database/survey_page1_db.dart';
-import 'package:gkvk/database/survey_page2_db.dart';
-import 'package:gkvk/database/survey_page3_db.dart';
-import 'package:gkvk/database/survey_page4_db.dart';
+import 'package:gkvk/database/farmerDB/gkvk_db.dart';
+import 'package:gkvk/database/farmerDB/farmer_profile_db.dart';
+import 'package:gkvk/database/farmerDB/cropdetails_db.dart';
+import 'package:gkvk/database/farmerDB/survey_page1_db.dart';
+import 'package:gkvk/database/farmerDB/survey_page2_db.dart';
+import 'package:gkvk/database/farmerDB/survey_page3_db.dart';
+import 'package:gkvk/database/farmerDB/survey_page4_db.dart';
 
-import 'dealer_db.dart';
+import 'DealerDB/dealer_db.dart';
 
 class DatabaseService {
   Database? _database;

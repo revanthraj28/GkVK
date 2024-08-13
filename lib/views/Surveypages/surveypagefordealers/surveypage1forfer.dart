@@ -1,25 +1,23 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:gkvk/database/surveypage2forfer_db.dart';
+import 'package:gkvk/database/DealerDB/surveypage1forfer_db.dart';
 import 'package:gkvk/models/data_model.dart';
 import 'package:gkvk/constants/surveydata.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
-
 import 'package:gkvk/shared/components/Question/question_container.dart';
-import 'package:gkvk/views/Surveypages/Surveypages3forfer.dart';
+import 'package:gkvk/views/Surveypages/surveypagefordealers/surveypage2forfer.dart';
 
-
-class surveypage2forfer extends StatefulWidget {
+class surveypage1forfer extends StatefulWidget {
   final int aadharId;
-  const surveypage2forfer({required this.aadharId, super.key});
+  const surveypage1forfer({required this.aadharId, super.key});
 
   @override
-  State<surveypage2forfer> createState() => _surveypage2forferState();
+  State<surveypage1forfer> createState() => _surveypage1forferState();
 }
 
-class _surveypage2forferState extends State<surveypage2forfer> {
-  List<String?> selectedOptions = List<String?>.filled(statementAcceptance.length, null);
-  List<String?> errors = List<String?>.filled(statementAcceptance.length, null); // Track errors
+class _surveypage1forferState extends State<surveypage1forfer> {
+  List<String?> selectedOptions = List<String?>.filled(questionsPage1.length, null);
+  List<String?> errors = List<String?>.filled(questionsPage1.length, null); // Track errors
 
   void _handleOptionChange(int index, String? value) {
     setState(() {
@@ -57,7 +55,7 @@ class _surveypage2forferState extends State<surveypage2forfer> {
       // print('Selected options JSON: $jsonString'); // Print the JSON string
 
       // Save to SurveyDataDB
-      final surveyDataDB = SurveyDataDBforfer2();
+      final surveyDataDB = SurveyDataDBforfer();
 
       // Check if the survey data already exists
       final existingSurveyData = await surveyDataDB.read(widget.aadharId);
@@ -79,7 +77,7 @@ class _surveypage2forferState extends State<surveypage2forfer> {
       // Navigate to the next page
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => Surveypages5(aadharId: widget.aadharId)),
+        MaterialPageRoute(builder: (context) => surveypage2forfer(aadharId: widget.aadharId)),
       );
     } else {
       // Show an alert dialog if not all questions are answered
@@ -209,12 +207,12 @@ class _surveypage2forferState extends State<surveypage2forfer> {
             children: [
               Expanded(
                 child: ListView.builder(
-                  itemCount: statementAcceptance.length + 1,  // Increase item count by 1
+                  itemCount: questionsPage1.length + 1,  // Increase item count by 1
                   itemBuilder: (context, index) {
-                    if (index == statementAcceptance.length) {
+                    if (index == questionsPage1.length) {
                       return const SizedBox(height: 60);  // Add SizedBox at the end
                     }
-                    return buildQuestion(statementAcceptance[index], index);
+                    return buildQuestion(questionsPage1[index], index);
                   },
                 ),
               ),

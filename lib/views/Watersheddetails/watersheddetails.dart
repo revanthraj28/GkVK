@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart' show Obx, RxString, StringExtension;
 import 'package:gkvk/database/database_service.dart';
-import 'package:gkvk/database/gkvk_db.dart';
+import 'package:gkvk/database/farmerDB/gkvk_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';

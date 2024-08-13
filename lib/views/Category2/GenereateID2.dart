@@ -4,12 +4,12 @@ import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
-import 'package:gkvk/views/Surveypages/surveypage1forfer.dart';
+import 'package:gkvk/views/Surveypages/surveypagefordealers/surveypage1forfer.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
 
-import '../../database/dealer_db.dart';
+import '../../database/DealerDB/dealer_db.dart';
 
 class GenerateDealersIdPage extends StatefulWidget {
   final int waterShedId;

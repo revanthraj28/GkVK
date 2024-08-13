@@ -16,31 +16,37 @@ class OptionButtonGroup extends StatelessWidget {
   Widget build(BuildContext context) {
     return Wrap(
       spacing: 5,
-      runSpacing: 0,
-      children: options
-          .map(
-            (option) => SizedBox(
-          width: MediaQuery.of(context).size.width - 40,
-          child: ElevatedButton(
-            onPressed: () => onPressed(option),
-            style: ElevatedButton.styleFrom(
-              backgroundColor: option == selectedOption ? Colors.black : Colors.white,
-              foregroundColor: option == selectedOption ? Colors.white : Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5.0),
+      runSpacing: 8,
+      children: options.map((option) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width -
+              40, // Keep the width as before
+          child: IntrinsicHeight(
+            // Ensures the height is adjusted based on content
+            child: ElevatedButton(
+              onPressed: () => onPressed(option),
+              style: ElevatedButton.styleFrom(
+                backgroundColor:
+                    option == selectedOption ? Colors.black : Colors.white,
+                foregroundColor:
+                    option == selectedOption ? Colors.white : Colors.black,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                elevation: 0,
+                padding: const EdgeInsets.all(16.0),
               ),
-              elevation: 0,
-            ),
-            child: Text(
-              option,
-              style: const TextStyle(
-                fontWeight: FontWeight.w400,
+              child: Text(
+                option,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontWeight: FontWeight.w500,
+                ),
               ),
             ),
           ),
-        ),
-      )
-          .toList(),
+        );
+      }).toList(),
     );
   }
 }

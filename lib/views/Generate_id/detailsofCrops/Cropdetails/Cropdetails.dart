@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
 import 'package:gkvk/shared/components/CustomTextFormField.dart';
 import 'package:gkvk/shared/components/SelectionButton.dart';
-import 'package:gkvk/database/cropdetails_db.dart';
+import 'package:gkvk/database/farmerDB/cropdetails_db.dart';
 import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 
 
