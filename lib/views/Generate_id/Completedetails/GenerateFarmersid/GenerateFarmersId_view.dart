@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomAlertDialog.dart';
@@ -43,6 +44,9 @@ class GenerateFarmersIdPage extends StatelessWidget {
       // Check if the farmer profile already exists
       final existingProfile =
           await farmerProfileDB.read(int.parse(_aadharController.text));
+          final user = FirebaseAuth.instance.currentUser;
+          if (user == null) return;
+
 
       if (existingProfile != null) {
         // Update the existing profile
@@ -64,6 +68,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
           lriReceived: _selectedLRIReceived.value,
           watershedId: waterShedId,
           image: _selectedImage.value?.path,
+          User: user.email!,
         );
       } else {
         // Create a new profile
@@ -85,6 +90,7 @@ class GenerateFarmersIdPage extends StatelessWidget {
           lriReceived: _selectedLRIReceived.value,
           watershedId: waterShedId,
           image: _selectedImage.value!.path,
+          User: user.email!,
         );
       }
 

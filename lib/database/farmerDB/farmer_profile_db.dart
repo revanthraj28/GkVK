@@ -27,6 +27,7 @@ class FarmerProfileDB {
         "totalland" INTEGER NOT NULL,
         "timestamp" DATETIME DEFAULT CURRENT_TIMESTAMP,
         "image" TEXT,
+        "User" TEXT,
         FOREIGN KEY ("watershedId") REFERENCES "water_shed_table" ("watershedId")
       );
     ''');
@@ -50,7 +51,8 @@ class FarmerProfileDB {
     required String salesOfProduce,
     required String lriReceived,
     required int watershedId,
-    required String image, // Add image parameter here
+    required String image,
+    required String User, // Add image parameter here
   }) async {
     final database = await DatabaseService().database;
     return await database.insert(tableName, {
@@ -70,7 +72,8 @@ class FarmerProfileDB {
       'lriReceived': lriReceived,
       'watershedId': watershedId,
       'totalland': totalland,
-      'image': image, // Include image here
+      'image': image,
+      'User' :User,// Include image here
     });
   }
 
@@ -113,7 +116,9 @@ class FarmerProfileDB {
     required String salesOfProduce,
     required String lriReceived,
     required int watershedId,
-    required String? image, // Add image parameter here
+    required String? image,
+    required String User,
+     // Add image parameter here
   }) async {
     final database = await DatabaseService().database;
     return await database.update(
@@ -134,7 +139,8 @@ class FarmerProfileDB {
         'lriReceived': lriReceived,
         'watershedId': watershedId,
         'totalland': totalland,
-        'image': image, // Include image here
+        'image': image,
+        'User' :User, // Include image here
       },
       where: 'aadharNumber = ?',
       whereArgs: [aadharNumber],

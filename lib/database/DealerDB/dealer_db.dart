@@ -22,6 +22,7 @@ class DealerDb {
         "watershedId" INTEGER NOT NULL,
         "timestamp" DATETIME DEFAULT CURRENT_TIMESTAMP,
         "image" TEXT,
+        "User" TEXT,
         FOREIGN KEY ("watershedId") REFERENCES "water_shed_table" ("watershedId")
       );
     ''');
@@ -41,6 +42,7 @@ class DealerDb {
     required String Place,
     required int watershedId,
     required String image,
+    required String User,
   }) async {
     final database = await DatabaseService().database;
     return await database.insert(tableName, {
@@ -57,6 +59,7 @@ class DealerDb {
       'watershedId': watershedId,
       'image': image,
       'aadharNumber': aadharNumber,
+      'User': User,
     });
   }
 
@@ -74,6 +77,7 @@ class DealerDb {
     required String Place,
     required int watershedId,
     required String image,
+    required String User,
   }) async {
     final database = await DatabaseService().database;
     return await database.update(
@@ -92,6 +96,7 @@ class DealerDb {
         'watershedId': watershedId,
         'image': image,
         'aadharNumber': aadharNumber,
+        'User': User,
       },
       where: 'aadharNumber = ?',
       whereArgs: [aadharNumber],

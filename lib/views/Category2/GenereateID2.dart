@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomAlertDialog.dart';
@@ -152,7 +153,8 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
       if (!_formKey.currentState!.validate()) {
         return;
       }
-
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
       // Check if the dealer profile already exists
       final existingProfile =
           await dealerDb.read(int.parse(_aadharController.text));
@@ -172,6 +174,7 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
           phonenumber: int.parse(phonenumbercontroller.text),
           watershedId: widget.waterShedId,
           image: _selectedImage.value?.path ?? '',
+          User: user.email!,
           Category: _Category.value,
         );
       } else {
@@ -189,6 +192,7 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
           phonenumber: int.parse(phonenumbercontroller.text),
           watershedId: widget.waterShedId,
           image: _selectedImage.value?.path ?? '',
+          User: user.email!,
           Category: _Category.value,
         );
       }
@@ -566,12 +570,12 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
                             _pickImage(context, ImageSource.camera);
                           },
                         ),
-                        // IconButton(
-                        //   icon: const Icon(Icons.photo),
-                        //   onPressed: () {
-                        //     _pickImage(context, ImageSource.gallery);
-                        //   },
-                        // ),
+                        IconButton(
+                          icon: const Icon(Icons.photo),
+                          onPressed: () {
+                            _pickImage(context, ImageSource.gallery);
+                          },
+                        ),
                       ],
                     ),
                     const SizedBox(height: 30.0),
