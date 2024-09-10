@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:io';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:gkvk/database/farmerDB/farmer_profile_db.dart';
 import 'package:gkvk/database/farmerDB/survey_page1_db.dart';
 import 'package:gkvk/database/farmerDB/survey_page2_db.dart';
@@ -12,10 +13,8 @@ import 'package:gkvk/database/farmerDB/cropdetails_db.dart';
 // import 'package:gkvk/database/watershed_db.dart';
 import 'package:gkvk/database/farmerDB/gkvk_db.dart';
 import 'package:gkvk/database/DealerDB/dealer_db.dart';
-import 'package:gkvk/database/DealerDB/surveypage1forfer_db.dart';
-import 'package:gkvk/database/DealerDB/surveypage2forfer_db.dart';
-import 'package:gkvk/database/DealerDB/surveypage3forfer_db.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
+import 'package:path_provider/path_provider.dart';
 
 void main() {
   runApp(const MaterialApp(
@@ -97,109 +96,147 @@ class _FarmersTabState extends State<FarmersTab> {
   Future<List<Map<String, dynamic>>> fetchAllFarmers() async {
     return await FarmerProfileDB().readAll();
   }
+Future<void> uploadFarmerData(int aadharNumber) async {
+  final farmerProfileDB = FarmerProfileDB();
+  final surveyDataDB1 = SurveyDataDB1();
+  final surveyDataDB2 = SurveyDataDB2();
+  final surveyDataDB3 = SurveyDataDB3();
+  final surveyDataDB4 = SurveyDataDB4();
+  final cropdetailsDB = CropdetailsDB();
+  final waterShedDB = WaterShedDB();
 
-  Future<void> uploadFarmerData(int aadharNumber) async {
-    final farmerProfileDB = FarmerProfileDB();
-    final surveyDataDB1 = SurveyDataDB1();
-    final surveyDataDB2 = SurveyDataDB2();
-    final surveyDataDB3 = SurveyDataDB3();
-    final surveyDataDB4 = SurveyDataDB4();
-    final cropdetailsDB = CropdetailsDB();
-    final waterShedDB = WaterShedDB();
+  try {
+    final farmerData = await farmerProfileDB.read(aadharNumber);
+    if (farmerData == null) throw Exception('Farmer data not found');
 
-    try {
-      final farmerData = await farmerProfileDB.read(aadharNumber);
-      if (farmerData == null) throw Exception('Farmer data not found');
+    // Create a mutable copy of farmerData
+    final mutableFarmerData = Map<String, dynamic>.from(farmerData);
 
-      // Create a mutable copy of farmerData
-      final mutableFarmerData = Map<String, dynamic>.from(farmerData);
+    print('Farmer Data: $mutableFarmerData');
 
-      print('Farmer Data: $mutableFarmerData');
+    final surveyData1 = await surveyDataDB1.read(aadharNumber);
+    final surveyData2 = await surveyDataDB2.read(aadharNumber);
+    final surveyData3 = await surveyDataDB3.read(aadharNumber);
+    final surveyData4 = await surveyDataDB4.read(aadharNumber);
+    final cropDetailsData = await cropdetailsDB.readByAadharId(aadharNumber);
 
-      final surveyData1 = await surveyDataDB1.read(aadharNumber);
-      final surveyData2 = await surveyDataDB2.read(aadharNumber);
-      final surveyData3 = await surveyDataDB3.read(aadharNumber);
-      final surveyData4 = await surveyDataDB4.read(aadharNumber);
-      final cropDetailsData = await cropdetailsDB.readByAadharId(aadharNumber);
+    final watershedId = farmerData['watershedId'];
+    final watershedData = await waterShedDB.read(watershedId);
+    if (watershedData == null) throw Exception('Watershed data not found');
 
-      final watershedId = farmerData['watershedId'];
-      final watershedData = await waterShedDB.read(watershedId);
-      if (watershedData == null) throw Exception('Watershed data not found');
+    final firestore = FirebaseFirestore.instance;
+    final batch = firestore.batch();
 
-      final firestore = FirebaseFirestore.instance;
-      final batch = firestore.batch();
+    final farmerRef =
+        firestore.collection('farmers').doc(aadharNumber.toString());
 
-      final farmerRef =
-          firestore.collection('farmers').doc(aadharNumber.toString());
+    // Compress and upload the image to Firebase Storage
+    final imagePath = farmerData['image'];
+    if (imagePath != null && imagePath.isNotEmpty) {
+      final file = File(imagePath);
+      if (file.existsSync()) {
+        // Compress the image
+        final compressedImage = await compressImage(file);
 
-      // Upload image to Firebase Storage
-      final imagePath = farmerData['image'];
-      if (imagePath != null && imagePath.isNotEmpty) {
-        final file = File(imagePath);
-        if (file.existsSync()) {
+        if (compressedImage != null) {
           final storageRef = FirebaseStorage.instance
               .ref()
               .child('farmer_images/$aadharNumber.jpg');
-          final uploadTask = storageRef.putFile(file);
+          final uploadTask = storageRef.putFile(compressedImage);
           final snapshot = await uploadTask.whenComplete(() => null);
           final downloadUrl = await snapshot.ref.getDownloadURL();
           print('Image URL: $downloadUrl');
 
-          // Update mutableFarmerData with imageUrl
+          // Create a new collection to store the image data
+          final farmerImageRef = firestore
+              .collection('farmer_images')
+              .doc(aadharNumber.toString());
+
+          final imageMetadata = {
+            'aadharNumber': aadharNumber,
+            'imageUrl': downloadUrl,
+            'timestamp': FieldValue.serverTimestamp(),
+          };
+
+          // Add image metadata to the new collection
+          batch.set(farmerImageRef, imageMetadata);
+
+          // Also update the mutableFarmerData with the image URL if needed
           mutableFarmerData['imageUrl'] = downloadUrl;
-        } else {
-          print('Error: Image file does not exist at path: $imagePath');
         }
+      } else {
+        print('Error: Image file does not exist at path: $imagePath');
       }
-
-      print('Updated Farmer Data: $mutableFarmerData');
-
-      batch.set(farmerRef, mutableFarmerData);
-
-      if (surveyData1 != null) {
-        final survey1Ref = farmerRef.collection('surveyData1').doc('survey1');
-        batch.set(survey1Ref, surveyData1);
-      }
-      if (surveyData2 != null) {
-        final survey2Ref = farmerRef.collection('surveyData2').doc('survey2');
-        batch.set(survey2Ref, surveyData2);
-      }
-      if (surveyData3 != null) {
-        final survey3Ref = farmerRef.collection('surveyData3').doc('survey3');
-        batch.set(survey3Ref, surveyData3);
-      }
-      if (surveyData4 != null) {
-        final survey4Ref = farmerRef.collection('surveyData4').doc('survey4');
-        batch.set(survey4Ref, surveyData4);
-      }
-      if (cropDetailsData.isNotEmpty) {
-        final cropDetailsRef = farmerRef.collection('cropDetails');
-        for (var crop in cropDetailsData) {
-          final cropRef = cropDetailsRef.doc();
-          batch.set(cropRef, crop);
-        }
-      }
-
-      final watershedRef = farmerRef.collection('watershed').doc('watershed');
-      batch.set(watershedRef, watershedData);
-
-      await batch.commit();
-
-      await farmerProfileDB.delete(aadharNumber);
-      if (surveyData1 != null) await surveyDataDB1.delete(aadharNumber);
-      if (surveyData2 != null) await surveyDataDB2.delete(aadharNumber);
-      if (surveyData3 != null) await surveyDataDB3.delete(aadharNumber);
-      if (surveyData4 != null) await surveyDataDB4.delete(aadharNumber);
-      if (cropDetailsData.isNotEmpty) await cropdetailsDB.delete(aadharNumber);
-
-      setState(() {
-        _farmersFuture = fetchAllFarmers();
-      });
-    } catch (e) {
-      print('Error: $e');
-      rethrow;
     }
+
+    print('Updated Farmer Data: $mutableFarmerData');
+
+    // Set the farmer data in Firestore
+    batch.set(farmerRef, mutableFarmerData);
+
+    // Add survey data and other related collections
+    if (surveyData1 != null) {
+      final survey1Ref = farmerRef.collection('surveyData1').doc('survey1');
+      batch.set(survey1Ref, surveyData1);
+    }
+    if (surveyData2 != null) {
+      final survey2Ref = farmerRef.collection('surveyData2').doc('survey2');
+      batch.set(survey2Ref, surveyData2);
+    }
+    if (surveyData3 != null) {
+      final survey3Ref = farmerRef.collection('surveyData3').doc('survey3');
+      batch.set(survey3Ref, surveyData3);
+    }
+    if (surveyData4 != null) {
+      final survey4Ref = farmerRef.collection('surveyData4').doc('survey4');
+      batch.set(survey4Ref, surveyData4);
+    }
+    if (cropDetailsData.isNotEmpty) {
+      final cropDetailsRef = farmerRef.collection('cropDetails');
+      for (var crop in cropDetailsData) {
+        final cropRef = cropDetailsRef.doc();
+        batch.set(cropRef, crop);
+      }
+    }
+
+    final watershedRef = farmerRef.collection('watershed').doc('watershed');
+    batch.set(watershedRef, watershedData);
+
+    // Commit the batch
+    await batch.commit();
+
+    // Delete the local data after successful upload
+    await farmerProfileDB.delete(aadharNumber);
+    if (surveyData1 != null) await surveyDataDB1.delete(aadharNumber);
+    if (surveyData2 != null) await surveyDataDB2.delete(aadharNumber);
+    if (surveyData3 != null) await surveyDataDB3.delete(aadharNumber);
+    if (surveyData4 != null) await surveyDataDB4.delete(aadharNumber);
+    if (cropDetailsData.isNotEmpty) await cropdetailsDB.delete(aadharNumber);
+
+    // Update the state to refresh the farmers list
+    setState(() {
+      _farmersFuture = fetchAllFarmers();
+    });
+  } catch (e) {
+    print('Error: $e');
+    rethrow;
   }
+}
+
+// Function to compress the image
+Future<File?> compressImage(File file) async {
+  final tempDir = await getTemporaryDirectory();
+  final targetPath = '${tempDir.path}/${file.uri.pathSegments.last}';
+
+  final compressedFile = await FlutterImageCompress.compressAndGetFile(
+    file.absolute.path, // input file path
+    targetPath,         // output file path
+    quality: 85,        // quality (adjust between 0-100)
+  );
+
+  return compressedFile;
+}
+
 
   Future<void> incrementUserCounter(String counterField) async {
     final user = FirebaseAuth.instance.currentUser;
@@ -432,103 +469,107 @@ class _DealersTabState extends State<DealersTab> {
     _dealersFuture = fetchAllDealers();
   }
 
-  Future<void> uploadDealerData(int aadharNumber) async {
-    final dealerDB = DealerDb();
-    final surveyDataDBforfer = SurveyDataDBforfer();
-    final surveyDataDBforfer2 = SurveyDataDBforfer2();
-    final surveyDataDBforfer3 = SurveyDataDBforfer3();
-    final waterShedDB = WaterShedDB();
+Future<void> uploadDealerData(int aadharNumber) async {
+  final dealerDB = DealerDb();
+  final waterShedDB = WaterShedDB();
 
-    try {
-      // Fetch dealer data
-      final dealerData = await dealerDB.read(aadharNumber);
-      if (dealerData == null) throw Exception('Dealer data not found');
+  try {
+    // Fetch dealer data
+    final dealerData = await dealerDB.read(aadharNumber);
+    if (dealerData == null) throw Exception('Dealer data not found');
 
-      // Create a mutable copy of dealerData
-      final mutableDealerData = Map<String, dynamic>.from(dealerData);
+    // Create a mutable copy of dealerData
+    final mutableDealerData = Map<String, dynamic>.from(dealerData);
 
-      print('Dealer Data: $mutableDealerData');
+    print('Dealer Data: $mutableDealerData');
 
-      // Fetch survey data
-      final surveyDataDBforfer01 = await surveyDataDBforfer.read(aadharNumber);
-      final surveyDataDBforfer02 = await surveyDataDBforfer2.read(aadharNumber);
-      final surveyDataDBforfer03 = await surveyDataDBforfer3.read(aadharNumber);
+    // Fetch watershed data
+    final watershedId = dealerData['watershedId'];
+    final watershedData = await waterShedDB.read(watershedId);
+    if (watershedData == null) throw Exception('Watershed data not found');
 
-      // Fetch watershed data
-      final watershedId = dealerData['watershedId'];
-      final watershedData = await waterShedDB.read(watershedId);
-      if (watershedData == null) throw Exception('Watershed data not found');
+    // Initialize Firebase batch operation
+    final firestore = FirebaseFirestore.instance;
+    final batch = firestore.batch();
 
-      // Initialize Firebase batch operation
-      final firestore = FirebaseFirestore.instance;
-      final batch = firestore.batch();
+    final dealerRef = firestore.collection('dealers').doc(aadharNumber.toString());
 
-      final dealerRef =
-          firestore.collection('dealers').doc(aadharNumber.toString());
+    // Compress and upload image to Firebase Storage
+    final imagePath = dealerData['image'];
+    if (imagePath != null && imagePath.isNotEmpty) {
+      final file = File(imagePath);
+      if (file.existsSync()) {
+        // Compress the image before uploading
+        final compressedImage = await compressImage(file);
 
-      // Upload image to Firebase Storage
-      final imagePath = dealerData['image'];
-      if (imagePath != null && imagePath.isNotEmpty) {
-        final file = File(imagePath);
-        if (file.existsSync()) {
+        if (compressedImage != null) {
           final storageRef = FirebaseStorage.instance
               .ref()
               .child('dealer_images/$aadharNumber.jpg');
-          final uploadTask = storageRef.putFile(file);
+          final uploadTask = storageRef.putFile(compressedImage);
           final snapshot = await uploadTask.whenComplete(() => null);
           final downloadUrl = await snapshot.ref.getDownloadURL();
           print('Image URL: $downloadUrl');
 
           // Update mutableDealerData with imageUrl
           mutableDealerData['imageUrl'] = downloadUrl;
-        } else {
-          print('Error: Image file does not exist at path: $imagePath');
+
+          // Create a new collection to store the image metadata
+          final dealerImageRef = firestore.collection('dealer_images').doc(aadharNumber.toString());
+
+          final imageMetadata = {
+            'aadharNumber': aadharNumber,
+            'imageUrl': downloadUrl,
+            'timestamp': FieldValue.serverTimestamp(),
+          };
+
+          // Add image metadata to Firestore collection
+          batch.set(dealerImageRef, imageMetadata);
         }
+      } else {
+        print('Error: Image file does not exist at path: $imagePath');
       }
-
-      print('Updated Dealer Data: $mutableDealerData');
-
-      // Add dealer data to batch
-      batch.set(dealerRef, mutableDealerData);
-
-      // Add survey data to batch if available
-      if (surveyDataDBforfer01 != null) {
-        final surveyRef = dealerRef.collection('surveyData').doc('surveyDataDBforfer01');
-        batch.set(surveyRef, surveyDataDBforfer01);
-      }
-
-      if (surveyDataDBforfer02 != null) {
-        final survey2Ref = dealerRef.collection('surveyData').doc('surveyDataDBforfer02');
-        batch.set(survey2Ref, surveyDataDBforfer02);
-      }
-
-      if (surveyDataDBforfer03 != null) {
-        final survey3Ref = dealerRef.collection('surveyData').doc('surveyDataDBforfer03');
-        batch.set(survey3Ref, surveyDataDBforfer03);
-      }
-
-      // Add watershed data to batch
-      final watershedRef = dealerRef.collection('watershed').doc('watershed');
-      batch.set(watershedRef, watershedData);
-
-      // Commit the batch operation
-      await batch.commit();
-
-      // Delete local data if upload is successful
-      await dealerDB.delete(aadharNumber);
-      if (surveyDataDBforfer01 != null) await surveyDataDBforfer.delete(aadharNumber);
-      if (surveyDataDBforfer02 != null) await surveyDataDBforfer2.delete(aadharNumber);
-      if (surveyDataDBforfer03 != null) await surveyDataDBforfer3.delete(aadharNumber);
-
-      // Update UI after successful upload
-      setState(() {
-        _dealersFuture = fetchAllDealers();
-      });
-    } catch (e, s) {
-      print('Error: $e stacktrace : $s');
-      rethrow;
     }
+
+    print('Updated Dealer Data: $mutableDealerData');
+
+    // Add dealer data to batch
+    batch.set(dealerRef, mutableDealerData);
+
+    // Add watershed data to batch
+    final watershedRef = dealerRef.collection('watershed').doc('watershed');
+    batch.set(watershedRef, watershedData);
+
+    // Commit the batch operation
+    await batch.commit();
+
+    // Delete local data if upload is successful
+    await dealerDB.delete(aadharNumber);
+
+    // Update UI after successful upload
+    setState(() {
+      _dealersFuture = fetchAllDealers();
+    });
+  } catch (e, s) {
+    print('Error: $e stacktrace : $s');
+    rethrow;
   }
+}
+
+// Function to compress the image
+Future<File?> compressImage(File file) async {
+  final tempDir = await getTemporaryDirectory();
+  final targetPath = '${tempDir.path}/${file.uri.pathSegments.last}';
+
+  final compressedFile = await FlutterImageCompress.compressAndGetFile(
+    file.absolute.path, // input file path
+    targetPath,         // output file path
+    quality: 85,        // quality (adjust between 0-100)
+  );
+
+  return compressedFile;
+}
+
   Future<void> addDealersToUserCollection(String userEmail, int aadharNumber) async {
     final firestore = FirebaseFirestore.instance;
     final userRef = firestore.collection('users').doc(userEmail);

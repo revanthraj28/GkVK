@@ -44,9 +44,8 @@ class GenerateFarmersIdPage extends StatelessWidget {
       // Check if the farmer profile already exists
       final existingProfile =
           await farmerProfileDB.read(int.parse(_aadharController.text));
-          final user = FirebaseAuth.instance.currentUser;
-          if (user == null) return;
-
+      final user = FirebaseAuth.instance.currentUser;
+      if (user == null) return;
 
       if (existingProfile != null) {
         // Update the existing profile

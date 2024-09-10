@@ -138,8 +138,7 @@ class _CropdetailsState extends State<Cropdetails> {
     // Update the total production cost controller
     _totalProductionCostController.text = total.toStringAsFixed(2);
   }
-
-  Future<void> _submitData(BuildContext context) async {
+Future<void> _submitData(BuildContext context) async {
   final cropDetailsDB = CropdetailsDB();
 
   Map<String, dynamic> data = {
@@ -193,21 +192,22 @@ class _CropdetailsState extends State<Cropdetails> {
   // Add chemical fertilizers details
   for (var i = 0; i < chemicalFertilizers.length; i++) {
     data['chemicalFertilizerName$i'] = chemicalFertilizers[i]['name']?.text ?? '';
-    data['chemicalFertilizerBasal$i'] = chemicalFertilizers[i]['basal']?.text ?? '';
-    data['chemicalFertilizerTopDress$i'] = chemicalFertilizers[i]['topDress']?.text ?? '';
-    data['chemicalFertilizerTotalQuantity$i'] = double.tryParse(chemicalFertilizers[i]['totalQuantity']?.text ?? '0');
-    data['chemicalFertilizerTotalCost$i'] = double.tryParse(chemicalFertilizers[i]['totalCost']?.text ?? '0');
+    data['chemicalFertilizerBasal$i'] = double.tryParse(chemicalFertilizers[i]['basal']?.text ?? '') ?? 0;
+    data['chemicalFertilizerTopDress$i'] = double.tryParse(chemicalFertilizers[i]['topDress']?.text ?? '') ?? 0;
+    data['chemicalFertilizerTotalQuantity$i'] = double.tryParse(chemicalFertilizers[i]['totalQuantity']?.text ?? '') ?? 0;
+    data['chemicalFertilizerTotalCost$i'] = double.tryParse(chemicalFertilizers[i]['totalCost']?.text ?? '') ?? 0;
   }
 
   final existingCropDetail = await cropDetailsDB.read(widget.aadharId, widget.hissaNumber, widget.SurveyNumber);
+
   if (existingCropDetail != null) {
-    await cropDetailsDB.update(data, widget.aadharId as String, widget.hissaNumber, widget.SurveyNumber as String);
-  } else {
-    await cropDetailsDB.create(data);
+    await cropDetailsDB.delete(widget.aadharId);
   }
 
+  await cropDetailsDB.create(data);
+
   if (kDebugMode) {
-    // print('Data submitted successfully');
+    print('Data submitted successfully');
   }
 
   Navigator.pop(
@@ -219,68 +219,6 @@ class _CropdetailsState extends State<Cropdetails> {
 }
 
 
-
-  // Future<void> _showExitConfirmationDialog(BuildContext context) async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: true,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(15.0),
-  //         ),
-  //         backgroundColor: const Color(0xFFFEF8E0),
-  //         title: const Text(
-  //           'Exit',
-  //           style: TextStyle(
-  //             color: Color(0xFFFB812C),
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //         content: const Text(
-  //           'Do you want to return to the home page?',
-  //           style: TextStyle(
-  //             color: Colors.black,
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text(
-  //               'Cancel',
-  //               style: TextStyle(
-  //                 color: Color(0xFFFB812C),
-  //               ),
-  //             ),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //               child: const Text(
-  //                 'OK',
-  //                 style: TextStyle(
-  //                   color: Color(0xFFFB812C),
-  //                 ),
-  //               ),
-  //               onPressed: () async {
-  //                 try {
-  //                   final farmerProfileDB =
-  //                       FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
-  //                   await farmerProfileDB.delete(widget.aadharId);
-  //                   final cropdetailsDB = CropdetailsDB();
-  //                   await cropdetailsDB.delete(widget.aadharId);
-
-  //                   Navigator.of(context).popUntil((route) => route.isFirst);
-  //                 } catch (error) {
-  //                   // print("Failed to delete farmer profile: $error");
-  //                   // Optionally show an error message to the user
-  //                 }
-  //               }),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
 
   void _handleTypeOfLandSelection(String option) {
     _selectedTypeOfLand.value = option;
@@ -846,36 +784,21 @@ class _CropdetailsState extends State<Cropdetails> {
                       labelText: "Name",
                       controller: _organicManureNameController,
                       keyboardType: TextInputType.text,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return "Please enter Name";
-                      //   }
-                      //   return null;
-                      // },
+                     
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
                       labelText: "Quantity (in tonnes)",
                       controller: _organicManureQuantityController,
                       keyboardType: TextInputType.number,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return "Please enter Quantity";
-                      //   }
-                      //   return null;
-                      // },
+                      
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
                       labelText: "Cost (in Rs.)",
                       controller: _organicManureCostController,
                       keyboardType: TextInputType.number,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return "Please enter Cost";
-                      //   }
-                      //   return null;
-                      // },
+                     
                     ),
                     const SizedBox(height: 20.0),
                     const Text(
@@ -891,36 +814,21 @@ class _CropdetailsState extends State<Cropdetails> {
                       labelText: "Name",
                       controller: _bioFertilizerNameController,
                       keyboardType: TextInputType.text,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return "Please enter Name";
-                      //   }
-                      //   return null;
-                      // },
+                    
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
                       labelText: "Quantity (in kgs)",
                       controller: _bioFertilizerQuantityController,
                       keyboardType: TextInputType.number,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return "Please enter Quantity";
-                      //   }
-                      //   return null;
-                      // },
+                     
                     ),
                     const SizedBox(height: 20.0),
                     CustomTextFormField(
                       labelText: "Cost (in Rs.)",
                       controller: _bioFertilizerCostController,
                       keyboardType: TextInputType.number,
-                      // validator: (value) {
-                      //   if (value == null || value.isEmpty) {
-                      //     return "Please enter Cost";
-                      //   }
-                      //   return null;
-                      // },
+                      
                     ),
                     const SizedBox(height: 20.0),
                     const Text(
@@ -948,60 +856,35 @@ class _CropdetailsState extends State<Cropdetails> {
                             labelText: "Name",
                             controller: fertilizer['name']!,
                             keyboardType: TextInputType.text,
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return "Please enter Name";
-                            //   }
-                            //   return null;
-                            // },
+                           
                           ),
                           const SizedBox(height: 20.0),
                           CustomTextFormField(
                             labelText: "Basal dose (in kgs)",
                             controller: fertilizer['basal']!,
                             keyboardType: TextInputType.number,
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return "Please enter Basal dose";
-                            //   }
-                            //   return null;
-                            // },
+                            
                           ),
                           const SizedBox(height: 20.0),
                           CustomTextFormField(
                             labelText: "Top dress (in kgs)",
                             controller: fertilizer['topDress']!,
                             keyboardType: TextInputType.number,
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return "Please enter Top dress";
-                            //   }
-                            //   return null;
-                            // },
+                            
                           ),
                           const SizedBox(height: 20.0),
                           CustomTextFormField(
                             labelText: "Total quantity (in kgs)",
                             controller: fertilizer['totalQuantity']!,
                             keyboardType: TextInputType.number,
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return "Please enter Total quantity";
-                            //   }
-                            //   return null;
-                            // },
+                           
                           ),
                           const SizedBox(height: 20.0),
                           CustomTextFormField(
                             labelText: "Total cost (in Rs.)",
                             controller: fertilizer['totalCost']!,
                             keyboardType: TextInputType.number,
-                            // validator: (value) {
-                            //   if (value == null || value.isEmpty) {
-                            //     return "Please enter Total cost";
-                            //   }
-                            //   return null;
-                            // },
+                         
                           ),
                           const SizedBox(height: 20.0),
                         ],
@@ -1373,23 +1256,3 @@ class _CropdetailsState extends State<Cropdetails> {
   }
 }
 
-
-
- // if (_organicManureNameController.text.isEmpty) {
-    //   emptyFields.add('Organic Manure Name');
-    // }
-    // if (_organicManureQuantityController.text.isEmpty) {
-    //   emptyFields.add('Organic Manure Quantity');
-    // }
-    // if (_organicManureCostController.text.isEmpty) {
-    //   emptyFields.add('Organic Manure Cost');
-    // }
-    // if (_bioFertilizerNameController.text.isEmpty) {
-    //   emptyFields.add('Bio-Fertilizer Name');
-    // }
-    // if (_bioFertilizerQuantityController.text.isEmpty) {
-    //   emptyFields.add('Bio-Fertilizer Quantity');
-    // }
-    // if (_bioFertilizerCostController.text.isEmpty) {
-    //   emptyFields.add('Bio-Fertilizer Cost');
-    // }

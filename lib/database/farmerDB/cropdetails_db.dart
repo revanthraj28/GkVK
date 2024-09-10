@@ -54,8 +54,8 @@ class CropdetailsDB {
         "methodsoffertilizer" TEXT,
         ${List.generate(5, (i) => '''
           "chemicalFertilizerName$i" TEXT,
-          "chemicalFertilizerBasal$i" TEXT,
-          "chemicalFertilizerTopDress$i" TEXT,
+          "chemicalFertilizerBasal$i" INTEGER,
+          "chemicalFertilizerTopDress$i" INTEGER,
           "chemicalFertilizerTotalQuantity$i" REAL,
           "chemicalFertilizerTotalCost$i" REAL
         ''').join(',')}
@@ -92,15 +92,16 @@ class CropdetailsDB {
     }
   }
 
-  Future<int> update(Map<String, dynamic> data, String aadharId, String hissaNumber, String surveyNumber) async {
-    final database = await DatabaseService().database;
-    return await database.update(
-      tableName,
-      data,
-      where: 'aadharId = ? AND Hissa = ? AND survey = ?',
-      whereArgs: [aadharId, hissaNumber, surveyNumber],
-    );
-  }
+ Future<int> update(Map<String, dynamic> data, int aadharId, double hissaNumber, int surveyNumber) async {
+  final database = await DatabaseService().database;
+  return await database.update(
+    tableName,
+    data,
+    where: 'aadharId = ? AND Hissa = ? AND survey = ?',
+    whereArgs: [aadharId, hissaNumber, surveyNumber],
+  );
+}
+
 
   Future<int> delete(int aadharId) async {
     final database = await DatabaseService().database;

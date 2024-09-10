@@ -167,7 +167,7 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
           gender: _selectedGender.value,
           educationStatus: _selectedEducation.value,
           PIACadre: _selectedPIACadre.value,
-          email: _emailController.text, // Include email field
+          email: _emailController.text,
           Duration: _selectedDurationExperience.value,
           Place: _placeController.text,
           aadharNumber: int.parse(_aadharController.text),
@@ -570,12 +570,12 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
                             _pickImage(context, ImageSource.camera);
                           },
                         ),
-                        IconButton(
-                          icon: const Icon(Icons.photo),
-                          onPressed: () {
-                            _pickImage(context, ImageSource.gallery);
-                          },
-                        ),
+                        // IconButton(
+                        //   icon: const Icon(Icons.photo),
+                        //   onPressed: () {
+                        //     _pickImage(context, ImageSource.gallery);
+                        //   },
+                        // ),
                       ],
                     ),
                     const SizedBox(height: 30.0),
