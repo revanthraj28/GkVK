@@ -45,9 +45,10 @@ dependencies:
   path_provider: ^2.0.9
   permission_handler: ^11.3.1
   firebase_crashlytics:
-  firebase_app_check: 
+  firebase_app_check:
   provider:
   flutter_image_compress: ^1.1.0
+  flutter_native_image:
 
 dev_dependencies:
   flutter_test:
@@ -109,7 +110,6 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages
-
 
 flutter_launcher_icons:
   android: "launcher_icon"

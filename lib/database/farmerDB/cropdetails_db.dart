@@ -117,3 +117,4 @@ class CropdetailsDB {
     return await database.insert(tableName, data);
   }
 }
+

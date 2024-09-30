@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:gkvk/shared/components/CustomAlertDialog.dart';
 import 'package:gkvk/shared/components/CustomTextButton.dart';
@@ -48,6 +49,23 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
     }
   }
 
+  Future<String?> _compressImage(String imagePath) async {
+    final result = await FlutterImageCompress.compressWithFile(
+      imagePath,
+      quality: 40, // Adjust quality as needed
+    );
+
+    // Save compressed image to a temporary location and return its path
+    if (result != null) {
+      final compressedImagePath = imagePath.replaceAll(RegExp(r'\.jpg$'),
+          '_compressed.jpg'); // Change extension if necessary
+      final compressedFile = File(compressedImagePath);
+      await compressedFile.writeAsBytes(result);
+      return compressedImagePath;
+    }
+    return null;
+  }
+
   Future<void> _pickImageFromCamera(BuildContext context) async {
     final status = await Permission.camera.request();
 
@@ -55,7 +73,21 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
       final pickedFile =
           await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
-        _selectedImage.value = File(pickedFile.path);
+        final compressedImagePath = await _compressImage(pickedFile.path);
+        if (compressedImagePath != null) {
+          _selectedImage.value = File(compressedImagePath);
+        } else {
+          showDialog(
+            context: context,
+            builder: (context) => CustomAlertDialog(
+              title: 'Error',
+              content: "Image compression failed.",
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+          );
+        }
       } else {
         showDialog(
           context: context,
@@ -80,12 +112,6 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
           },
         ),
       );
-      // _showDialog(
-      //   context,
-      //   'Permission Required',
-      //   'You have permanently denied the camera permission. Please enable it in the app settings.',
-      //   openAppSettings,
-      // );
     } else {
       showDialog(
         context: context,
@@ -324,6 +350,8 @@ class _GenerateDealersIdPageState extends State<GenerateDealersIdPage> {
       },
     );
   }
+
+  
 
   @override
   Widget build(BuildContext context) {
