@@ -10,7 +10,6 @@ import 'package:gkvk/database/farmerDB/farmer_profile_db.dart';
 import 'package:gkvk/views/Generate_id/farmersarea/area.dart';
 import 'dart:io';
 import 'package:image_picker/image_picker.dart';
-import 'package:flutter_native_image/flutter_native_image.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class GenerateFarmersIdPage extends StatelessWidget {

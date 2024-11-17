@@ -47,15 +47,16 @@ dependencies:
   firebase_crashlytics:
   firebase_app_check:
   provider:
-  flutter_image_compress: ^1.1.0
+  flutter_image_compress: ^2.3.0
   flutter_native_image:
+  
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
   intl:
   sqflite:
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.1
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
