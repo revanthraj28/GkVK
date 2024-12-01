@@ -92,16 +92,16 @@ class CropdetailsDB {
     }
   }
 
- Future<int> update(Map<String, dynamic> data, int aadharId, double hissaNumber, int surveyNumber) async {
-  final database = await DatabaseService().database;
-  return await database.update(
-    tableName,
-    data,
-    where: 'aadharId = ? AND Hissa = ? AND survey = ?',
-    whereArgs: [aadharId, hissaNumber, surveyNumber],
-  );
-}
-
+  Future<int> update(Map<String, dynamic> data, int aadharId,
+      double hissaNumber, int surveyNumber) async {
+    final database = await DatabaseService().database;
+    return await database.update(
+      tableName,
+      data,
+      where: 'aadharId = ? AND Hissa = ? AND survey = ?',
+      whereArgs: [aadharId, hissaNumber, surveyNumber],
+    );
+  }
 
   Future<int> delete(int aadharId) async {
     final database = await DatabaseService().database;
@@ -117,4 +117,3 @@ class CropdetailsDB {
     return await database.insert(tableName, data);
   }
 }
-

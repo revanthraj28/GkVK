@@ -10,7 +10,6 @@ import 'package:gkvk/views/Surveypages/surveypagefordealers/surveypage1forfer.da
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:permission_handler/permission_handler.dart';
-
 import '../../database/DealerDB/dealer_db.dart';
 
 class GenerateDealersIdPage extends StatefulWidget {

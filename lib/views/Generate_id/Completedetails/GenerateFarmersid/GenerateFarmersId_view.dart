@@ -655,12 +655,12 @@ class GenerateFarmersIdPage extends StatelessWidget {
                             _pickImage(context, ImageSource.camera);
                           },
                         ),
-                        // IconButton(
-                        //   icon: const Icon(Icons.photo),
-                        //   onPressed: () {
-                        //     _pickImage(context, ImageSource.gallery);
-                        //   },
-                        // ),
+                        IconButton(
+                          icon: const Icon(Icons.photo),
+                          onPressed: () {
+                            _pickImage(context, ImageSource.gallery);
+                          },
+                        ),
                       ],
                     ),
                     const SizedBox(height: 30.0),

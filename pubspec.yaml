@@ -49,7 +49,6 @@ dependencies:
   provider:
   flutter_image_compress: ^2.3.0
   flutter_native_image:
-  
 
 dev_dependencies:
   flutter_test:

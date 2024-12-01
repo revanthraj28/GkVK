@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gkvk/views/home/2ndcrop/editdetailsoffarmer.dart';
 import 'dart:async';
 import '../../Watersheddetails/watersheddetails.dart';
 
@@ -23,13 +24,15 @@ class HomeTabView extends StatelessWidget {
             backgroundColor: Color(0xFFFEF8E0), // Set background color
             body: Center(
               child: CircularProgressIndicator(
-                color: Color(0xFFFB812C), // Set the color of the progress indicator
+                color: Color(
+                    0xFFFB812C), // Set the color of the progress indicator
               ),
             ),
           );
         } else {
           return Scaffold(
-            backgroundColor: Colors.transparent, // Make Scaffold background transparent
+            backgroundColor:
+                Colors.transparent, // Make Scaffold background transparent
             body: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -46,13 +49,17 @@ class HomeTabView extends StatelessWidget {
                       ),
                       // Content
                       Padding(
-                        padding: const EdgeInsets.only(top: 50, left: 20, right: 20), // Adjust top padding for status bar
+                        padding: const EdgeInsets.only(
+                            top: 50,
+                            left: 20,
+                            right: 20), // Adjust top padding for status bar
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             // Your content here
                             Container(
-                              padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: 10, horizontal: 10),
                               decoration: BoxDecoration(
                                 color: const Color(0xFFFEF8E0),
                                 borderRadius: BorderRadius.circular(5),
@@ -88,32 +95,65 @@ class HomeTabView extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.stretch,
                             children: [
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Expanded(child: _buildMenuBox('Create', 'Farmer Profile', Icons.person_add, Colors.black, () {
+                                  Expanded(
+                                      child: _buildMenuBox(
+                                          'Create',
+                                          'Farmer Profile',
+                                          Icons.person_add,
+                                          Colors.black, () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => WatershedView(Category: 1,)),
+                                      MaterialPageRoute(
+                                          builder: (context) => WatershedView(
+                                                Category: 1,
+                                              )),
                                     );
                                   })),
                                   const SizedBox(width: 10),
-                                  Expanded(child: _buildMenuBox('Edit', 'Farmer Profile', Icons.edit, Colors.black, () {
+                                  Expanded(
+                                      child: _buildMenuBox(
+                                          'Edit',
+                                          'Farmer Profile',
+                                          Icons.edit,
+                                          Colors.black, () {
                                     // Handle Edit Farmer Profile tap
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => const Editdetailsoffarmer()),
+                                    );
                                   })),
                                 ],
                               ),
                               const SizedBox(height: 10),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Expanded(child: _buildMenuBox('Create', 'PIA / Dealer Profile', Icons.person_add, Colors.black, () {
+                                  Expanded(
+                                      child: _buildMenuBox(
+                                          'Create',
+                                          'PIA / Dealer Profile',
+                                          Icons.person_add,
+                                          Colors.black, () {
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) => WatershedView(Category: 2,)),
+                                      MaterialPageRoute(
+                                          builder: (context) => WatershedView(
+                                                Category: 2,
+                                              )),
                                     );
                                   })),
                                   const SizedBox(width: 10),
-                                  Expanded(child: _buildMenuBox('Enter', 'Crop Details', Icons.grain, Colors.black, () {
+                                  Expanded(
+                                      child: _buildMenuBox(
+                                          'Enter',
+                                          'Crop Details',
+                                          Icons.grain,
+                                          Colors.black, () {
                                     // Handle Enter Crop Details tap
                                   })),
                                 ],
@@ -137,7 +177,8 @@ class HomeTabView extends StatelessWidget {
     await Future.delayed(const Duration(seconds: 2));
   }
 
-  Widget _buildMenuBox(String firstLine, String secondLine, IconData icon, Color color, VoidCallback onTap) {
+  Widget _buildMenuBox(String firstLine, String secondLine, IconData icon,
+      Color color, VoidCallback onTap) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
