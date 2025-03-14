@@ -244,17 +244,6 @@ Future<void> _submitData(BuildContext context) async {
       return false;
     }
 
-    // Check if chemical fertilizers fields are filled
-    // for (var fertilizer in chemicalFertilizers) {
-    //   if (fertilizer['name']!.text.isEmpty ||
-    //       fertilizer['basal']!.text.isEmpty ||
-    //       fertilizer['topDress']!.text.isEmpty ||
-    //       fertilizer['totalQuantity']!.text.isEmpty ||
-    //       fertilizer['totalCost']!.text.isEmpty) {
-    //     return false;
-    //   }
-    // }
-
     return true;
   }
 

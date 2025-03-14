@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "732318741320",
+    "firebase_url": "https://gkvk-cdd6c-default-rtdb.firebaseio.com",
     "project_id": "gkvk-cdd6c",
     "storage_bucket": "gkvk-cdd6c.appspot.com"
   },
@@ -10,6 +11,25 @@
         "mobilesdk_app_id": "1:732318741320:android:fc75454f0baa91e99fb97d",
         "android_client_info": {
           "package_name": "com.example.gkvk"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7RjmxCX8p1_tiDw2SqgKPO6t2KeXhDJg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:732318741320:android:566658226a13e4099fb97d",
+        "android_client_info": {
+          "package_name": "com.gkvk.lrifa"
         }
       },
       "oauth_client": [],

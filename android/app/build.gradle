@@ -6,15 +6,22 @@ plugins {
 }
 
 android {
+    def keystorePropertiesFile = rootProject.file("key.properties")
+    def keystoreProperties = new Properties()
+
+    if (keystorePropertiesFile.exists()) {
+        keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+    }
+
     compileSdkVersion 34
     buildToolsVersion "34.0.0"
 
     defaultConfig {
-        applicationId "com.example.gkvk"
+        applicationId "com.gkvk.lrifa"
         minSdkVersion 23
         targetSdkVersion 34
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "1.0.1"
         multiDexEnabled true // Enable multidex if your app requires it
     }
 
@@ -23,11 +30,20 @@ android {
         targetCompatibility JavaVersion.VERSION_11
     }
 
+    signingConfigs {
+        release {
+            keyAlias keystoreProperties['keyAlias']
+            keyPassword keystoreProperties['keyPassword']
+            storeFile keystoreProperties['storeFile'] ? file(keystoreProperties['storeFile']) : null
+            storePassword keystoreProperties['storePassword']
+        }
+    }
+
     buildTypes {
         release {
             // Configure your signing config for release builds
             // Note: Ensure signingConfigs.debug is replaced with your actual signing configuration
-            signingConfig signingConfigs.debug
+            signingConfig signingConfigs.release
             minifyEnabled true // Enable code shrinking (obfuscation/minification) for release builds
             shrinkResources true // Enable resource shrinking for release builds
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'

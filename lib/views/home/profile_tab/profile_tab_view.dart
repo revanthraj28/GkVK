@@ -120,44 +120,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 color: Colors.grey[700],
                               ),
                             ),
-                            // const SizedBox(height: 32),
-                            // FutureBuilder<int>(
-                            //   future: getFarmerCount(),
-                            //   builder: (context, snapshot) {
-                            //     if (snapshot.connectionState == ConnectionState.waiting) {
-                            //       return const CircularProgressIndicator();
-                            //     } else if (snapshot.hasError) {
-                            //       return Text('Error: ${snapshot.error}');
-                            //     } else {
-                            //       return Text(
-                            //         'Farmers Uploaded: ${snapshot.data}',
-                            //         style: const TextStyle(
-                            //           fontSize: 18,
-                            //           fontWeight: FontWeight.bold,
-                            //         ),
-                            //       );
-                            //     }
-                            //   },
-                            // ),
-                            //   const SizedBox(height: 32),
-                            // FutureBuilder<int>(
-                            //   future: getdealerCount(),
-                            //   builder: (context, snapshot) {
-                            //     if (snapshot.connectionState == ConnectionState.waiting) {
-                            //       return const CircularProgressIndicator();
-                            //     } else if (snapshot.hasError) {
-                            //       return Text('Error: ${snapshot.error}');
-                            //     } else {
-                            //       return Text(
-                            //         'Dealer Uploaded: ${snapshot.data}',
-                            //         style: const TextStyle(
-                            //           fontSize: 18,
-                            //           fontWeight: FontWeight.bold,
-                            //         ),
-                            //       );
-                            //     }
-                            //   },
-                            // ),
                             const SizedBox(height: 32),
                             MaterialButton(
                               onPressed: _signOutAndNavigateToLogin,

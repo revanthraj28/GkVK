@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:gkvk/views/home/2ndcrop/editdetailsoffarmer.dart';
+import 'package:gkvk/views/home/2ndcrop/editfarmers/editdetailsoffarmer.dart';
+import 'package:gkvk/views/home/2ndcrop/nagivatepage.dart';
 import 'dart:async';
 import '../../Watersheddetails/watersheddetails.dart';
 
@@ -123,7 +124,8 @@ class HomeTabView extends StatelessWidget {
                                     Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                          builder: (context) => const Editdetailsoffarmer()),
+                                          builder: (context) =>
+                                              const Editdetailsoffarmer()),
                                     );
                                   })),
                                 ],
@@ -154,7 +156,12 @@ class HomeTabView extends StatelessWidget {
                                           'Crop Details',
                                           Icons.grain,
                                           Colors.black, () {
-                                    // Handle Enter Crop Details tap
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const Nagivatepage()),
+                                    );
                                   })),
                                 ],
                               ),

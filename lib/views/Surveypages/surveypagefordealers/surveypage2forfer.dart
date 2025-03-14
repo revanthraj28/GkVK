@@ -123,69 +123,6 @@ class _surveypage2forferState extends State<surveypage2forfer> {
     }
   }
 
-  // Future<void> _showExitConfirmationDialog(BuildContext context) async {
-  //   return showDialog<void>(
-  //     context: context,
-  //     barrierDismissible: true,
-  //     builder: (BuildContext context) {
-  //       return AlertDialog(
-  //         shape: RoundedRectangleBorder(
-  //           borderRadius: BorderRadius.circular(15.0),
-  //         ),
-  //         backgroundColor: const Color(0xFFFEF8E0),
-  //         title: const Text(
-  //           'Exit',
-  //           style: TextStyle(
-  //             color: Color(0xFFFB812C),
-  //             fontWeight: FontWeight.bold,
-  //           ),
-  //         ),
-  //         content: const Text(
-  //           'Do you want to return to the home page?',
-  //           style: TextStyle(
-  //             color: Colors.black,
-  //           ),
-  //         ),
-  //         actions: <Widget>[
-  //           TextButton(
-  //             child: const Text(
-  //               'Cancel',
-  //               style: TextStyle(
-  //                 color: Color(0xFFFB812C),
-  //               ),
-  //             ),
-  //             onPressed: () {
-  //               Navigator.of(context).pop();
-  //             },
-  //           ),
-  //           TextButton(
-  //             child: const Text(
-  //               'OK',
-  //               style: TextStyle(
-  //                 color: Color(0xFFFB812C),
-  //               ),
-  //             ),
-  //             onPressed: () async {
-  //               try {
-  //                 final farmerProfileDB = FarmerProfileDB(); // Assuming FarmerProfileDB uses a singleton pattern
-  //                 await farmerProfileDB.delete(widget.aadharId);
-  //                 final cropdetailsDB = CropdetailsDB();
-  //                 await cropdetailsDB.delete(widget.aadharId);
-  //
-  //                 Navigator.of(context).popUntil((route) => route.isFirst);
-  //               } catch (error) {
-  //                 // print("Failed to delete farmer profile: $error");
-  //                 // Optionally show an error message to the user
-  //               }
-  //             }
-  //           ),
-  //         ],
-  //       );
-  //     },
-  //   );
-  // }
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
