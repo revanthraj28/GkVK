@@ -66,6 +66,7 @@ class _EditdetailsoffarmerState extends State<Editdetailsoffarmer> {
               "AREA": TextEditingController(
                   text: cropData['area']?.toString() ?? ''),
               "SEASON": TextEditingController(text: cropData['season'] ?? ''),
+              "NEWSEASON": TextEditingController(text:cropData['newSeason']?.toString() ?? '1'),
               "TYPEOFLAND":
                   TextEditingController(text: cropData['typeOfLand'] ?? ''),
               "SOURCEOFIRRIGATION": TextEditingController(
@@ -698,6 +699,13 @@ class _EditdetailsoffarmerState extends State<Editdetailsoffarmer> {
                                       ),
                                     ),
                                     const SizedBox(height: 20),
+                                    CustomTextFormField(
+                                      labelText: 'Season Number',
+                                      keyboardType: TextInputType.text,
+                                      controller: cropController['NEWSEASON'] ??
+                                          TextEditingController(),
+                                          enabled: false,
+                                    ),
                                     CustomTextFormField(
                                       labelText: 'Crop Name',
                                       keyboardType: TextInputType.text,
