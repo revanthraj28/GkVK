@@ -65,11 +65,11 @@ class _DealerSurveyPage2State extends State<DealerSurveyPage2> {
         "dealerId": widget.dealerId,
         "surveyData": surveyResponsesString,
         "timestamp": formattedTimestamp,
-        "Season": 2
+        "Season": nextSurveyNumber
       };
       // Save the new document
       await dealerRef
-          .collection("Season2")
+          .collection("Season$nextSurveyNumber")
           .doc(newDocumentName)
           .set(documentData);
 

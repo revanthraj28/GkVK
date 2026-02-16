@@ -472,7 +472,7 @@ class _EnterCropDetailsState extends State<EnterCropDetails> {
         'variety': _varietyController.text.trim(),
         'duration': int.tryParse(_durationController.text) ?? 0,
         'season': _selectedSeason.value,
-        'newSeason': 2,
+        'newSeason': 3,
         'typeOfLand': _selectedTypeOfLand.value, //
         'sourceOfIrrigation': _selectedSourceOfIrrigation.value,
         'cost': int.tryParse(_costController.text) ?? 0,
